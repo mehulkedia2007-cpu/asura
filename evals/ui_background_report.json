@@ -1,0 +1,36 @@
+{
+  "origin": "http://127.0.0.1:3017",
+  "checks": [
+    {
+      "locale": "en",
+      "defaultDark": true,
+      "renderedPixelChange": true,
+      "cursorWarp": true,
+      "pause": true,
+      "voicePause": true,
+      "reducedMotion": true,
+      "graphFrameBudget": true
+    },
+    {
+      "locale": "te",
+      "defaultDark": true,
+      "renderedPixelChange": true,
+      "cursorWarp": true,
+      "pause": true,
+      "voicePause": true,
+      "reducedMotion": true,
+      "graphFrameBudget": true
+    },
+    {
+      "locale": "hi",
+      "defaultDark": true,
+      "renderedPixelChange": true,
+      "cursorWarp": true,
+      "pause": true,
+      "voicePause": true,
+      "reducedMotion": true,
+      "graphFrameBudget": true
+    }
+  ],
+  "noWebGL": "visible static contours and working feature links"
+}

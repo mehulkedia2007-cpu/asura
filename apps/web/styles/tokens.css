@@ -59,3 +59,17 @@
 
   --shadow-hairline: 0 1px 4px oklch(0.965 0.006 85 / 0.08);
 }
+
+/* Cinematic interface requested on 2026-10-02. Light mode remains selectable. */
+:root:not([data-theme="light"]) {
+  --bone: oklch(0.12 0 0);
+  --ink: oklch(0.96 0 0);
+  --graphite: oklch(0.76 0 0);
+  --surface: oklch(0.17 0 0);
+  --surface-muted: oklch(0.21 0 0);
+  --line: oklch(0.34 0 0);
+  --signal-text: oklch(0.8 0.12 30);
+  --sage-ink: oklch(0.8 0.08 150);
+  --background: var(--bone);
+  --foreground: var(--ink);
+}

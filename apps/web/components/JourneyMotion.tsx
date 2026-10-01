@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon, type IconName } from "@/components/Icon";
 import { Link } from "@/i18n/navigation";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
@@ -33,6 +33,17 @@ export function JourneyMotion() {
   const [stage, setStage] = useState(0);
   const [open, setOpen] = useState(false);
   const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("daari:ambient-pause", { detail: paused }),
+    );
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent("daari:ambient-pause", { detail: false }),
+      );
+    };
+  }, [paused]);
 
   function close() {
     dialog.current?.close();

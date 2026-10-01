@@ -49,7 +49,7 @@ try {
       await page
         .locator(".workspace-brand .brand-lockup")
         .evaluate((el) => getComputedStyle(el).fontSize),
-      "40px",
+      "24px",
     );
     assert.equal(await page.locator(".feature-set a").count(), 8);
     for (const route of [
@@ -108,10 +108,9 @@ try {
     }
     await page.addScriptTag({ content: axe });
     for (const dark of [false, true]) {
-      if (dark)
-        await page.evaluate(() => {
-          document.documentElement.dataset.theme = "dark";
-        });
+      await page.evaluate((isDark) => {
+        document.documentElement.dataset.theme = isDark ? "dark" : "light";
+      }, dark);
       const audit = await page.evaluate(() =>
         window.axe.run(document, {
           runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] },

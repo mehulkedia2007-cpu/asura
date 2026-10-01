@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { Brand } from "@/components/Brand";
 import { Experience } from "@/components/Experience";
+import { FluidBackground } from "@/components/FluidBackground";
 import { Icon, type IconName } from "@/components/Icon";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { VoicePanel } from "@/components/VoicePanel";
@@ -13,7 +14,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const t = useTranslations("workspace");
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
   const [connection, setConnection] = useState<
     "checking" | "online" | "offline"
   >("checking");
@@ -27,7 +28,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("daari-theme") === "dark";
+      const firstVisualVisit =
+        localStorage.getItem("daari-visual-v2") !== "fluid";
+      const saved =
+        firstVisualVisit || localStorage.getItem("daari-theme") !== "light";
+      if (firstVisualVisit) {
+        localStorage.setItem("daari-theme", "dark");
+        localStorage.setItem("daari-visual-v2", "fluid");
+      }
       setDark(saved);
       document.documentElement.dataset.theme = saved ? "dark" : "light";
     } catch {
@@ -81,7 +89,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="workspace">
+    <div className="workspace cinematic-workspace">
+      <FluidBackground />
       <a className="skip-link" href="#main-content">
         {t("skip")}
       </a>

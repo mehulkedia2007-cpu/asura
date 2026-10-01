@@ -284,3 +284,19 @@ snapshots reduced motion at mount. CSS reduced-motion rules also cover first
 paint. Pause the feature band on hover, voice use or its pause control; keyboard
 focus makes the original eight links static and hides presentation duplicates.
 The native modal supplies focus containment, Escape dismissal and focus return.
+
+## D32 · 2026-10-02 · Rebuild the interface around a cursor-responsive fluid field
+
+The user clarified that the whole background and interface should take inspiration
+from DAQ Consulting. Supersede the earlier paper/serif-first direction with a
+dark technical interface, large Geist headings, angular panels, monochrome
+geometric DAARI direction mark and an original domain-warped contour field.
+No reference assets or code are imported. The procedural WebGL renderer is an
+intentional exception to the previous Motion-only guidance.
+
+Render at a bounded resolution and at most 30 fps. Smooth pointer input into
+the fluid field; pause for reduced motion, hidden tabs, explicit pause, voice
+panels and the roadmap page. Keep static vector contours available if WebGL
+fails. First visits to this visual revision use dark appearance, after which
+theme choices persist. The redesigned shell preserves all existing routes,
+source annotations, score explanations, eligibility states and voice behavior.

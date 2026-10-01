@@ -297,3 +297,18 @@ Live job, scheme eligibility recheck and six-answer assessment/persistence
 journeys pass. A source ConnectTimeout is reported honestly. A public visual
 review caught and repaired a logo selector collision; desktop/mobile mark-size
 assertions and the complete production UI suite pass on the correction.
+
+## Full cinematic UI correction — 2026-10-02
+
+The user clarified that small cursor/line effects did not meet the requested
+redesign. Rebuilt the presentation around an original moving fluid background,
+dark default, technical typography, angular panels and a geometric DAARI mark.
+The field responds to mouse position across the viewport. All feature routes
+and connected backend behavior remain accessible. Light appearance is optional.
+
+Production verification passes 57 accessibility states and 108 responsive checks
+across English/Telugu/Hindi, plus existing motion/audio checks and seven web unit
+tests. Biome, TypeScript and build pass. A new rendered-background regression
+checks actual pixel changes, pointer warping, explicit pause, voice pause,
+live reduced motion, roadmap frame-budget suspension and no-WebGL fallback.
+See evals/ui_background_report.json and the revised UI_BRIEF.md.

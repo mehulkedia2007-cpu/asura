@@ -1,4 +1,27 @@
-# UI_BRIEF.md — DAARI. Direction: "Editorial instrument."
+# DAARI UI direction — Cinematic fluid, updated 2026-10-02
+
+The user clarified that the whole interface and moving background must take
+inspiration from https://daqconsulting.com, beyond small cursor and line effects.
+Use a dark graphite default, large Geist typography, thin technical borders,
+angular panels and an original geometric direction mark. The whole viewport
+contains an original domain-warped WebGL contour field that responds to cursor
+position. Reference assets and code must not be copied.
+
+Keep the existing real feature routes, source stamps, eligibility explanations,
+language controls, voice and evidence board. Light appearance remains available.
+On the first visit to this visual revision, show the requested dark appearance;
+later visits retain the user's selected theme.
+
+The WebGL background is an intentional exception to the historical Motion-only
+implementation guideline. Limit render resolution and 30 fps; stop animation
+for reduced motion, hidden tabs, the explicit pause control, voice panels and the
+roadmap page (which owns the frame budget). Render static contours when WebGL
+is unavailable. Use the same accessible contrast, responsive and keyboard gates.
+
+The earlier editorial brief below records the original design baseline.
+Its paper-first, serif-first presentation is superseded by this user request.
+
+## Historical baseline — Editorial instrument.
 
 Paper, ink, one signal colour. A well-set journal that learned motion from Awwwards work, with data panels that read like instruments.
 References are for **feel only** — never layout, never assets: wonjyou.com (counter preloader, type scale, marquee, confident whitespace) and current Awwwards SOTD.

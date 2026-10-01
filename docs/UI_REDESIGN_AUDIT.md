@@ -115,3 +115,18 @@ production build passes that regression and the full UI suite again.
 Public backend journeys return seven sourced leads, five schemes, a successful
 eligibility recheck and six persisted assessment answers with a recalculated
 roadmap. One source ConnectTimeout remains visible.
+
+## Full fluid interface correction — 2026-10-02
+
+The requested reference applied to the overall background and interface.
+Replaced the paper/serif-first presentation with a dark technical shell,
+large Geist headlines, angular borders/panels and an original geometric mark.
+The viewport contains original procedural domain-warped fluid contours that
+move and respond to mouse position. Existing source-backed tools stay intact.
+
+Production check:background passes real rendered pixel changes and pointer
+response in all three locales, explicit pause, voice suspension, live reduced
+motion, roadmap suspension and a simulated unavailable-WebGL fallback.
+Production check:motion passes both actual themes, modal/keyboard routes,
+navigation audio, mute persistence, voice suppression and touch. The complete
+UI suite passes 57 accessibility states and 108 responsive route checks.

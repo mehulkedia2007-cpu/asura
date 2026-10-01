@@ -12,7 +12,8 @@
     "check:ui": "node scripts/check-redesign.mjs",
     "check:journeys": "node scripts/check-live-journeys.mjs",
     "check:cloud": "node scripts/check-cloud.mjs",
-    "check:motion": "node scripts/check-motion.mjs"
+    "check:motion": "node scripts/check-motion.mjs",
+    "check:background": "node scripts/check-background.mjs"
   },
   "dependencies": {
     "d3-force": "3.0.0",

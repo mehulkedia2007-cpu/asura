@@ -54,6 +54,14 @@ try {
       await page.goto(`${origin}/${locale}/${route}`);
       await page.locator("h1").waitFor();
       await page.waitForTimeout(400);
+      if (
+        !route &&
+        (await page.evaluate(
+          () => document.documentElement.dataset.theme === "dark",
+        ))
+      ) {
+        await page.locator(".theme-toggle").click();
+      }
       assert.equal(
         await page.locator("h1").count(),
         1,

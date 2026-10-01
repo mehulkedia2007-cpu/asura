@@ -9,13 +9,13 @@ export function Brand() {
       >
         <path
           className="brand-path"
-          d="M5 33V18a8 8 0 0 1 8-8h19M23 2l9 8-9 8"
+          pathLength={1}
+          d="M6 33V7h13l15 13-15 13H6ZM12 27V13h6l9 7-9 7h-6M18 20h16"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <circle cx="5" cy="33" r="3" fill="currentColor" />
       </svg>
       <span>DAARI</span>
     </span>
