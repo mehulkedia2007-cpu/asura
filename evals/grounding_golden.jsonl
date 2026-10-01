@@ -1,0 +1,20 @@
+{"id":"exact-scheme","evidence":"The training lasts 15 days.","draft":"The training lasts 15 days.","supported":true}
+{"id":"exact-pay","evidence":"The stipend is ₹7000.","draft":"The stipend is ₹7000.","supported":true}
+{"id":"exact-place","evidence":"The office is in Guntur.","draft":"The office is in Guntur.","supported":true}
+{"id":"exact-name","evidence":"The Craftsmen Training Scheme offers courses.","draft":"The Craftsmen Training Scheme offers courses.","supported":true}
+{"id":"exact-date","evidence":"Applications close on 2026-10-01.","draft":"Applications close on 2026-10-01.","supported":true}
+{"id":"exact-document","evidence":"Applicants need an Aadhaar card.","draft":"Applicants need an Aadhaar card.","supported":true}
+{"id":"exact-remote","evidence":"The role is remote.","draft":"The role is remote.","supported":true}
+{"id":"exact-eligibility","evidence":"Residents of Andhra Pradesh may apply.","draft":"Residents of Andhra Pradesh may apply.","supported":true}
+{"id":"exact-hours","evidence":"Training takes 40 hours.","draft":"Training takes 40 hours.","supported":true}
+{"id":"exact-age","evidence":"Applicants must be at least 18 years old.","draft":"Applicants must be at least 18 years old.","supported":true}
+{"id":"changed-number","evidence":"The stipend is ₹7000.","draft":"The stipend is ₹9000.","supported":false}
+{"id":"changed-place","evidence":"The office is in Guntur.","draft":"The office is in Vijayawada.","supported":false}
+{"id":"changed-scheme","evidence":"The Craftsmen Training Scheme offers courses.","draft":"The Skill Loan Scheme offers courses.","supported":false}
+{"id":"changed-date","evidence":"Applications close on 2026-10-01.","draft":"Applications close on 2026-11-01.","supported":false}
+{"id":"invented-document","evidence":"Applicants need an Aadhaar card.","draft":"Applicants need a passport.","supported":false}
+{"id":"invented-remote","evidence":"The role is in Guntur.","draft":"The role is remote.","supported":false}
+{"id":"guaranteed-job","evidence":"The training is free.","draft":"Guaranteed job after training.","supported":false}
+{"id":"fee-instruction","evidence":"Applications are free.","draft":"Pay a fee to apply.","supported":false}
+{"id":"wrong-age","evidence":"Applicants must be at least 18 years old.","draft":"Applicants must be at least 16 years old.","supported":false}
+{"id":"wrong-duration","evidence":"Training takes 40 hours.","draft":"Training takes 30 hours.","supported":false}

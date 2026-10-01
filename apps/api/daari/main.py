@@ -1,4 +1,4 @@
-"""daari.main — FastAPI app with exactly one route: GET /health.
+"""daari.main — FastAPI app with health probes and the P2 engine router.
 
 Every probe is best-effort and never raises past its own function: a bad
 network, a missing key or a down provider degrades that one field to
@@ -22,19 +22,25 @@ import redis.asyncio as redis_async
 from fastapi import FastAPI
 from sqlalchemy import text
 
+from daari.agent.loop import _TOOLS as TOOLS
 from daari.config import settings
 from daari.db import engine
+from daari.evidence import evidence as evidence_endpoint
+from daari.evidence import router as evidence_router
+from daari.p2 import router as p2_router
+from daari.p3 import router as p3_router
+from daari.p4 import router as p4_router
+from daari.p5 import router as p5_router
+from daari.source_cache import source
 
 _APP_DIR = Path(__file__).resolve().parent
 _PROBE_TIMEOUT_S = 6.0
 
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-3.1-flash-lite"
 GROQ_CHAT_MODEL = "openai/gpt-oss-120b"
 GROQ_ASR_MODEL = "whisper-large-v3"
 OLLAMA_MODEL = "llama3.1:8b"
 
-# Public MySchemes search key, verified working against v6 at /setup (v4/v5 return 500).
-_MYSCHEME_API_KEY = "tYTy5eEhlu9rFjyxuCr7ra7ACp4dv1RH8gWuHTDc"
 _MYSCHEME_UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/128.0 Safari/537.36"
@@ -62,6 +68,17 @@ def _git_sha() -> str:
 _SHA = _git_sha()
 
 app = FastAPI(title="daari-api")
+app.include_router(p2_router)
+app.include_router(p3_router)
+app.include_router(p4_router)
+app.include_router(p5_router)
+app.include_router(evidence_router)
+
+
+@app.get("/evidence", tags=["P6 evidence"])
+async def public_evidence() -> dict:
+    """Stable top-level alias for the evidence board and external checks."""
+    return await evidence_endpoint()
 
 
 async def _safe(coro: Coroutine[Any, Any, dict]) -> dict:
@@ -198,7 +215,7 @@ async def _probe_myscheme(client: httpx.AsyncClient) -> dict:
         "https://api.myscheme.gov.in/search/v6/schemes",
         params={"lang": "en", "q": "[]", "keyword": "income", "sort": "", "from": 0, "size": 1},
         headers={
-            "x-api-key": _MYSCHEME_API_KEY,
+            "x-api-key": source("myscheme_ap")["public_api_key"],
             "User-Agent": _MYSCHEME_UA,
             "Referer": "https://www.myscheme.gov.in/",
         },
@@ -279,7 +296,7 @@ async def health() -> dict:
         "db": db_result,
         "redis": redis_result,
         "llm": llm,
-        "tools": {"status": "ok", "count": 0},
+        "tools": {"status": "ok", "count": len(TOOLS)},
         "asr": asr_result,
         "tts": tts_result,
         "adzuna": adzuna_result,

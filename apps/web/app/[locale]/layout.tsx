@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { PrepNav } from "@/components/Preparation";
+import { VoicePanel } from "@/components/VoicePanel";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -63,9 +65,11 @@ export default async function LocaleLayout({
     >
       <body className="flex min-h-full flex-col bg-bone text-ink">
         <NextIntlClientProvider messages={messages}>
-          <header className="flex items-center justify-end border-graphite/20 border-b px-6 py-5">
+          <header className="flex items-center justify-between gap-4 border-graphite/20 border-b px-6 py-5">
+            <VoicePanel />
             <LanguageToggle />
           </header>
+          <PrepNav />
           {children}
         </NextIntlClientProvider>
       </body>

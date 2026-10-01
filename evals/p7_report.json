@@ -1,0 +1,478 @@
+{
+  "phase": "P7",
+  "checked_at": "2026-09-30T05:12:17.058297+00:00",
+  "scope": "Rehearsal and audit; cached regressions are not field validation.",
+  "audit": {
+    "passed": true,
+    "checks": {
+      "invented_number_struck": true,
+      "forbidden_payment_struck": true,
+      "notice_personal_data_removed": true,
+      "cat_terminates_at_six": true,
+      "telugu_fee": true,
+      "hindi_fee": true,
+      "telugu_no_fee": true,
+      "telugu_whatsapp_only": true
+    },
+    "verifier": {
+      "samples": 20,
+      "p95_ms": 0.012,
+      "gate_ms": 400,
+      "passed": true
+    },
+    "shared_engine": {
+      "status": "green",
+      "core_package": "packages/core/daari_core",
+      "forbidden_imports": {},
+      "persona_engine_violations": [],
+      "shared_by": [
+        "student",
+        "rural"
+      ]
+    },
+    "roadmap": {
+      "checks": {
+        "learning_never_lengthens": true,
+        "market_shock_computes": true,
+        "deterministic_replay": true
+      },
+      "passed": true,
+      "baseline_hours": 375,
+      "after_learning_hours": 360
+    },
+    "match_ablations": {
+      "graph_on": 0.0016,
+      "graph_off": -0.0096,
+      "vector_on": 0.0016,
+      "vector_off": -0.067,
+      "graph_delta": 0.0112,
+      "vector_delta": 0.0686,
+      "passed": true,
+      "fixture": "data_analyst role with held data_visualization_tableau"
+    },
+    "i18n": {
+      "keys": 277,
+      "missing": {
+        "en": [],
+        "te": [],
+        "hi": []
+      },
+      "empty": {
+        "en": [],
+        "te": [],
+        "hi": []
+      },
+      "passed": true
+    },
+    "constitution": [
+      {
+        "article": "I",
+        "title": "Sources of truth",
+        "test": "test_article_1_memory_is_not_a_source",
+        "status": "green"
+      },
+      {
+        "article": "II",
+        "title": "Time",
+        "test": "test_article_2_dates",
+        "status": "green"
+      },
+      {
+        "article": "III",
+        "title": "Numbers",
+        "test": "test_article_3_numbers",
+        "status": "green"
+      },
+      {
+        "article": "IV",
+        "title": "Names and entities",
+        "test": "test_article_4_names",
+        "status": "green"
+      },
+      {
+        "article": "V",
+        "title": "Unknowns are answers",
+        "test": "nodata_adversarial.jsonl",
+        "status": "green"
+      },
+      {
+        "article": "VI",
+        "title": "Citations",
+        "test": "test_article_6_no_uncited_prose",
+        "status": "green"
+      },
+      {
+        "article": "VII",
+        "title": "Determinism",
+        "test": "test_purity",
+        "status": "green"
+      },
+      {
+        "article": "VIII",
+        "title": "Language",
+        "test": "test_article_8_translation_adds_no_entity",
+        "status": "green"
+      },
+      {
+        "article": "IX",
+        "title": "Scope and seriousness",
+        "test": "test_article_9_forbidden_claims",
+        "status": "green"
+      },
+      {
+        "article": "X",
+        "title": "Scams and safety",
+        "test": "scam_golden.jsonl",
+        "status": "green"
+      },
+      {
+        "article": "XI",
+        "title": "Data hygiene",
+        "test": "test_article_11_no_personal_names_persisted",
+        "status": "green"
+      },
+      {
+        "article": "XII",
+        "title": "Transparency",
+        "test": "test_article_12_trace_completeness",
+        "status": "green"
+      },
+      {
+        "article": "XIII",
+        "title": "Failure mode",
+        "test": "test_article_13_degrades_to_cards",
+        "status": "green"
+      }
+    ],
+    "regressions": {
+      "p3": {
+        "scheme_retrieval": {
+          "cases": 40,
+          "corpus_records": 179,
+          "precision_at_5": 0.805,
+          "recall_at_5": 0.728,
+          "hit_at_5": 1.0,
+          "precision_en": 0.8,
+          "precision_te": 0.81,
+          "weak_count": 0,
+          "weak_cases": [],
+          "gate": "precision@5 ≥ 0.80",
+          "passed": true,
+          "scope": "frozen public-source regression; not independent holdout validation"
+        },
+        "scam": {
+          "cases": 30,
+          "true_positive": 15,
+          "false_positive": 0,
+          "false_negative": 0,
+          "true_negative": 15,
+          "recall": 1.0,
+          "precision": 1.0,
+          "failures": [],
+          "gate": "recall ≥ 0.90; precision ≥ 0.80",
+          "passed": true
+        },
+        "grounding": {
+          "cases": 20,
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "failures": [],
+          "no_data": {
+            "cases": 10,
+            "violations": 0,
+            "failures": []
+          },
+          "passed": true
+        }
+      },
+      "p4": {
+        "phase": "P4",
+        "status": "complete",
+        "date": "2026-09-26",
+        "api_tests": 46,
+        "web_tests": 3,
+        "i18n_keys_per_locale": 125,
+        "checks": [
+          "ruff",
+          "pyright",
+          "biome",
+          "typescript",
+          "production_build",
+          "verified_sentence_streaming",
+          "barge_in_server_cancellation",
+          "browser_stale_audio_cancellation",
+          "mobile_en_te_hi",
+          "live_gemini_groq_tools"
+        ],
+        "cached_browser": {
+          "upstream_http_and_tts": "blocked",
+          "local_postgres": true,
+          "clips": "three synthetic reviewed clips",
+          "samples_per_locale": 20,
+          "thresholds_ms": {
+            "first_playback_p95": 1500,
+            "response_done_p95": 4000
+          },
+          "results": {
+            "en": {
+              "first_playback_p95_ms": 56,
+              "response_done_p95_ms": 3
+            },
+            "te": {
+              "first_playback_p95_ms": 53,
+              "response_done_p95_ms": 39
+            },
+            "hi": {
+              "first_playback_p95_ms": 44,
+              "response_done_p95_ms": 3
+            }
+          },
+          "passed": true
+        },
+        "cached_server": {
+          "samples_per_locale": 20,
+          "results": {
+            "en": {
+              "first_audio_p95_ms": 0.4,
+              "response_done_p95_ms": 0.4
+            },
+            "te": {
+              "first_audio_p95_ms": 35.7,
+              "response_done_p95_ms": 35.8
+            },
+            "hi": {
+              "first_audio_p95_ms": 0.3,
+              "response_done_p95_ms": 0.4
+            }
+          },
+          "passed": true
+        },
+        "measurement_limits": [
+          "Cached regressions do not measure human microphone ASR accuracy.",
+          "Total response delivery excludes speech duration.",
+          "Cold provider/source turns previously took 8.82–64.02 seconds."
+        ]
+      },
+      "p5": {
+        "checked_at": "2026-09-30T04:43:03.093832+00:00",
+        "scope": "development regression; not an independent holdout or field validation",
+        "intel": {
+          "cases": 10,
+          "recall_at_5": 1.0,
+          "no_data_violations": 0
+        },
+        "notices": {
+          "cases": 20,
+          "field_accuracy": 1.0,
+          "privacy_violations": 0
+        },
+        "feedback": {
+          "cases": 8,
+          "must_mention_recall": 1.0,
+          "quote_specificity": 1.0,
+          "adversarial_violations": 0,
+          "adversarial_cases": 116
+        },
+        "passed": true
+      }
+    }
+  },
+  "field_rehearsal": {
+    "status": "measured",
+    "source": "reviewed_microphone",
+    "scope": "ASR and full agent/TTS caches bypassed",
+    "reference_transcript_independently_reviewed": true,
+    "review_note": "Google FLEURS te_in test split, clip 10054709042905280078.wav; native-speaker recording validated by additional workers against its human-translated source transcript; CC BY 4.0; PCM16 normalized",
+    "asr": {
+      "status": "measured",
+      "provider": [
+        "groq"
+      ],
+      "samples": 5,
+      "word_accuracy_mean": 0.45,
+      "wer_mean": 0.55,
+      "cer_mean": 0.2342,
+      "reason": null
+    },
+    "latency": {
+      "status": "measured",
+      "samples": 5,
+      "first_audio_p95_ms": 14428.6,
+      "total_p95_ms": 14428.8,
+      "passed_voice_thresholds": false,
+      "reason": null
+    },
+    "rows": [
+      {
+        "asr_provider": "groq",
+        "transcript_metrics": {
+          "reference_words": 20,
+          "hypothesis_words": 18,
+          "word_errors": 11,
+          "wer": 0.55,
+          "word_accuracy": 0.45,
+          "reference_characters": 111,
+          "hypothesis_characters": 102,
+          "character_errors": 26,
+          "cer": 0.2342,
+          "character_accuracy": 0.7658
+        },
+        "elapsed_ms": 7247.1,
+        "event_types": [
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "first_audio_ms": 7246.5,
+        "total_ms": 7246.7,
+        "stages_ms": {
+          "t_asr_final": 2009.6,
+          "t_llm_response": 5368.3,
+          "t_engine_done": 2009.7,
+          "t_audio_first_chunk": 7246.5,
+          "t_done": 7246.7
+        }
+      },
+      {
+        "asr_provider": "groq",
+        "transcript_metrics": {
+          "reference_words": 20,
+          "hypothesis_words": 18,
+          "word_errors": 11,
+          "wer": 0.55,
+          "word_accuracy": 0.45,
+          "reference_characters": 111,
+          "hypothesis_characters": 102,
+          "character_errors": 26,
+          "cer": 0.2342,
+          "character_accuracy": 0.7658
+        },
+        "elapsed_ms": 5598.6,
+        "event_types": [
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "first_audio_ms": 5596.8,
+        "total_ms": 5596.9,
+        "stages_ms": {
+          "t_asr_final": 1600.4,
+          "t_llm_response": 4211.9,
+          "t_engine_done": 1600.5,
+          "t_audio_first_chunk": 5596.8,
+          "t_done": 5596.9
+        }
+      },
+      {
+        "asr_provider": "groq",
+        "transcript_metrics": {
+          "reference_words": 20,
+          "hypothesis_words": 18,
+          "word_errors": 11,
+          "wer": 0.55,
+          "word_accuracy": 0.45,
+          "reference_characters": 111,
+          "hypothesis_characters": 102,
+          "character_errors": 26,
+          "cer": 0.2342,
+          "character_accuracy": 0.7658
+        },
+        "elapsed_ms": 6491.4,
+        "event_types": [
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "first_audio_ms": 6490.5,
+        "total_ms": 6490.5,
+        "stages_ms": {
+          "t_asr_final": 1658.5,
+          "t_llm_response": 4772.9,
+          "t_engine_done": 1658.8,
+          "t_audio_first_chunk": 6490.5,
+          "t_done": 6490.5
+        }
+      },
+      {
+        "asr_provider": "groq",
+        "transcript_metrics": {
+          "reference_words": 20,
+          "hypothesis_words": 18,
+          "word_errors": 11,
+          "wer": 0.55,
+          "word_accuracy": 0.45,
+          "reference_characters": 111,
+          "hypothesis_characters": 102,
+          "character_errors": 26,
+          "cer": 0.2342,
+          "character_accuracy": 0.7658
+        },
+        "elapsed_ms": 14429.3,
+        "event_types": [
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "first_audio_ms": 14428.6,
+        "total_ms": 14428.8,
+        "stages_ms": {
+          "t_asr_final": 1410.9,
+          "t_llm_response": 3170.1,
+          "t_engine_done": 1411.1,
+          "t_audio_first_chunk": 14428.6,
+          "t_done": 14428.8
+        }
+      },
+      {
+        "asr_provider": "groq",
+        "transcript_metrics": {
+          "reference_words": 20,
+          "hypothesis_words": 18,
+          "word_errors": 11,
+          "wer": 0.55,
+          "word_accuracy": 0.45,
+          "reference_characters": 111,
+          "hypothesis_characters": 102,
+          "character_errors": 26,
+          "cer": 0.2342,
+          "character_accuracy": 0.7658
+        },
+        "elapsed_ms": 4620.9,
+        "event_types": [
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "first_audio_ms": 4619.4,
+        "total_ms": 4619.5,
+        "stages_ms": {
+          "t_asr_final": 1342.6,
+          "t_llm_response": 3157.9,
+          "t_engine_done": 1342.9,
+          "t_audio_first_chunk": 4619.4,
+          "t_done": 4619.5
+        }
+      }
+    ]
+  },
+  "readiness": {
+    "p7_phase": "ready",
+    "full_build": "open",
+    "open_gates": [
+      "P2 taxonomy, role and CAT-bank breadth",
+      "P2 multilingual learned embeddings",
+      "P3 live-index precision and source breadth"
+    ]
+  }
+}

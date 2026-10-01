@@ -1,0 +1,437 @@
+{
+  "scope": "General discovery seed; college-specific recruiter status and recent hiring are unverified.",
+  "companies": [
+    {
+      "id": "tcs",
+      "name": "TCS",
+      "aliases": [
+        "Tata Consultancy Services"
+      ],
+      "roles": [
+        "Prime"
+      ],
+      "role_aliases": {
+        "prime": "Prime",
+        "tcs prime": "Prime"
+      }
+    },
+    {
+      "id": "infosys",
+      "name": "Infosys",
+      "aliases": [],
+      "roles": [
+        "Specialist Programmer"
+      ],
+      "role_aliases": {
+        "sp": "Specialist Programmer",
+        "specialist programmer": "Specialist Programmer"
+      }
+    },
+    {
+      "id": "wipro",
+      "name": "Wipro",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "hcltech",
+      "name": "HCLTech",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "tech_mahindra",
+      "name": "Tech Mahindra",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "cognizant",
+      "name": "Cognizant",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "accenture",
+      "name": "Accenture",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "capgemini",
+      "name": "Capgemini",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "ibm",
+      "name": "IBM",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "ltimindtree",
+      "name": "LTIMindtree",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "mphasis",
+      "name": "Mphasis",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "persistent_systems",
+      "name": "Persistent Systems",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "hexaware",
+      "name": "Hexaware",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "coforge",
+      "name": "Coforge",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "zensar",
+      "name": "Zensar",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "birlasoft",
+      "name": "Birlasoft",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "kpit",
+      "name": "KPIT",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "cyient",
+      "name": "Cyient",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "landt_technology_services",
+      "name": "L&T Technology Services",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "ust",
+      "name": "UST",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "deloitte",
+      "name": "Deloitte",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "ey",
+      "name": "EY",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "kpmg",
+      "name": "KPMG",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "pwc",
+      "name": "PwC",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "dxc_technology",
+      "name": "DXC Technology",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "ntt_data",
+      "name": "NTT DATA",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "virtusa",
+      "name": "Virtusa",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "cgi",
+      "name": "CGI",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "epam",
+      "name": "EPAM",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "oracle",
+      "name": "Oracle",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "amazon",
+      "name": "Amazon",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "google",
+      "name": "Google",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "sap",
+      "name": "SAP",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "salesforce",
+      "name": "Salesforce",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "servicenow",
+      "name": "ServiceNow",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "cisco",
+      "name": "Cisco",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "intel",
+      "name": "Intel",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "qualcomm",
+      "name": "Qualcomm",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "amd",
+      "name": "AMD",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "nvidia",
+      "name": "NVIDIA",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "dell",
+      "name": "Dell",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "hp",
+      "name": "HP",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "bosch",
+      "name": "Bosch",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "siemens",
+      "name": "Siemens",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "schneider_electric",
+      "name": "Schneider Electric",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "honeywell",
+      "name": "Honeywell",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "abb",
+      "name": "ABB",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "larsen_and_toubro",
+      "name": "Larsen & Toubro",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "tata_elxsi",
+      "name": "Tata Elxsi",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "tata_motors",
+      "name": "Tata Motors",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "mahindra_and_mahindra",
+      "name": "Mahindra & Mahindra",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "ashok_leyland",
+      "name": "Ashok Leyland",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "hyundai",
+      "name": "Hyundai",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "maruti_suzuki",
+      "name": "Maruti Suzuki",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "reliance_industries",
+      "name": "Reliance Industries",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "adani_group",
+      "name": "Adani Group",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "hetero",
+      "name": "Hetero",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "dr_reddys_laboratories",
+      "name": "Dr. Reddy’s Laboratories",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    },
+    {
+      "id": "divis_laboratories",
+      "name": "Divi’s Laboratories",
+      "aliases": [],
+      "roles": [],
+      "role_aliases": {}
+    }
+  ]
+}

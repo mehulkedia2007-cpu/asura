@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "locale": "en",
+      "questions": 5,
+      "completed_answers": 5,
+      "reload_history": true,
+      "deletion": true,
+      "mobile_overflow": false,
+      "recorded_audio": true,
+      "asr": "stubbed",
+      "audio_source": "web_audio_generated_stream",
+      "pending_microphone_cancel": true,
+      "transcript_confirmation": true
+    },
+    {
+      "locale": "te",
+      "questions": 5,
+      "completed_answers": 5,
+      "reload_history": true,
+      "deletion": true,
+      "mobile_overflow": false,
+      "recorded_audio": true,
+      "asr": "stubbed",
+      "audio_source": "web_audio_generated_stream",
+      "pending_microphone_cancel": true,
+      "transcript_confirmation": true
+    },
+    {
+      "locale": "hi",
+      "questions": 5,
+      "completed_answers": 5,
+      "reload_history": true,
+      "deletion": true,
+      "mobile_overflow": false,
+      "recorded_audio": true,
+      "asr": "stubbed",
+      "audio_source": "web_audio_generated_stream",
+      "pending_microphone_cancel": true,
+      "transcript_confirmation": true
+    }
+  ],
+  "errors": [],
+  "scope": "Local production build; Web Audio generated stream and stubbed ASR. Native microphone accuracy not measured."
+}

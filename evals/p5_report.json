@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-09-30T04:43:03.093832+00:00",
+  "scope": "development regression; not an independent holdout or field validation",
+  "intel": {
+    "cases": 10,
+    "recall_at_5": 1.0,
+    "no_data_violations": 0
+  },
+  "notices": {
+    "cases": 20,
+    "field_accuracy": 1.0,
+    "privacy_violations": 0
+  },
+  "feedback": {
+    "cases": 8,
+    "must_mention_recall": 1.0,
+    "quote_specificity": 1.0,
+    "adversarial_violations": 0,
+    "adversarial_cases": 116
+  },
+  "passed": true
+}

@@ -1,0 +1,128 @@
+[
+  {
+    "id": "data_analyst",
+    "label_en": "Data Analyst",
+    "label_te": "డేటా అనలిస్ట్",
+    "label_hi": "डेटा विश्लेषक",
+    "source": "ESCO occupation: data analyst — http://data.europa.eu/esco/occupation/d3edb8f8-3a06-47a0-8fb9-9b212c006aa2 (ISCO-08 group 2511); exact NCO-2015 numeric code could not be independently verified this session (ncs.gov.in's occupation search did not return a readable match) — the ESCO/ISCO citation is used instead of guessing a code.",
+    "required_skills": [
+      {
+        "skill_id": "spoken_english",
+        "level": 2
+      },
+      {
+        "skill_id": "basic_numeracy",
+        "level": 2
+      },
+      {
+        "skill_id": "digital_literacy",
+        "level": 2
+      },
+      {
+        "skill_id": "ms_excel_basic",
+        "level": 2
+      },
+      {
+        "skill_id": "excel_advanced",
+        "level": 3
+      },
+      {
+        "skill_id": "database_fundamentals",
+        "level": 2
+      },
+      {
+        "skill_id": "sql_querying",
+        "level": 3
+      },
+      {
+        "skill_id": "python_programming",
+        "level": 4
+      },
+      {
+        "skill_id": "statistics_fundamentals",
+        "level": 3
+      },
+      {
+        "skill_id": "data_cleaning",
+        "level": 3
+      },
+      {
+        "skill_id": "data_visualization_tableau",
+        "level": 3
+      },
+      {
+        "skill_id": "data_visualization_powerbi",
+        "level": 3
+      },
+      {
+        "skill_id": "critical_thinking_problem_solving",
+        "level": 3
+      }
+    ]
+  },
+  {
+    "id": "delivery_executive",
+    "label_en": "Delivery Executive",
+    "label_te": "డెలివరీ ఎగ్జిక్యూటివ్",
+    "label_hi": "डिलीवरी एग्जीक्यूटिव",
+    "source": "NSQF Qualification Pack: Courier Delivery Executive, Ref LSC/Q3023 v3.0, NSQF Level 3, Logistics Sector Skill Council — https://lsc-india.com/qp_files/English%20PH%20-%20Courier%20Delivery%20Executive%20-%20V3.pdf (also listed at https://nsdcindia.org/courier-delivery-executive)",
+    "required_skills": [
+      {
+        "skill_id": "spoken_english",
+        "level": 1
+      },
+      {
+        "skill_id": "basic_numeracy",
+        "level": 2
+      },
+      {
+        "skill_id": "digital_literacy",
+        "level": 2
+      },
+      {
+        "skill_id": "traffic_safety_rules",
+        "level": 2
+      },
+      {
+        "skill_id": "two_wheeler_riding",
+        "level": 2
+      },
+      {
+        "skill_id": "mobile_app_usage",
+        "level": 1
+      },
+      {
+        "skill_id": "route_navigation_gps",
+        "level": 2
+      },
+      {
+        "skill_id": "cash_handling",
+        "level": 2
+      },
+      {
+        "skill_id": "cash_reconciliation",
+        "level": 2
+      },
+      {
+        "skill_id": "customer_service_basic",
+        "level": 2
+      },
+      {
+        "skill_id": "delivery_safety_compliance",
+        "level": 3
+      },
+      {
+        "skill_id": "time_management",
+        "level": 2
+      },
+      {
+        "skill_id": "local_area_familiarity",
+        "level": 2
+      },
+      {
+        "skill_id": "package_handling_safety",
+        "level": 2
+      }
+    ]
+  }
+]

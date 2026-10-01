@@ -1,10 +1,13 @@
+"use client";
+
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
 export function LanguageToggle() {
   const locale = useLocale();
   const t = useTranslations("nav");
+  const pathname = usePathname();
   const codes: Record<(typeof routing.locales)[number], string> = {
     en: "EN",
     te: "TE",
@@ -19,7 +22,7 @@ export function LanguageToggle() {
             <span aria-hidden="true" className="h-3 w-px bg-graphite/40" />
           )}
           <Link
-            href="/"
+            href={pathname}
             locale={loc}
             aria-current={loc === locale ? "true" : undefined}
             className={`font-mono text-sm tracking-wide transition-colors ${

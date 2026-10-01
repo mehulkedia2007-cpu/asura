@@ -24,8 +24,43 @@ html {
 }
 
 body {
+  font-family:
+    var(--font-geist), var(--font-noto-sans-telugu),
+    var(--font-noto-sans-devanagari), sans-serif;
   background: var(--background);
   color: var(--foreground);
   font-feature-settings: "tnum" 1;
   font-variant-numeric: tabular-nums;
+}
+
+html[lang="te"] body {
+  font-family: var(--font-noto-sans-telugu), var(--font-geist), sans-serif;
+}
+html[lang="hi"] body {
+  font-family: var(--font-noto-sans-devanagari), var(--font-geist), sans-serif;
+}
+html[lang="te"] .font-display {
+  font-family: var(--font-noto-serif-telugu), serif;
+}
+html[lang="hi"] .font-display {
+  font-family: var(--font-noto-sans-devanagari), sans-serif;
+}
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 4px;
+}
+input,
+select,
+textarea {
+  max-width: 100%;
+  min-width: 0;
+}
+main {
+  overflow-wrap: anywhere;
+}
+main .grid > * {
+  min-width: 0;
+}
+select {
+  width: 100%;
 }

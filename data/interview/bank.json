@@ -1,0 +1,122 @@
+[
+  {
+    "id": "practice-0",
+    "text": "Explain how you would check a SQL query for duplicate rows.",
+    "text_te": "SQL క్వెరీలో డూప్లికేట్ వరుసలను ఎలా తనిఖీ చేస్తారు?",
+    "text_hi": "SQL क्वेरी में दोहराई गई पंक्तियों की जाँच कैसे करेंगे?",
+    "skill_ids": [
+      "sql_querying"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "sql_querying"
+  },
+  {
+    "id": "practice-1",
+    "text": "Describe a Python program you built and how you tested it.",
+    "text_te": "మీరు రాసిన Python ప్రోగ్రామ్‌ను, దాన్ని ఎలా పరీక్షించారో వివరించండి.",
+    "text_hi": "अपने बनाए Python प्रोग्राम और उसकी जाँच के बारे में बताएँ।",
+    "skill_ids": [
+      "python_programming"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "python_programming"
+  },
+  {
+    "id": "practice-2",
+    "text": "Describe a difficult problem, your action, and the result.",
+    "text_te": "ఒక కష్టమైన సమస్య, మీరు చేసిన పని, ఫలితం వివరించండి.",
+    "text_hi": "एक कठिन समस्या, अपनी कार्रवाई और परिणाम बताएँ।",
+    "skill_ids": [
+      "critical_thinking_problem_solving"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "critical_thinking_problem_solving"
+  },
+  {
+    "id": "practice-3",
+    "text": "How would you find and handle missing values in a dataset?",
+    "text_te": "డేటాలో లేని విలువలను ఎలా గుర్తించి నిర్వహిస్తారు?",
+    "text_hi": "डेटा में अनुपस्थित मान कैसे खोजेंगे और संभालेंगे?",
+    "skill_ids": [
+      "data_cleaning"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "data_cleaning"
+  },
+  {
+    "id": "practice-4",
+    "text": "Describe a time you explained something complex to someone.",
+    "text_te": "ఒక క్లిష్టమైన విషయాన్ని మరొకరికి వివరించిన సందర్భాన్ని చెప్పండి.",
+    "text_hi": "किसी को जटिल बात समझाने का अनुभव बताएँ।",
+    "skill_ids": [
+      "spoken_english"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "spoken_english"
+  },
+  {
+    "id": "practice-5",
+    "text": "How would you handle a delivery that cannot be completed safely?",
+    "text_te": "సురక్షితంగా పూర్తి చేయలేని డెలివరీని ఎలా నిర్వహిస్తారు?",
+    "text_hi": "जो डिलीवरी सुरक्षित पूरी नहीं हो सकती उसे कैसे संभालेंगे?",
+    "skill_ids": [
+      "delivery_safety_compliance"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "delivery_safety_compliance"
+  },
+  {
+    "id": "practice-6",
+    "text": "Describe how you would respond to an upset customer.",
+    "text_te": "అసంతృప్తి చెందిన కస్టమర్‌కు ఎలా స్పందిస్తారు?",
+    "text_hi": "नाराज़ ग्राहक को कैसे जवाब देंगे?",
+    "skill_ids": [
+      "customer_service_basic"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "customer_service_basic"
+  },
+  {
+    "id": "practice-7",
+    "text": "How would you respond when the planned route is blocked?",
+    "text_te": "మీ మార్గం మూసివేసినప్పుడు ఎలా స్పందిస్తారు?",
+    "text_hi": "तय रास्ता बंद होने पर क्या करेंगे?",
+    "skill_ids": [
+      "route_navigation_gps"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "route_navigation_gps"
+  },
+  {
+    "id": "practice-8",
+    "text": "Explain how you would check a mismatch in cash collected.",
+    "text_te": "వసూలు చేసిన నగదులో తేడాను ఎలా తనిఖీ చేస్తారు?",
+    "text_hi": "वसूली गई नकदी में अंतर की जाँच कैसे करेंगे?",
+    "skill_ids": [
+      "cash_reconciliation"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "cash_reconciliation"
+  },
+  {
+    "id": "practice-9",
+    "text": "Describe how you prioritize tasks with competing deadlines.",
+    "text_te": "ఒకేసారి గడువులు ఉన్న పనులకు ప్రాధాన్యం ఎలా ఇస్తారు?",
+    "text_hi": "एक साथ समय सीमा वाले कामों की प्राथमिकता कैसे तय करेंगे?",
+    "skill_ids": [
+      "time_management"
+    ],
+    "round": "practice",
+    "kind": "practice",
+    "topic": "time_management"
+  }
+]

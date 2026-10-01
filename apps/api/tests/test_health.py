@@ -63,7 +63,7 @@ def test_health_has_every_required_key_and_sane_types():
     assert len(body["llm"]) == 3
     for entry in body["llm"]:
         assert {"provider", "model", "status", "detail"} <= set(entry.keys())
-    assert body["tools"] == {"status": "ok", "count": 0}
+    assert body["tools"] == {"status": "ok", "count": 10}
 
 
 def test_health_returns_200_with_error_statuses_when_every_probe_raises(monkeypatch):

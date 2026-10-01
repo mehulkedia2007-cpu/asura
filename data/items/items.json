@@ -1,0 +1,246 @@
+[
+  {
+    "id": "sql_001",
+    "skill_id": "sql_querying",
+    "band": -1,
+    "text": "Which SQL keyword retrieves rows from a table?",
+    "text_te": "పట్టిక నుంచి వరుసలను తీసుకురావడానికి ఏ SQL కీవర్డ్ ఉపయోగిస్తారు?",
+    "text_hi": "तालिका से पंक्तियाँ प्राप्त करने के लिए कौन-सा SQL कीवर्ड इस्तेमाल होता है?",
+    "text_te": "పట్టిక నుంచి వరుసలను తీసుకురావడానికి ఏ SQL కీవర్డ్ ఉపయోగిస్తారు?",
+    "text_hi": "तालिका से पंक्तियाँ प्राप्त करने के लिए कौन-सा SQL कीवर्ड इस्तेमाल होता है?",
+    "answer": "SELECT",
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742"
+  },
+  {
+    "id": "sql_002",
+    "skill_id": "sql_querying",
+    "band": -1,
+    "text": "Which clause filters rows based on a condition, e.g. `WHERE price > 100`?",
+    "text_te": "`WHERE price > 100` వంటి షరతు ఆధారంగా వరుసలను వడపోయే క్లాజ్ ఏది?",
+    "text_hi": "`WHERE price > 100` जैसी शर्त के आधार पर पंक्तियों को छाँटने वाला क्लॉज़ कौन-सा है?",
+    "text_te": "`WHERE price > 100` వంటి షరతు ఆధారంగా వరుసలను వడపోయే క్లాజ్ ఏది?",
+    "text_hi": "`WHERE price > 100` जैसी शर्त के आधार पर पंक्तियों को छाँटने वाला क्लॉज़ कौन-सा है?",
+    "answer": "WHERE",
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742"
+  },
+  {
+    "id": "sql_003",
+    "skill_id": "sql_querying",
+    "band": -1,
+    "text": "What does the acronym SQL stand for?",
+    "text_te": "SQL అనే సంక్షిప్త రూపం దేనిని సూచిస్తుంది?",
+    "text_hi": "SQL संक्षिप्त नाम का पूरा रूप क्या है?",
+    "text_te": "SQL అనే సంక్షిప్త రూపం దేనిని సూచిస్తుంది?",
+    "text_hi": "SQL संक्षिप्त नाम का पूरा रूप क्या है?",
+    "answer": "Structured Query Language",
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742"
+  },
+  {
+    "id": "sql_004",
+    "skill_id": "sql_querying",
+    "band": 0,
+    "text": "Which clause sorts query results, and which keyword makes that order descending?",
+    "text_te": "ప్రశ్న ఫలితాలను క్రమబద్ధం చేసే క్లాజ్ ఏది? అవరోహణ క్రమం కోసం ఏ కీవర్డ్ వాడతారు?",
+    "text_hi": "क्वेरी के नतीजों को क्रम में लगाने वाला क्लॉज़ कौन-सा है? घटते क्रम के लिए कौन-सा कीवर्ड इस्तेमाल होता है?",
+    "text_te": "ప్రశ్న ఫలితాలను క్రమబద్ధం చేసే క్లాజ్ ఏది? అవరోహణ క్రమం కోసం ఏ కీవర్డ్ వాడతారు?",
+    "text_hi": "क्वेरी के नतीजों को क्रम में लगाने वाला क्लॉज़ कौन-सा है? घटते क्रम के लिए कौन-सा कीवर्ड इस्तेमाल होता है?",
+    "answer": "ORDER BY ... DESC",
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742"
+  },
+  {
+    "id": "sql_005",
+    "skill_id": "sql_querying",
+    "band": 0,
+    "text": "Which SQL clause groups rows that share a value into summary rows?",
+    "text_te": "ఒకే విలువ ఉన్న వరుసలను సమూహాలుగా చేసి సారాంశ వరుసలు తయారు చేసే SQL క్లాజ్ ఏది?",
+    "text_hi": "एक जैसी वैल्यू वाली पंक्तियों को समूह बनाकर सारांश पंक्तियाँ तैयार करने वाला SQL क्लॉज़ कौन-सा है?",
+    "text_te": "ఒకే విలువ ఉన్న వరుసలను సమూహాలుగా చేసి సారాంశ వరుసలు తయారు చేసే SQL క్లాజ్ ఏది?",
+    "text_hi": "एक जैसी वैल्यू वाली पंक्तियों को समूह बनाकर सारांश पंक्तियाँ तैयार करने वाला SQL क्लॉज़ कौन-सा है?",
+    "answer": "GROUP BY",
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742"
+  },
+  {
+    "id": "sql_006",
+    "skill_id": "sql_querying",
+    "band": 0,
+    "text": "Which JOIN type returns only the rows that have a match in both tables?",
+    "text_te": "రెండు పట్టికల్లోనూ సరిపోలే వరుసలను మాత్రమే ఇచ్చే JOIN రకం ఏది?",
+    "text_hi": "दोनों तालिकाओं में मेल खाने वाली पंक्तियाँ ही लौटाने वाला JOIN प्रकार कौन-सा है?",
+    "text_te": "రెండు పట్టికల్లోనూ సరిపోలే వరుసలను మాత్రమే ఇచ్చే JOIN రకం ఏది?",
+    "text_hi": "दोनों तालिकाओं में मेल खाने वाली पंक्तियाँ ही लौटाने वाला JOIN प्रकार कौन-सा है?",
+    "answer": "INNER JOIN",
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742"
+  },
+  {
+    "id": "sql_007",
+    "skill_id": "sql_querying",
+    "band": 1,
+    "text": "How does HAVING differ from WHERE when used with GROUP BY?",
+    "text_te": "GROUP BY తో వాడినప్పుడు HAVING, WHERE మధ్య తేడా ఏమిటి?",
+    "text_hi": "GROUP BY के साथ इस्तेमाल होने पर HAVING और WHERE में क्या अंतर है?",
+    "text_te": "GROUP BY తో వాడినప్పుడు HAVING, WHERE మధ్య తేడా ఏమిటి?",
+    "text_hi": "GROUP BY के साथ इस्तेमाल होने पर HAVING और WHERE में क्या अंतर है?",
+    "answer": "HAVING filters groups after aggregation; WHERE filters individual rows before aggregation.",
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742"
+  },
+  {
+    "id": "sql_008",
+    "skill_id": "sql_querying",
+    "band": 1,
+    "text": "Without using LIMIT/OFFSET, write a query pattern to find the second-highest salary in an `employees(salary)` table.",
+    "text_te": "LIMIT/OFFSET వాడకుండా, `employees(salary)` పట్టికలో రెండో అత్యధిక జీతాన్ని కనుగొనే ప్రశ్న నమూనా రాయండి.",
+    "text_hi": "LIMIT/OFFSET का उपयोग किए बिना `employees(salary)` तालिका में दूसरा सबसे बड़ा वेतन ढूँढ़ने वाली क्वेरी लिखें।",
+    "text_te": "LIMIT/OFFSET వాడకుండా, `employees(salary)` పట్టికలో రెండో అత్యధిక జీతాన్ని కనుగొనే ప్రశ్న నమూనా రాయండి.",
+    "text_hi": "LIMIT/OFFSET का उपयोग किए बिना `employees(salary)` तालिका में दूसरा सबसे बड़ा वेतन ढूँढ़ने वाली क्वेरी लिखें।",
+    "answer": "SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees)",
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742"
+  },
+  {
+    "id": "sql_009",
+    "skill_id": "sql_querying",
+    "band": 1,
+    "text": "What is a self-join, and name one real scenario where you'd use one.",
+    "text_te": "Self-join అంటే ఏమిటి? దాన్ని ఉపయోగించే ఒక వాస్తవ సందర్భాన్ని చెప్పండి.",
+    "text_hi": "Self-join क्या है? ऐसी एक वास्तविक स्थिति बताएँ जहाँ आप इसका उपयोग करेंगे।",
+    "text_te": "Self-join అంటే ఏమిటి? దాన్ని ఉపయోగించే ఒక వాస్తవ సందర్భాన్ని చెప్పండి.",
+    "text_hi": "Self-join क्या है? ऐसी एक वास्तविक स्थिति बताएँ जहाँ आप इसका उपयोग करेंगे।",
+    "answer": "A table joined to itself, e.g. to compare an employee's row to their manager's row within the same employees table.",
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742"
+  },
+  {
+    "id": "two_wheeler_001",
+    "skill_id": "two_wheeler_riding",
+    "band": -1,
+    "text": "In India, is wearing a helmet mandatory for both the rider and pillion on a two-wheeler?",
+    "answer": "Yes",
+    "rationale": "Baseline road-safety recall item; band -1 = easiest recall level."
+  },
+  {
+    "id": "two_wheeler_002",
+    "skill_id": "two_wheeler_riding",
+    "band": -1,
+    "text": "What does a red traffic signal mean?",
+    "answer": "Stop",
+    "rationale": "Universal traffic-signal recall; band -1."
+  },
+  {
+    "id": "two_wheeler_003",
+    "skill_id": "two_wheeler_riding",
+    "band": -1,
+    "text": "Before starting a ride, name one basic check a rider should do (e.g. on tyres, brakes, or lights).",
+    "answer": "Any one of: tyre condition, brake function, headlight/taillight working.",
+    "rationale": "Pre-ride checklist recall; band -1."
+  },
+  {
+    "id": "two_wheeler_004",
+    "skill_id": "two_wheeler_riding",
+    "band": 0,
+    "text": "What documents must a delivery rider carry while on duty?",
+    "answer": "Valid driving licence, the vehicle's registration certificate (RC), and valid insurance.",
+    "rationale": "Standard on-road compliance knowledge for the Courier Delivery Executive role (LSC/Q3023); band 0 = requires recall of multiple items, not independently re-verified against the primary Motor Vehicles Act text this session — flagged for data-lane fact-check."
+  },
+  {
+    "id": "two_wheeler_005",
+    "skill_id": "two_wheeler_riding",
+    "band": 0,
+    "text": "What does a solid white line in the middle of the road mean for overtaking?",
+    "answer": "No overtaking / do not cross the line.",
+    "rationale": "Standard road-marking knowledge; band 0."
+  },
+  {
+    "id": "two_wheeler_006",
+    "skill_id": "two_wheeler_riding",
+    "band": 0,
+    "text": "What is a commonly recommended safe following distance behind the vehicle ahead in normal conditions?",
+    "answer": "At least a 2-second gap.",
+    "rationale": "Common defensive-riding guidance; band 0."
+  },
+  {
+    "id": "two_wheeler_007",
+    "skill_id": "two_wheeler_riding",
+    "band": 1,
+    "text": "Under India's amended motor vehicle penalty framework, what generally happens to a rider caught without a helmet (fine and licence consequence)?",
+    "answer": "A monetary fine plus possible driving-licence disqualification for a period, per the Motor Vehicles (Amendment) Act, 2019.",
+    "rationale": "Specific legal-penalty item; band 1 = hardest. The exact fine amount and disqualification period were NOT independently re-verified against the primary Act text this session — flagged for data-lane fact-check before scoring anyone against this item."
+  },
+  {
+    "id": "two_wheeler_008",
+    "skill_id": "two_wheeler_riding",
+    "band": 1,
+    "text": "A delivery load exceeds the two-wheeler's rated carrier weight limit. What should the rider do?",
+    "answer": "Split it into multiple trips rather than exceed the manufacturer's rated carrier load.",
+    "rationale": "Applied safety-compliance judgement, consistent with 'delivery_safety_compliance' in the same QP (LSC/Q3023); band 1."
+  },
+  {
+    "id": "two_wheeler_009",
+    "skill_id": "two_wheeler_riding",
+    "band": 1,
+    "text": "At an uncontrolled intersection with no traffic signal, what is the generally correct right-of-way behaviour?",
+    "answer": "Slow down, yield to traffic already in the intersection, and proceed only when clear.",
+    "rationale": "Applied road-safety judgement beyond simple recall; band 1."
+  },
+  {
+    "id": "generic_english_001",
+    "skill_id": "spoken_english",
+    "band": -1,
+    "text": "Which sentence is grammatically correct: (a) 'He go to work daily.' (b) 'He goes to work daily.'",
+    "answer": "(b)",
+    "source": "ESCO skill: English — http://data.europa.eu/esco/skill/6d3edede-8951-4621-a835-e04323300fa0"
+  },
+  {
+    "id": "generic_english_002",
+    "skill_id": "spoken_english",
+    "band": 0,
+    "text": "Complete the sentence: 'I have been working here ___ three years.'",
+    "answer": "for",
+    "source": "ESCO skill: English — http://data.europa.eu/esco/skill/6d3edede-8951-4621-a835-e04323300fa0"
+  },
+  {
+    "id": "generic_english_003",
+    "skill_id": "spoken_english",
+    "band": 1,
+    "text": "Rephrase this instruction politely for a customer: 'Give me the file now.'",
+    "answer": "Any polite rephrasing, e.g. 'Could you please give me the file now?'",
+    "source": "ESCO skill: English — http://data.europa.eu/esco/skill/6d3edede-8951-4621-a835-e04323300fa0"
+  },
+  {
+    "id": "generic_numeracy_001",
+    "skill_id": "basic_numeracy",
+    "band": -1,
+    "text": "What is 15% of 200?",
+    "answer": "30",
+    "source": "ESCO skill: apply numeracy skills — http://data.europa.eu/esco/skill/5dd01a1e-7ba0-4b7f-a76c-ed811c12bfde"
+  },
+  {
+    "id": "generic_numeracy_002",
+    "skill_id": "basic_numeracy",
+    "band": 0,
+    "text": "A worker earns ₹350 per day. How much do they earn in 6 days?",
+    "answer": "₹2100",
+    "source": "ESCO skill: apply numeracy skills — http://data.europa.eu/esco/skill/5dd01a1e-7ba0-4b7f-a76c-ed811c12bfde"
+  },
+  {
+    "id": "generic_numeracy_003",
+    "skill_id": "basic_numeracy",
+    "band": 1,
+    "text": "A delivery rider covers 18 km in 45 minutes. What is their average speed in km/h?",
+    "answer": "24 km/h",
+    "source": "ESCO skill: apply numeracy skills — http://data.europa.eu/esco/skill/5dd01a1e-7ba0-4b7f-a76c-ed811c12bfde"
+  },
+  {
+    "id": "generic_digital_001",
+    "skill_id": "digital_literacy",
+    "band": -1,
+    "text": "Which icon typically represents email on a smartphone home screen?",
+    "answer": "An envelope icon.",
+    "source": "ESCO skill: creatively use digital technologies — http://data.europa.eu/esco/skill/1a4cc54f-1e53-442b-a6d2-1682dc8ef8f9"
+  },
+  {
+    "id": "generic_digital_002",
+    "skill_id": "digital_literacy",
+    "band": 1,
+    "text": "Describe how you would reset a forgotten password on a mobile banking app using an OTP.",
+    "answer": "Request an OTP via the registered mobile number, enter the OTP, then set a new password following the app's prompts.",
+    "source": "ESCO skill: creatively use digital technologies — http://data.europa.eu/esco/skill/1a4cc54f-1e53-442b-a6d2-1682dc8ef8f9"
+  }
+]

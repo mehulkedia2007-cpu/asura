@@ -1,0 +1,30 @@
+{"id":"fee-registration","description":"Registration fee of Rs 500 required before interview.","org":"Acme","contact":"","label":true}
+{"id":"fee-training","description":"Training fee payable before joining.","org":"Acme","contact":"","label":true}
+{"id":"fee-application","description":"Application fee must be paid to process your profile.","org":"Acme","contact":"","label":true}
+{"id":"fee-security","description":"Security deposit of ₹2000 required before starting.","org":"Acme","contact":"","label":true}
+{"id":"fee-processing","description":"Processing charge is mandatory for applicants.","org":"Acme","contact":"","label":true}
+{"id":"fee-joining","description":"Joining payment of 1500 rupees is required.","org":"Acme","contact":"","label":true}
+{"id":"fee-upfront","description":"Upfront payment required to obtain this role.","org":"Acme","contact":"","label":true}
+{"id":"fee-pay","description":"Pay a deposit to receive your offer letter.","org":"Acme","contact":"","label":true}
+{"id":"fee-refund","description":"Refundable deposit needed to confirm selection.","org":"Acme","contact":"","label":true}
+{"id":"fee-transfer","description":"Transfer ₹700 before the training starts.","org":"Acme","contact":"","label":true}
+{"id":"fee-send","description":"Send 999 rupees to activate your job account.","org":"Acme","contact":"","label":true}
+{"id":"fee-gpay","description":"GPay 499 to register for the job.","org":"Acme","contact":"","label":true}
+{"id":"fee-whatsapp","description":"Pay the fee and contact us only via WhatsApp.","org":"","contact":"","label":true}
+{"id":"fee-telegram","description":"Training deposit required; only on Telegram.","org":"","contact":"","label":true}
+{"id":"fee-no-org","description":"Pay a registration charge today.","org":"Unknown","contact":"","label":true}
+{"id":"clear-plain","description":"Full-time technician role with benefits.","org":"Acme","contact":"","label":false}
+{"id":"clear-no-fee","description":"No application fee is charged for this role.","org":"Acme","contact":"","label":false}
+{"id":"clear-no-deposit","description":"Never pay a deposit to apply.","org":"Acme","contact":"","label":false}
+{"id":"clear-without-training-fee","description":"Training is provided without a fee.","org":"Acme","contact":"","label":false}
+{"id":"clear-employer-gmail","description":"Office assistant role with fixed schedule.","org":"Acme","contact":"hr@gmail.com","label":false}
+{"id":"clear-whatsapp-option","description":"You may ask questions on WhatsApp; applications use our website.","org":"Acme","contact":"","label":false}
+{"id":"clear-telegram-option","description":"Telegram community for updates; apply on official portal.","org":"Acme","contact":"","label":false}
+{"id":"clear-remote","description":"Remote analyst, prior SQL experience required.","org":"Acme","contact":"","label":false}
+{"id":"clear-high-pay","description":"Senior manager annual pay ₹900000.","org":"Acme","contact":"","label":false}
+{"id":"clear-missing-org","description":"Entry-level retail role in Guntur.","org":"","contact":"","label":false}
+{"id":"clear-home-skilled","description":"Work from home as a licensed accountant; experience required.","org":"Acme","contact":"","label":false}
+{"id":"clear-fee-negation","description":"We do not charge any registration fee.","org":"Acme","contact":"","label":false}
+{"id":"clear-fee-warning","description":"Beware of scams asking you to pay a fee.","org":"Acme","contact":"","label":false}
+{"id":"clear-salary-median","description":"Technician role paying 20000 monthly.","org":"Acme","contact":"","pay":20000,"median":15000,"label":false}
+{"id":"clear-unknown-pay","description":"Salary based on interview.","org":"Acme","contact":"","label":false}

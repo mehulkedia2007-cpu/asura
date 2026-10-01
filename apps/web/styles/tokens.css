@@ -2,7 +2,7 @@
  * DAARI design tokens — apps/web/styles/tokens.css
  * The ONLY place colours are defined. No hex literals in components.
  * Values verbatim from docs/UI_BRIEF.md §"Palette".
- * Dark mode flips --bone/--ink; --graphite/--signal/--sage/--amber unchanged.
+ * Dark mode flips --bone/--ink and lightens --graphite for text contrast.
  * Flat colour only, no glassmorphism, no glow — shadows are a 1px hairline
  * plus a 4px blur at 8% opacity, at most.
  */
@@ -23,6 +23,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    --graphite: oklch(0.74 0.01 60);
     --bone: oklch(0.18 0.01 60);
     --ink: oklch(0.965 0.006 85);
 
@@ -34,6 +35,7 @@
 }
 
 :root[data-theme="dark"] {
+  --graphite: oklch(0.74 0.01 60);
   --bone: oklch(0.18 0.01 60);
   --ink: oklch(0.965 0.006 85);
 

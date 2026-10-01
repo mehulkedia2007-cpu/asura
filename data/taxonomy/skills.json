@@ -1,0 +1,393 @@
+[
+  {
+    "id": "spoken_english",
+    "label_en": "Spoken English / workplace communication",
+    "label_te": "మాట్లాడే ఆంగ్లం / కార్యాలయ సంభాషణ",
+    "label_hi": "बोलचाल की अंग्रेज़ी / कार्यस्थल संचार",
+    "aliases": [
+      "English communication",
+      "workplace English",
+      "spoken communication"
+    ],
+    "level": 2,
+    "hours": 30,
+    "source": "ESCO skill: English — http://data.europa.eu/esco/skill/6d3edede-8951-4621-a835-e04323300fa0",
+    "prereqs": [
+
+    ]
+  },
+  {
+    "id": "basic_numeracy",
+    "label_en": "Basic numeracy / arithmetic for work",
+    "label_te": "ప్రాథమిక గణితం",
+    "label_hi": "बुनियादी अंकगणित",
+    "aliases": [
+      "numeracy",
+      "basic maths",
+      "arithmetic"
+    ],
+    "level": 2,
+    "hours": 20,
+    "source": "ESCO skill: apply numeracy skills — http://data.europa.eu/esco/skill/5dd01a1e-7ba0-4b7f-a76c-ed811c12bfde",
+    "prereqs": [
+
+    ]
+  },
+  {
+    "id": "digital_literacy",
+    "label_en": "Digital literacy / basic smartphone & internet use",
+    "label_te": "డిజిటల్ అక్షరాస్యత",
+    "label_hi": "डिजिटल साक्षरता",
+    "aliases": [
+      "digital skills",
+      "smartphone literacy",
+      "basic computer use"
+    ],
+    "level": 2,
+    "hours": 15,
+    "source": "ESCO skill: creatively use digital technologies — http://data.europa.eu/esco/skill/1a4cc54f-1e53-442b-a6d2-1682dc8ef8f9",
+    "prereqs": [
+
+    ]
+  },
+  {
+    "id": "ms_excel_basic",
+    "label_en": "Basic MS Excel",
+    "label_te": "ప్రాథమిక MS ఎక్సెల్",
+    "label_hi": "बुनियादी एमएस एक्सेल",
+    "aliases": [
+      "Excel basics",
+      "spreadsheets"
+    ],
+    "level": 2,
+    "hours": 20,
+    "source": "ESCO skill: use spreadsheets software — http://data.europa.eu/esco/skill/1973c966-f236-40c9-b2d4-5d71a89019be",
+    "prereqs": [
+      "digital_literacy"
+    ]
+  },
+  {
+    "id": "excel_advanced",
+    "label_en": "Advanced MS Excel (formulas, pivot tables)",
+    "label_te": "అధునాతన MS ఎక్సెల్ (ఫార్ములాలు, పివోట్ టేబుల్స్)",
+    "label_hi": "उन्नत एमएस एक्सेल (फॉर्मूला, पिवट टेबल)",
+    "aliases": [
+      "pivot tables",
+      "Excel formulas",
+      "advanced spreadsheets"
+    ],
+    "level": 3,
+    "hours": 30,
+    "source": "ESCO skill: use spreadsheets software — http://data.europa.eu/esco/skill/1973c966-f236-40c9-b2d4-5d71a89019be (ESCO does not distinguish basic/advanced Excel; same skill entry, higher node level)",
+    "prereqs": [
+      "ms_excel_basic"
+    ]
+  },
+  {
+    "id": "database_fundamentals",
+    "label_en": "Database fundamentals / relational DB concepts",
+    "label_te": "డేటాబేస్ ప్రాథమికాంశాలు",
+    "label_hi": "डेटाबेस की बुनियादी बातें",
+    "aliases": [
+      "relational databases",
+      "DB fundamentals"
+    ],
+    "level": 2,
+    "hours": 20,
+    "source": "ESCO skill: use databases — http://data.europa.eu/esco/skill/4463a721-69f3-413d-8321-43e3af13a4f1",
+    "prereqs": [
+      "digital_literacy"
+    ]
+  },
+  {
+    "id": "sql_querying",
+    "label_en": "SQL querying",
+    "label_te": "SQL క్వెరీయింగ్",
+    "label_hi": "एसक्यूएल क्वेरी",
+    "aliases": [
+      "SQL",
+      "structured query language"
+    ],
+    "level": 3,
+    "hours": 40,
+    "source": "ESCO skill: SQL — http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742",
+    "prereqs": [
+      "database_fundamentals"
+    ]
+  },
+  {
+    "id": "python_programming",
+    "label_en": "Python programming for data analysis",
+    "label_te": "పైథాన్ ప్రోగ్రామింగ్",
+    "label_hi": "पायथन प्रोग्रामिंग",
+    "aliases": [
+      "Python",
+      "Python for data science"
+    ],
+    "level": 4,
+    "hours": 60,
+    "source": "ESCO skill: Python (computer programming) — http://data.europa.eu/esco/skill/ccd0a1d9-afda-43d9-b901-96344886e14d; NPTEL course \"Python for Data Science\" (IIT Madras) — https://nptel.ac.in/courses/106106212",
+    "prereqs": [
+      "digital_literacy",
+      "basic_numeracy"
+    ]
+  },
+  {
+    "id": "statistics_fundamentals",
+    "label_en": "Statistics fundamentals",
+    "label_te": "గణాంకశాస్త్ర ప్రాథమికాంశాలు",
+    "label_hi": "सांख्यिकी की बुनियादी बातें",
+    "aliases": [
+      "statistics",
+      "basic stats"
+    ],
+    "level": 3,
+    "hours": 40,
+    "source": "ESCO skill: statistics — http://data.europa.eu/esco/skill/7ee4c2ea-b349-4bd2-81a3-ec31475d4833",
+    "prereqs": [
+      "basic_numeracy"
+    ]
+  },
+  {
+    "id": "data_cleaning",
+    "label_en": "Data cleaning / data wrangling",
+    "label_te": "డేటా క్లీనింగ్ / డేటా వ్రాంగ్లింగ్",
+    "label_hi": "डेटा क्लीनिंग / डेटा रैंगलिंग",
+    "aliases": [
+      "data wrangling",
+      "data cleansing"
+    ],
+    "level": 3,
+    "hours": 25,
+    "source": "ESCO skill: perform data cleansing — http://data.europa.eu/esco/skill/50b100ea-74fd-4706-99db-3e4ca55e51b8",
+    "prereqs": [
+      "excel_advanced",
+      "sql_querying"
+    ]
+  },
+  {
+    "id": "data_visualization_tableau",
+    "label_en": "Data visualization with Tableau",
+    "label_te": "Tableau తో డేటా విజువలైజేషన్",
+    "label_hi": "Tableau के साथ डेटा विज़ुअलाइज़ेशन",
+    "aliases": [
+      "Tableau",
+      "dashboarding"
+    ],
+    "level": 3,
+    "hours": 30,
+    "source": "NPTEL course \"Data to Dashboard: Mastering Visual Storytelling with Tableau\" — https://elearn.nptel.ac.in/shop/completed-courses/short-term-programs-completed/data-to-dashboard-mastering-visual-storytelling-with-tableau/ (ESCO has no Tableau-specific skill entry; confirmed by a live ESCO API query for \"Tableau\" returning zero results, so NPTEL is the real nearest source, not a fallback of convenience)",
+    "prereqs": [
+      "data_cleaning"
+    ]
+  },
+  {
+    "id": "data_visualization_powerbi",
+    "label_en": "Data visualization with Power BI",
+    "label_te": "Power BI తో డేటా విజువలైజేషన్",
+    "label_hi": "Power BI के साथ डेटा विज़ुअलाइज़ेशन",
+    "aliases": [
+      "Power BI",
+      "business intelligence dashboards"
+    ],
+    "level": 3,
+    "hours": 30,
+    "source": "NPTEL course \"Business Intelligence & Analytics\" (IIT Madras) — https://nptel.ac.in/courses/106106361 (nearest verifiable source; ESCO's top hit for \"Power BI\" was the unrelated skill \"use power tools\", discarded as a false match — no ESCO or NPTEL entry names Power BI specifically)",
+    "prereqs": [
+      "data_cleaning"
+    ]
+  },
+  {
+    "id": "critical_thinking_problem_solving",
+    "label_en": "Critical thinking / problem solving",
+    "label_te": "విమర్శనాత్మక ఆలోచన / సమస్యా పరిష్కారం",
+    "label_hi": "आलोचनात्मक चिंतन / समस्या समाधान",
+    "aliases": [
+      "problem solving",
+      "analytical thinking"
+    ],
+    "level": 3,
+    "hours": 15,
+    "source": "ESCO skill: think analytically — http://data.europa.eu/esco/skill/4707da90-9cfc-46ca-8de0-38a0b7bfb137",
+    "prereqs": [
+
+    ]
+  },
+  {
+    "id": "traffic_safety_rules",
+    "label_en": "Road traffic safety rules (India)",
+    "label_te": "ట్రాఫిక్ భద్రతా నియమాలు",
+    "label_hi": "यातायात सुरक्षा नियम",
+    "aliases": [
+      "road safety",
+      "traffic rules"
+    ],
+    "level": 2,
+    "hours": 8,
+    "source": "NSQF Qualification Pack: Courier Delivery Executive, Ref LSC/Q3023 v3.0, NSQF Level 3, Logistics Sector Skill Council — https://lsc-india.com/qp_files/English%20PH%20-%20Courier%20Delivery%20Executive%20-%20V3.pdf (also listed at https://nsdcindia.org/courier-delivery-executive)",
+    "prereqs": [
+
+    ]
+  },
+  {
+    "id": "two_wheeler_riding",
+    "label_en": "Two-wheeler riding / delivery driving skill",
+    "label_te": "ద్విచక్ర వాహన నడపడం",
+    "label_hi": "दोपहिया वाहन चलाना",
+    "aliases": [
+      "motorbike riding",
+      "scooter riding"
+    ],
+    "level": 2,
+    "hours": 12,
+    "source": "NSQF Qualification Pack: Courier Delivery Executive, Ref LSC/Q3023 v3.0, NSQF Level 3, Logistics Sector Skill Council — https://lsc-india.com/qp_files/English%20PH%20-%20Courier%20Delivery%20Executive%20-%20V3.pdf",
+    "prereqs": [
+      "traffic_safety_rules"
+    ]
+  },
+  {
+    "id": "mobile_app_usage",
+    "label_en": "Using delivery/gig-work mobile apps",
+    "label_te": "డెలివరీ మొబైల్ యాప్ వినియోగం",
+    "label_hi": "डिलीवरी मोबाइल ऐप का उपयोग",
+    "aliases": [
+      "gig app usage",
+      "delivery app"
+    ],
+    "level": 1,
+    "hours": 5,
+    "source": "NSQF Qualification Pack: Courier Delivery Executive, Ref LSC/Q3023 v3.0, Logistics Sector Skill Council — https://lsc-india.com/qp_files/English%20PH%20-%20Courier%20Delivery%20Executive%20-%20V3.pdf",
+    "prereqs": [
+      "digital_literacy"
+    ]
+  },
+  {
+    "id": "route_navigation_gps",
+    "label_en": "Route navigation using GPS/maps apps",
+    "label_te": "GPS ద్వారా మార్గ నిర్దేశం",
+    "label_hi": "जीपीएस से मार्ग नेविगेशन",
+    "aliases": [
+      "GPS navigation",
+      "map reading"
+    ],
+    "level": 2,
+    "hours": 6,
+    "source": "NSQF Qualification Pack: Courier Delivery Executive, Ref LSC/Q3023 v3.0, Logistics Sector Skill Council — https://lsc-india.com/qp_files/English%20PH%20-%20Courier%20Delivery%20Executive%20-%20V3.pdf",
+    "prereqs": [
+      "mobile_app_usage"
+    ]
+  },
+  {
+    "id": "cash_handling",
+    "label_en": "Cash handling (COD collection)",
+    "label_te": "నగదు నిర్వహణ (COD వసూలు)",
+    "label_hi": "नकद प्रबंधन (सीओडी वसूली)",
+    "aliases": [
+      "COD collection",
+      "cash on delivery"
+    ],
+    "level": 2,
+    "hours": 6,
+    "source": "NSQF Qualification Pack: Consignment Delivery Executive, Ref LSC_Q1801 v1.0, Logistics Sector Skill Council — https://lsc-india.com/qp_files/Consignment%20Delivery%20Executive%20LSC_Q1801_v1.0.pdf",
+    "prereqs": [
+      "basic_numeracy"
+    ]
+  },
+  {
+    "id": "cash_reconciliation",
+    "label_en": "Cash reconciliation / basic bookkeeping",
+    "label_te": "నగదు సరిపోల్చడం / ప్రాథమిక లెక్కలు",
+    "label_hi": "नकद मिलान / बुनियादी बहीखाता",
+    "aliases": [
+      "daily cash reconciliation",
+      "basic bookkeeping"
+    ],
+    "level": 2,
+    "hours": 8,
+    "source": "NSQF Qualification Pack: Consignment Delivery Executive, Ref LSC_Q1801 v1.0, Logistics Sector Skill Council — https://lsc-india.com/qp_files/Consignment%20Delivery%20Executive%20LSC_Q1801_v1.0.pdf",
+    "prereqs": [
+      "cash_handling"
+    ]
+  },
+  {
+    "id": "customer_service_basic",
+    "label_en": "Basic customer service",
+    "label_te": "ప్రాథమిక కస్టమర్ సేవ",
+    "label_hi": "बुनियादी ग्राहक सेवा",
+    "aliases": [
+      "customer handling",
+      "client interaction"
+    ],
+    "level": 2,
+    "hours": 10,
+    "source": "ESCO skill: customer service — http://data.europa.eu/esco/skill/15a33d76-4640-438d-ae64-fdc0c1d3eebc",
+    "prereqs": [
+      "spoken_english"
+    ]
+  },
+  {
+    "id": "delivery_safety_compliance",
+    "label_en": "Delivery safety compliance (helmet, load limits, traffic rules)",
+    "label_te": "డెలివరీ భద్రతా నిబంధనల పాటింపు",
+    "label_hi": "डिलीवरी सुरक्षा अनुपालन",
+    "aliases": [
+      "safety compliance",
+      "helmet compliance"
+    ],
+    "level": 3,
+    "hours": 8,
+    "source": "NSQF Qualification Pack: Courier Delivery Executive, Ref LSC/Q3023 v3.0, NSQF Level 3, Logistics Sector Skill Council — https://lsc-india.com/qp_files/English%20PH%20-%20Courier%20Delivery%20Executive%20-%20V3.pdf",
+    "prereqs": [
+      "traffic_safety_rules",
+      "two_wheeler_riding"
+    ]
+  },
+  {
+    "id": "time_management",
+    "label_en": "Time management for delivery slots",
+    "label_te": "సమయ నిర్వహణ",
+    "label_hi": "समय प्रबंधन",
+    "aliases": [
+      "slot management",
+      "scheduling"
+    ],
+    "level": 2,
+    "hours": 6,
+    "source": "ESCO skill: manage time — http://data.europa.eu/esco/skill/d9013e0e-e937-43d5-ab71-0e917ee882b8",
+    "prereqs": [
+
+    ]
+  },
+  {
+    "id": "local_area_familiarity",
+    "label_en": "Local area / locality familiarity",
+    "label_te": "స్థానిక ప్రాంత పరిచయం",
+    "label_hi": "स्थानीय क्षेत्र से परिचय",
+    "aliases": [
+      "locality knowledge",
+      "area familiarity"
+    ],
+    "level": 2,
+    "hours": 10,
+    "source": "NSQF Qualification Pack: Courier Delivery Executive, Ref LSC/Q3023 v3.0, Logistics Sector Skill Council — https://lsc-india.com/qp_files/English%20PH%20-%20Courier%20Delivery%20Executive%20-%20V3.pdf (role-level citation: no dedicated NOS line item found for locality knowledge as its own standard; it is an implicit part of this on-road delivery role — stated here rather than hidden, per data.md)",
+    "prereqs": [
+
+    ]
+  },
+  {
+    "id": "package_handling_safety",
+    "label_en": "Safe package handling (fragile goods, food safety basics)",
+    "label_te": "పార్సిల్ సురక్షిత నిర్వహణ",
+    "label_hi": "पार्सल की सुरक्षित हैंडलिंग",
+    "aliases": [
+      "parcel handling",
+      "fragile goods handling"
+    ],
+    "level": 2,
+    "hours": 6,
+    "source": "NSQF Qualification Pack: E-commerce Delivery Associate, Logistics Sector Skill Council (NSQC-approved) — https://lsc-india.com/qp_files/E_commerceDeliveryAssociateQP.pdf",
+    "prereqs": [
+
+    ]
+  }
+]

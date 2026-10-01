@@ -66,6 +66,14 @@ jobs:
         run: uv run alembic upgrade head
       - name: tests
         run: uv run pytest -q
+      - name: P5 session persistence and concurrency
+        run: uv run python scripts/check_p5.py
+      - name: P5 interview, notice and feedback golden sets
+        run: uv run python ../../evals/run_p5.py
+      - name: P3 safety and scheme retrieval golden sets
+        run: uv run python ../../evals/run_p3.py --snapshot
+      - name: P7 deterministic rehearsal audit
+        run: uv run python ../../evals/run_p7.py --audit
 
   web:
     runs-on: ubuntu-latest
@@ -89,5 +97,7 @@ jobs:
         run: pnpm typecheck
       - name: unit tests
         run: pnpm test
+      - name: locale key coverage
+        run: python3 ../../evals/i18n_check.py
       - name: build
         run: pnpm build

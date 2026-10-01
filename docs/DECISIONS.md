@@ -135,3 +135,94 @@ The general rule, since `/health` is what the P1 gate and the pitch both rely on
 At the user's request, the current tracked tree was restored from the verified P1 commit `6539b31`. This removes the standalone demo and the later ad hoc product routes, engine modules, fetchers, data, and screenshots from the branch tip. The old commits remain in Git history for reference; this is a forward cleanup commit, with no history rewrite. Untracked project export copies and overview artifacts were moved out of the repository to `/private/tmp/asura-pre-p1-artifacts-2026-09-25/`.
 
 P1 keeps locally hosted font files so the Next build is independent of Google Fonts. Its build script uses webpack because Turbopack stalled on this host. The API CI now declares Pyright, which the old workflow invoked without installing. The premature eval job that silently passed when `evals/run.py` was absent and the ffmpeg installation (needed only for later voice/prosody work) were removed from P1 CI. Phase status and verification evidence live in `docs/STATE.md`. Resume with P2 only after the P1 gate is green.
+
+## D18 · 2026-09-25 · P2 runs on a sourced seed before the learned embedding gate
+
+The restored 24-skill taxonomy and 26-item CAT bank are the P2 seed from Git history. The API environment has no YAML parser or fastembed model installed, so the committed seed is JSON and the first vector representation is a deterministic 47-dimensional prerequisite feature vector. It gives the graph one genuine adjacency pair and lets profile vectors shift and persist in pgvector. The API reports `embedding_kind: prerequisite-feature-seed`; it does not call these learned or multilingual embeddings.
+
+Migration `0002_p2_vectors` pins 47 dimensions for this seed. Expanding the taxonomy or replacing the representation requires a coordinated vector-table migration and reseed. The source data, assessment coverage and embedding model remain explicit P2 gate work in `docs/STATE.md` rather than being presented as complete §7 scale.
+
+## D19 · 2026-09-25 · P3 live source and model behavior
+
+After the user's approval, the public myScheme v6 search and detail endpoints were verified against live responses. Search returns `data.hits.items`; detail, documents and application channels are separate requests. The previously documented portal browser key is a public site key and is used only for those public endpoints. Eligibility is never inferred from a search summary. The AP MSME public directory supplies summary cards and source links, but no verified eligibility or document fields through the current adapter, so those cards remain `unknown`.
+
+On this account, a real `gemini-2.5-flash` generate call returned 404 even though the model list exposed it; `gemini-3.1-flash-lite` generated a valid response and is the P3 rule extractor. Two later Telugu rule calls returned 503, leaving those decisions `unknown`. The scheme index uses `gemini-embedding-001` at 768 dimensions and lexical fallback if an embedding call fails. This updates D9's earlier availability observation; model-list reachability is not an execution guarantee.
+
+The public Nominatim server is used for user-triggered place lookups with a persistent cache and one-request-per-second process limit. Adzuna supplied coordinates for three local Guntur leads in the live check. Recurring bulk listing geocoding is deliberately avoided under the [Nominatim usage policy](https://operations.osmfoundation.org/policies/nominatim/).
+
+## D20 · 2026-09-25 · P3 retrieval gate remains red
+
+The 40-query local benchmark (20 Telugu) on 179 live-derived scheme records measures precision@5 0.49, below §7.5's 0.8 gate. Scam and grounding fixture gates pass, but those synthetic fixtures do not establish field accuracy. The source registry now records portal reachability; five of nine portals were reachable in this environment, while unavailable portals supply no eligibility evidence. Do not infer a passing retrieval gate from a working UI or from a high hit@5 (0.875). Keep the benchmark exit status nonzero until precision improves on a reviewed relevance set.
+
+
+## D21 · 2026-09-25 · Resolve P3 retrieval blocker without changing the gate
+
+D20's 0.49 result is superseded by 0.805 precision@5 on the same 40 queries and
+179 source records. No expected IDs or relevance labels were changed, and the
+fixed denominator of five and 0.80 cutoff remain intact. The benchmark ceiling
+is 0.84 because some queries have fewer than five labeled relevant schemes.
+
+The old OR-query shortlist discarded candidates before ranking, verbose detail
+text overwhelmed scheme purpose, and detail ingestion lost brief descriptions.
+Use bilingual concept normalization and field-weighted purpose ranking over the
+small AP/central catalog, with optional semantic rank as a small tie-breaker and
+fallback. Preserve summary/tag metadata, backfill missing context from existing
+source snapshots in migration 0006, and hash each actual locale chunk for vector
+invalidation. Eligibility still requires complete source-backed rules.
+
+CI now evaluates a frozen public-source corpus through the same ranker, so the
+retrieval gate does not depend on services or model availability. Snapshot,
+live-database lexical and embedding-enabled checks each measured 0.805;
+English 0.80, Telugu 0.81, recall@5 0.728, hit@5 1.0. This is a development-set
+regression result, not a holdout claim. Keep broader source coverage and an
+independently judged evaluation set as separate work. See `evals/README.md`.
+
+## D22 · 2026-09-25 · P4 keeps voice facts behind the existing verifier
+
+The P4 agent calls the existing typed P2/P3 engine and live-source functions. Gemini/Groq/Ollama adapt native function calls into one bounded loop, with six model turns at most, provider circuit breaking and a cached response path. Source titles and locale summaries are extracted from stamped, HTTPS-linked cards. Free prose is checked against those exact spans before rendering or TTS; unsupported model text is struck. Missing Telugu/Hindi source wording produces a localized no-data utterance with the linked card still visible. This preserves the P3 safety boundary while the optional semantic verifier and verified translation are absent.
+
+The voice route records receipt-to-hop timings and the browser records release-to-playback start. Final model text streams internally and measures its first content token; complete sentences are verified before any text or audio event leaves the server. The HUD also shows `t_llm_response` for completion. Generated sentence audio is cached by content hash; only explicitly reviewed ASR clips enter the transcript cache. The voice latency gate remains open. The one-field scheme follow-up uses a source-backed missing field and re-evaluates the deterministic rules after an answer.
+
+## D23 · 2026-09-25 · Live P4 provider request held for explicit authorization
+
+The sandbox could not connect to configured Gemini/Groq endpoints. An escalated product-prompt test was rejected by auto-review because it would send an internal system prompt, tool definitions and a query to those external APIs without specific authorization. A separate, safer test used only a synthetic `echo_word` tool and public `hello` prompt: Gemini and Groq both completed a native function-call round trip and streamed final text with a measured first content token. That check found that Groq's GPT-OSS returned HTTP 400 when `tool_choice=none` was sent with tool declarations; omitting declarations on the final text pass worked. Synthetic Edge TTS and Groq ASR also completed for English and Telugu, although the Telugu transcript changed one word. The actual product prompt, tool schemas and a real user recording were not sent. Full-product behavior remains unverified until the user authorizes that specific egress.
+
+## D24 · 2026-09-26 · Authorized P4 integration and cached gate completed
+
+Destination-specific user authorization resolved D23. The actual agent executed roadmap, job and Telugu scheme tools against configured Gemini/Groq, with first content-token measurements. Browser testing found the missing Uvicorn transport; pin wsproto 1.3.2. Supply taxonomy IDs in the prompt, exclude transient token/request timestamps from cache identity while retaining source fetch stamps, permit cache hits during provider cooldown, cap voice agent work at 90 s and Edge TTS at 12 s. Preserve rejected claims when falling back to verified source titles.
+
+The reusable voice replay script blocks HTTP and Edge calls without substituting tool/model results, requires actual cached audio plus successful tool results, and evaluates server receipt-to-first-audio and total delivery. Three synthetic clips × 20 repeats passed the unchanged <1.5 s/<4 s gates (p95 at most 34.7 ms). This is a cached server regression, not a human ASR or browser playback benchmark. Uncached scheme retrieval took 64 s; P7 must retain that limitation and measure actual microphone/browser behavior. Real Chrome WebSocket verification and all three localized page renders passed.
+
+## D25 · 2026-09-26 · Close P4 with sentence streaming and browser playback evidence
+
+Final-only buffering was insufficient for P4. Incremental sentence splitting now feeds the existing verifier before each speech callback; incomplete tails remain buffered, provider failover resets the unfinished tail, and accepted streamed sentences stay in the final evidence record. No raw model token reaches TTS. Browser interruption invalidates queued playback, closes the prior socket and guards delayed microphone/file reads. Source names without translations get only a localized field label, preserving the name and its source exactly.
+
+Forty-six API tests and all web checks pass. Browser-inclusive cached first-playback p95 is 56/53/44 ms for en/te/hi (20 each), with HTTP/TTS upstream blocked; response delivery p95 is 3/39/3 ms. Server cached gates also pass. These replace server-only timing as the P4 closure evidence. The UI now accumulates playback p50/p95. P4 is complete; field ASR and cold-provider measurements belong in P7 rehearsal and remain honestly distinguished from cached regression results.
+
+
+## P5 completion — 2026-09-26
+
+P5 uses the plan’s GfG/GitHub source lane, paste-only notices, on-screen packs and text-only coach metric cut lines. The 60-company list is a discovery seed; only TCS Prime and Infosys Specialist Programmer have reviewed report coverage. Those roles are never relabeled as the learner’s taxonomy goal. Dates retain their source-update meaning.
+
+Schedules use Asia/Kolkata and exclude interview day, maintain prerequisites and report unfinished hours. Feedback admits only computed findings with valid transcript quotes; an optional model rewrite cannot add a trait, promise or unrelated claim. Session IDs are anonymous capabilities with 24-hour access expiry and an explicit delete action. Hash-feature vectors are labeled lexical rather than semantic. See [P5](P5.md) for checks, source limits and reproduction.
+
+## D26 · 2026-09-26 · P7 measures field behavior only with independently reviewed inputs
+
+P7 adds `evals/run_p7.py` and a cache-bypass path for an explicitly requested
+field rehearsal. The deterministic audit passes the invented-number,
+payment-instruction, notice-privacy, CAT-termination, shared-engine, roadmap,
+ablation, i18n, P3 and P5 checks. The field path calculates WER/CER from a
+separately prepared transcript and measures real first-audio and total-turn
+p95 after bypassing ASR, LLM and TTS caches.
+
+At the time of the initial P7 implementation, no reviewed microphone
+clip/reference pair was available, so that snapshot recorded the field portion
+as `not_run`. This was superseded on 2026-09-30 by the reviewed Google FLEURS
+Telugu run documented in `docs/P7.md`. The current report separates P7 phase
+readiness from whole-build readiness and lists remaining P2/P3 gates. Synthetic
+uncached rehearsals remain `rehearsal_only`; neither they nor cached P4 timings
+are promoted to field accuracy.
+
+The red-team pass also exposed English-only scam payment/contact matching. The
+core rules now catch Telugu and Hindi fee requests, Telugu WhatsApp-only
+contact, and preserve explicit no-fee negation; the added cases pass.

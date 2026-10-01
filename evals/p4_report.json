@@ -1,0 +1,68 @@
+{
+  "phase": "P4",
+  "status": "complete",
+  "date": "2026-09-26",
+  "api_tests": 46,
+  "web_tests": 3,
+  "i18n_keys_per_locale": 125,
+  "checks": [
+    "ruff",
+    "pyright",
+    "biome",
+    "typescript",
+    "production_build",
+    "verified_sentence_streaming",
+    "barge_in_server_cancellation",
+    "browser_stale_audio_cancellation",
+    "mobile_en_te_hi",
+    "live_gemini_groq_tools"
+  ],
+  "cached_browser": {
+    "upstream_http_and_tts": "blocked",
+    "local_postgres": true,
+    "clips": "three synthetic reviewed clips",
+    "samples_per_locale": 20,
+    "thresholds_ms": {
+      "first_playback_p95": 1500,
+      "response_done_p95": 4000
+    },
+    "results": {
+      "en": {
+        "first_playback_p95_ms": 56,
+        "response_done_p95_ms": 3
+      },
+      "te": {
+        "first_playback_p95_ms": 53,
+        "response_done_p95_ms": 39
+      },
+      "hi": {
+        "first_playback_p95_ms": 44,
+        "response_done_p95_ms": 3
+      }
+    },
+    "passed": true
+  },
+  "cached_server": {
+    "samples_per_locale": 20,
+    "results": {
+      "en": {
+        "first_audio_p95_ms": 0.4,
+        "response_done_p95_ms": 0.4
+      },
+      "te": {
+        "first_audio_p95_ms": 35.7,
+        "response_done_p95_ms": 35.8
+      },
+      "hi": {
+        "first_audio_p95_ms": 0.3,
+        "response_done_p95_ms": 0.4
+      }
+    },
+    "passed": true
+  },
+  "measurement_limits": [
+    "Cached regressions do not measure human microphone ASR accuracy.",
+    "Total response delivery excludes speech duration.",
+    "Cold provider/source turns previously took 8.82\u201364.02 seconds."
+  ]
+}

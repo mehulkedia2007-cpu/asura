@@ -1,0 +1,233 @@
+[
+  {
+    "id": "tcs-ce-prime2024-0",
+    "company": "tcs",
+    "role": "Prime",
+    "text": "Print each element of a Python array.",
+    "round": "technical",
+    "topic": "python_programming",
+    "skill_ids": [
+      "python_programming"
+    ],
+    "year": 2024,
+    "as_of": "2024-09-24",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/tcs-interview-experience-prime2024/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "How would you print an array in python?",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "Python అర్రేలోని ప్రతి అంశాన్ని ప్రింట్ చేయండి.",
+    "text_hi": "Python ऐरे के हर तत्व को प्रिंट करें।"
+  },
+  {
+    "id": "tcs-ce-prime2024-1",
+    "company": "tcs",
+    "role": "Prime",
+    "text": "Count students per department using a SQL grouping query.",
+    "round": "technical",
+    "topic": "sql_querying",
+    "skill_ids": [
+      "sql_querying"
+    ],
+    "year": 2024,
+    "as_of": "2024-09-24",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/tcs-interview-experience-prime2024/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "Write SQL query to get total students in each department.",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "SQL గ్రూపింగ్ క్వెరీతో ప్రతి విభాగంలోని విద్యార్థులను లెక్కించండి.",
+    "text_hi": "SQL ग्रुपिंग क्वेरी से हर विभाग के विद्यार्थियों की संख्या निकालें।"
+  },
+  {
+    "id": "tcs-ce-prime2024-2",
+    "company": "tcs",
+    "role": "Prime",
+    "text": "Describe the purpose of GitHub.",
+    "round": "technical",
+    "topic": "digital_literacy",
+    "skill_ids": [
+      "digital_literacy"
+    ],
+    "year": 2024,
+    "as_of": "2024-09-24",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/tcs-interview-experience-prime2024/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "What is github used for?",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "GitHub ఉపయోగాన్ని వివరించండి.",
+    "text_hi": "GitHub का उद्देश्य बताएँ।"
+  },
+  {
+    "id": "tcs-ce-tcs-prime-0",
+    "company": "tcs",
+    "role": "Prime",
+    "text": "Classify MongoDB as relational SQL or NoSQL.",
+    "round": "technical",
+    "topic": "database_fundamentals",
+    "skill_ids": [
+      "database_fundamentals"
+    ],
+    "year": 2024,
+    "as_of": "2024-06-11",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/tcs-interview-experience-tcs-prime/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "Is MongoDB NoSQL or SQL?",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "MongoDB SQL లేదా NoSQL డేటాబేస్ అని వర్గీకరించండి.",
+    "text_hi": "MongoDB को SQL या NoSQL डेटाबेस के रूप में वर्गीकृत करें।"
+  },
+  {
+    "id": "tcs-ce-tcs-prime-1",
+    "company": "tcs",
+    "role": "Prime",
+    "text": "Model a college database and discuss a shared user table for teachers and students.",
+    "round": "technical",
+    "topic": "database_fundamentals",
+    "skill_ids": [
+      "database_fundamentals"
+    ],
+    "year": 2024,
+    "as_of": "2024-06-11",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/tcs-interview-experience-tcs-prime/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "Design a database for your college. Can teachers and students be in the same table as users?",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "కళాశాల డేటాబేస్ రూపొందించి, ఉపాధ్యాయులు, విద్యార్థులకు ఒకే యూజర్ పట్టికను చర్చించండి.",
+    "text_hi": "कॉलेज का डेटाबेस बनाएँ और शिक्षकों व विद्यार्थियों की साझा यूज़र तालिका पर चर्चा करें।"
+  },
+  {
+    "id": "infosys-programmer-4-0",
+    "company": "infosys",
+    "role": "Specialist Programmer",
+    "text": "Explain how SQL grouping aggregates records.",
+    "round": "technical",
+    "topic": "sql_querying",
+    "skill_ids": [
+      "sql_querying"
+    ],
+    "year": 2024,
+    "as_of": "2024-05-23",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/infosys-interview-experience-for-specialist-programmer-4/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "GROUP BY clause",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "SQL గ్రూపింగ్ రికార్డులను ఎలా సమీకరిస్తుందో వివరించండి.",
+    "text_hi": "बताएँ कि SQL ग्रुपिंग रिकॉर्ड को कैसे एकत्र करती है।"
+  },
+  {
+    "id": "infosys-programmer-4-1",
+    "company": "infosys",
+    "role": "Specialist Programmer",
+    "text": "Discuss database indexing.",
+    "round": "technical",
+    "topic": "database_fundamentals",
+    "skill_ids": [
+      "database_fundamentals"
+    ],
+    "year": 2024,
+    "as_of": "2024-05-23",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/infosys-interview-experience-for-specialist-programmer-4/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "Indexing",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "డేటాబేస్ ఇండెక్సింగ్ గురించి చర్చించండి.",
+    "text_hi": "डेटाबेस इंडेक्सिंग पर चर्चा करें।"
+  },
+  {
+    "id": "infosys-programmer-4-2",
+    "company": "infosys",
+    "role": "Specialist Programmer",
+    "text": "Illustrate polymorphism with a practical programming example.",
+    "round": "technical",
+    "topic": "python_programming",
+    "skill_ids": [
+      "python_programming"
+    ],
+    "year": 2024,
+    "as_of": "2024-05-23",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/infosys-interview-experience-for-specialist-programmer-4/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "Polymorphism",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "ప్రోగ్రామింగ్ ఉదాహరణతో పాలిమార్ఫిజాన్ని వివరించండి.",
+    "text_hi": "प्रोग्रामिंग के उदाहरण से पॉलीमॉर्फ़िज़्म समझाएँ।"
+  },
+  {
+    "id": "infosys-s-2025-batch-0",
+    "company": "infosys",
+    "role": "Specialist Programmer",
+    "text": "Find the fifth greatest salary with a SQL query.",
+    "round": "technical",
+    "topic": "sql_querying",
+    "skill_ids": [
+      "sql_querying"
+    ],
+    "year": 2024,
+    "as_of": "2024-12-17",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/infosys-interview-experience-specialist-programmer-full-time-on-campus-2025-batch/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "Write a query to find the 5th highest salary in a database table.",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "SQL క్వెరీతో ఐదవ అత్యధిక జీతాన్ని కనుగొనండి.",
+    "text_hi": "SQL क्वेरी से पाँचवाँ सबसे बड़ा वेतन खोजें।"
+  },
+  {
+    "id": "infosys-s-2025-batch-1",
+    "company": "infosys",
+    "role": "Specialist Programmer",
+    "text": "Describe a difficult issue encountered while developing a project.",
+    "round": "technical",
+    "topic": "critical_thinking_problem_solving",
+    "skill_ids": [
+      "critical_thinking_problem_solving"
+    ],
+    "year": 2024,
+    "as_of": "2024-12-17",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/infosys-interview-experience-specialist-programmer-full-time-on-campus-2025-batch/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "Challenges faced during development.",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "ప్రాజెక్ట్ అభివృద్ధిలో ఎదురైన కష్టమైన సమస్యను వివరించండి.",
+    "text_hi": "परियोजना बनाते समय आई कठिन समस्या बताएँ।"
+  },
+  {
+    "id": "infosys-s-2025-batch-2",
+    "company": "infosys",
+    "role": "Specialist Programmer",
+    "text": "Explain what a project achieved and what you learned.",
+    "round": "technical",
+    "topic": "spoken_english",
+    "skill_ids": [
+      "spoken_english"
+    ],
+    "year": 2024,
+    "as_of": "2024-12-17",
+    "date_kind": "source_updated",
+    "source_url": "https://www.geeksforgeeks.org/interview-experiences/infosys-interview-experience-specialist-programmer-full-time-on-campus-2025-batch/",
+    "fetched_at": "2026-09-25T19:49:43.572151+00:00",
+    "source_span": "Project outcomes and learnings.",
+    "wording": "adapted_from_report",
+    "similar": [],
+    "text_te": "ప్రాజెక్ట్ ఫలితాన్ని, మీరు నేర్చుకున్న విషయాలను వివరించండి.",
+    "text_hi": "परियोजना के परिणाम और उससे सीखी बातों को बताएँ।"
+  }
+]

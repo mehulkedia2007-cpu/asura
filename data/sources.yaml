@@ -1,0 +1,154 @@
+{
+  "jobs": [
+    {
+      "id": "adzuna",
+      "kind": "json_api",
+      "url_template": "https://api.adzuna.com/v1/api/jobs/in/search/{page}",
+      "parser": "adzuna",
+      "refresh_hours": 6,
+      "region": "India",
+      "tos_note": "Official Adzuna Jobs API; link to redirect_url."
+    },
+    {
+      "id": "remotive",
+      "kind": "json_api",
+      "url_template": "https://remotive.com/api/remote-jobs",
+      "parser": "remotive",
+      "refresh_hours": 6,
+      "region": "remote",
+      "tos_note": "Attribute Remotive and link to its job URL; feed is delayed by 24 hours."
+    }
+  ],
+  "schemes": [
+    {
+      "id": "myscheme_ap",
+      "kind": "json_api",
+      "url_template": "https://api.myscheme.gov.in/search/v6/schemes",
+      "parser": "myscheme",
+      "refresh_hours": 6,
+      "region": "AP",
+      "public_api_key": "tYTy5eEhlu9rFjyxuCr7ra7ACp4dv1RH8gWuHTDc",
+      "tos_note": "Government search index; retrieve only public scheme content."
+    },
+    {
+      "id": "myscheme_central",
+      "kind": "json_api",
+      "url_template": "https://api.myscheme.gov.in/search/v6/schemes",
+      "parser": "myscheme",
+      "refresh_hours": 6,
+      "region": "central",
+      "tos_note": "Government search index; retrieve only public scheme content."
+    },
+    {
+      "id": "ap_gsws",
+      "kind": "html_list",
+      "url_template": "https://gramawardsachivalayam.ap.gov.in/gsws/home/main",
+      "parser": "official_links",
+      "refresh_hours": 6,
+      "region": "AP",
+      "tos_note": "Andhra Pradesh Grama Ward Sachivalayam portal."
+    },
+    {
+      "id": "ap_skill",
+      "kind": "html_list",
+      "url_template": "https://naipunyam.ap.gov.in/",
+      "parser": "official_links",
+      "refresh_hours": 6,
+      "region": "AP",
+      "tos_note": "Official APSSDC portal linked by National Career Service."
+    },
+    {
+      "id": "ap_msme",
+      "kind": "html_list",
+      "url_template": "https://apmsmeone.ap.gov.in/schemes",
+      "parser": "ap_msme_directory",
+      "refresh_hours": 6,
+      "region": "AP",
+      "tos_note": "Official Andhra Pradesh MSME scheme directory; directory summaries do not establish eligibility."
+    },
+    {
+      "id": "pmkvy",
+      "kind": "html_list",
+      "url_template": "https://www.pmkvyofficial.org/",
+      "parser": "official_links",
+      "refresh_hours": 6,
+      "region": "central",
+      "tos_note": "Official PMKVY portal."
+    },
+    {
+      "id": "pm_vishwakarma",
+      "kind": "html_list",
+      "url_template": "https://pmvishwakarma.gov.in/",
+      "parser": "official_links",
+      "refresh_hours": 6,
+      "region": "central",
+      "tos_note": "Official PM Vishwakarma portal."
+    },
+    {
+      "id": "pmegp",
+      "kind": "html_list",
+      "url_template": "https://www.kviconline.gov.in/pmegpeportal/",
+      "parser": "official_links",
+      "refresh_hours": 6,
+      "region": "central",
+      "tos_note": "Official KVIC PMEGP portal."
+    },
+    {
+      "id": "mudra",
+      "kind": "html_list",
+      "url_template": "https://www.mudra.org.in/",
+      "parser": "official_links",
+      "refresh_hours": 6,
+      "region": "central",
+      "tos_note": "Official MUDRA portal."
+    },
+    {
+      "id": "naps",
+      "kind": "html_list",
+      "url_template": "https://www.apprenticeshipindia.gov.in/",
+      "parser": "official_links",
+      "refresh_hours": 6,
+      "region": "central",
+      "tos_note": "Official apprenticeship portal."
+    },
+    {
+      "id": "ncs",
+      "kind": "html_list",
+      "url_template": "https://www.ncs.gov.in/",
+      "parser": "official_links",
+      "refresh_hours": 6,
+      "region": "central",
+      "tos_note": "Official National Career Service portal."
+    }
+  ],
+  "geo": {
+    "id": "nominatim",
+    "kind": "json_api",
+    "url_template": "https://nominatim.openstreetmap.org/search",
+    "parser": "nominatim",
+    "refresh_hours": 720,
+    "region": "global",
+    "tos_note": "One request per second maximum, persistent cache, OSM attribution."
+  },
+  "interviews": [
+    {
+      "id": "gfg_interview_experiences",
+      "host": "www.geeksforgeeks.org",
+      "path_prefix": "/interview-experiences/",
+      "kind": "candidate_reports",
+      "refresh": "on_demand",
+      "tos_note": "Public candidate reports only. Respect robots, one request per second, no authors, no full articles; retain short source excerpts."
+    },
+    {
+      "id": "github_interview_notes",
+      "host": "raw.githubusercontent.com",
+      "suffixes": [
+        ".md",
+        ".txt"
+      ],
+      "kind": "public_notes",
+      "refresh": "on_demand",
+      "tos_note": "Allow-listed public Markdown/text only; no private repositories. No reviewed GitHub corpus seeded yet."
+    }
+  ]
+}

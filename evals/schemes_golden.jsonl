@@ -1,0 +1,40 @@
+{"id":"skilling-en-1","locale":"en","query":"government skill training","profile":{"state":"Andhra Pradesh"},"expected_ids":["pmkvy-stt","cts-msde","avts","15dsugt","ddugku","nap-sdp","esdp","pm-daksh","sutsesdm","ati","pmkvy-rpl","sdatocitt","pmsetu2","smile-skill-and-training","fspip"]}
+{"id":"skilling-en-2","locale":"en","query":"learn job skills","profile":{"state":"Andhra Pradesh"},"expected_ids":["pmkvy-stt","cts-msde","avts","15dsugt","ddugku","nap-sdp","esdp","pm-daksh","sutsesdm","ati","pmkvy-rpl","sdatocitt","pmsetu2","smile-skill-and-training","fspip"]}
+{"id":"skilling-te-1","locale":"te","query":"ప్రభుత్వ నైపుణ్య శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["pmkvy-stt","cts-msde","avts","15dsugt","ddugku","nap-sdp","esdp","pm-daksh","sutsesdm","ati","pmkvy-rpl","sdatocitt","pmsetu2","smile-skill-and-training","fspip"]}
+{"id":"skilling-te-2","locale":"te","query":"ఉద్యోగ నైపుణ్యాలు నేర్చుకోవాలి","profile":{"state":"Andhra Pradesh"},"expected_ids":["pmkvy-stt","cts-msde","avts","15dsugt","ddugku","nap-sdp","esdp","pm-daksh","sutsesdm","ati","pmkvy-rpl","sdatocitt","pmsetu2","smile-skill-and-training","fspip"]}
+{"id":"vocational-en-1","locale":"en","query":"vocational training course","profile":{"state":"Andhra Pradesh"},"expected_ids":["avts","cts-msde","pmkvy-stt","vtd","vetls","pmsetu2","15dsugt","nap-sdp","rmewf-vocational-training","vtcta"]}
+{"id":"vocational-en-2","locale":"en","query":"trade skills training","profile":{"state":"Andhra Pradesh"},"expected_ids":["avts","cts-msde","pmkvy-stt","vtd","vetls","pmsetu2","15dsugt","nap-sdp","rmewf-vocational-training","vtcta"]}
+{"id":"vocational-te-1","locale":"te","query":"వృత్తి శిక్షణ కోర్సు","profile":{"state":"Andhra Pradesh"},"expected_ids":["avts","cts-msde","pmkvy-stt","vtd","vetls","pmsetu2","15dsugt","nap-sdp","rmewf-vocational-training","vtcta"]}
+{"id":"vocational-te-2","locale":"te","query":"చేతివృత్తి నైపుణ్య శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["avts","cts-msde","pmkvy-stt","vtd","vetls","pmsetu2","15dsugt","nap-sdp","rmewf-vocational-training","vtcta"]}
+{"id":"apprentice-en-1","locale":"en","query":"apprenticeship training scheme","profile":{"state":"Andhra Pradesh"},"expected_ids":["naps","nsat"]}
+{"id":"apprentice-en-2","locale":"en","query":"paid apprentice opportunity","profile":{"state":"Andhra Pradesh"},"expected_ids":["naps","nsat"]}
+{"id":"apprentice-te-1","locale":"te","query":"అప్రెంటిస్‌షిప్ శిక్షణ పథకం","profile":{"state":"Andhra Pradesh"},"expected_ids":["naps","nsat"]}
+{"id":"apprentice-te-2","locale":"te","query":"అప్రెంటిస్ అవకాశం","profile":{"state":"Andhra Pradesh"},"expected_ids":["naps","nsat"]}
+{"id":"loan-en-1","locale":"en","query":"loan for skill training","profile":{"state":"Andhra Pradesh"},"expected_ids":["sl","vetls","els","els-nsfdc","els-nmdfc"]}
+{"id":"loan-en-2","locale":"en","query":"vocational education loan","profile":{"state":"Andhra Pradesh"},"expected_ids":["sl","vetls","els","els-nsfdc","els-nmdfc"]}
+{"id":"loan-te-1","locale":"te","query":"నైపుణ్య శిక్షణ రుణం","profile":{"state":"Andhra Pradesh"},"expected_ids":["sl","vetls","els","els-nsfdc","els-nmdfc"]}
+{"id":"loan-te-2","locale":"te","query":"వృత్తి విద్య కోసం లోన్","profile":{"state":"Andhra Pradesh"},"expected_ids":["sl","vetls","els","els-nsfdc","els-nmdfc"]}
+{"id":"rural-en-1","locale":"en","query":"rural livelihood employment","profile":{"state":"Andhra Pradesh"},"expected_ids":["day-nrlm","ddugku","mgnrega","sr","eebdrp","gvyoj","kvyoj"]}
+{"id":"rural-en-2","locale":"en","query":"village jobs and training","profile":{"state":"Andhra Pradesh"},"expected_ids":["day-nrlm","ddugku","mgnrega","sr","eebdrp","gvyoj","kvyoj"]}
+{"id":"rural-te-1","locale":"te","query":"గ్రామీణ ఉపాధి పథకాలు","profile":{"state":"Andhra Pradesh"},"expected_ids":["day-nrlm","ddugku","mgnrega","sr","eebdrp","gvyoj","kvyoj"]}
+{"id":"rural-te-2","locale":"te","query":"గ్రామంలో పని మరియు శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["day-nrlm","ddugku","mgnrega","sr","eebdrp","gvyoj","kvyoj"]}
+{"id":"entrepreneur-en-1","locale":"en","query":"entrepreneurship training","profile":{"state":"Andhra Pradesh"},"expected_ids":["esdp","ap-msme:ESDP","cbsp-ep","ati","sr","eebdrp","bio-ride","gbs","ppe","csusme-to"]}
+{"id":"entrepreneur-en-2","locale":"en","query":"start a business skills program","profile":{"state":"Andhra Pradesh"},"expected_ids":["esdp","ap-msme:ESDP","cbsp-ep","ati","sr","eebdrp","bio-ride","gbs","ppe","csusme-to"]}
+{"id":"entrepreneur-te-1","locale":"te","query":"వ్యవస్థాపకత శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["esdp","ap-msme:ESDP","cbsp-ep","ati","sr","eebdrp","bio-ride","gbs","ppe","csusme-to"]}
+{"id":"entrepreneur-te-2","locale":"te","query":"వ్యాపారం ప్రారంభించడానికి శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["esdp","ap-msme:ESDP","cbsp-ep","ati","sr","eebdrp","bio-ride","gbs","ppe","csusme-to"]}
+{"id":"disability-en-1","locale":"en","query":"skill training for persons with disabilities","profile":{"state":"Andhra Pradesh"},"expected_ids":["dky","nap-sdp"]}
+{"id":"disability-en-2","locale":"en","query":"vocational training for disabled people","profile":{"state":"Andhra Pradesh"},"expected_ids":["dky","nap-sdp"]}
+{"id":"disability-te-1","locale":"te","query":"వికలాంగులకు నైపుణ్య శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["dky","nap-sdp"]}
+{"id":"disability-te-2","locale":"te","query":"దివ్యాంగులకు వృత్తి శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["dky","nap-sdp"]}
+{"id":"digital-en-1","locale":"en","query":"digital technology skills","profile":{"state":"Andhra Pradesh"},"expected_ids":["fspip","sdesdm","sutsesdm","pmsetu2","mdiis"]}
+{"id":"digital-en-2","locale":"en","query":"electronics and IT training","profile":{"state":"Andhra Pradesh"},"expected_ids":["fspip","sdesdm","sutsesdm","pmsetu2","mdiis"]}
+{"id":"digital-te-1","locale":"te","query":"డిజిటల్ టెక్నాలజీ నైపుణ్యాలు","profile":{"state":"Andhra Pradesh"},"expected_ids":["fspip","sdesdm","sutsesdm","pmsetu2","mdiis"]}
+{"id":"digital-te-2","locale":"te","query":"ఎలక్ట్రానిక్స్ ఐటీ శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["fspip","sdesdm","sutsesdm","pmsetu2","mdiis"]}
+{"id":"craft-en-1","locale":"en","query":"traditional craft skills","profile":{"state":"Andhra Pradesh"},"expected_ids":["cts-msde","chcdp","pmv","cvy-sumcy","gvyoj","kvyoj","nhdp-dba-saic","nhdp-iandts-uh","nhdp-iandts-emporia"]}
+{"id":"craft-en-2","locale":"en","query":"handicraft and artisan training","profile":{"state":"Andhra Pradesh"},"expected_ids":["cts-msde","chcdp","pmv","cvy-sumcy","gvyoj","kvyoj","nhdp-dba-saic","nhdp-iandts-uh","nhdp-iandts-emporia"]}
+{"id":"craft-te-1","locale":"te","query":"సాంప్రదాయ చేతివృత్తి నైపుణ్యాలు","profile":{"state":"Andhra Pradesh"},"expected_ids":["cts-msde","chcdp","pmv","cvy-sumcy","gvyoj","kvyoj","nhdp-dba-saic","nhdp-iandts-uh","nhdp-iandts-emporia"]}
+{"id":"craft-te-2","locale":"te","query":"హస్తకళాకారులకు శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["cts-msde","chcdp","pmv","cvy-sumcy","gvyoj","kvyoj","nhdp-dba-saic","nhdp-iandts-uh","nhdp-iandts-emporia"]}
+{"id":"pmkvy-en-1","locale":"en","query":"PMKVY short term training","profile":{"state":"Andhra Pradesh"},"expected_ids":["pmkvy-stt","pmkvy-rpl","pmkvy-sp"]}
+{"id":"pmkvy-en-2","locale":"en","query":"Pradhan Mantri Kaushal Vikas Yojana","profile":{"state":"Andhra Pradesh"},"expected_ids":["pmkvy-stt","pmkvy-rpl","pmkvy-sp"]}
+{"id":"pmkvy-te-1","locale":"te","query":"ప్రధాన మంత్రి కౌశల్ వికాస్ యోజన","profile":{"state":"Andhra Pradesh"},"expected_ids":["pmkvy-stt","pmkvy-rpl","pmkvy-sp"]}
+{"id":"pmkvy-te-2","locale":"te","query":"పీఎంకేవీవై శిక్షణ","profile":{"state":"Andhra Pradesh"},"expected_ids":["pmkvy-stt","pmkvy-rpl","pmkvy-sp"]}

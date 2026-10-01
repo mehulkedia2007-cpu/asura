@@ -1,0 +1,8 @@
+{"id": "empty-cues", "transcript": "I worked hard.", "must_mention": ["situation", "task", "action", "result", "quantifiers"], "locale": "en"}
+{"id": "filler", "transcript": "um uh I tried.", "must_mention": ["fillers", "situation", "task", "action", "result"], "locale": "en"}
+{"id": "no-result", "transcript": "In a project my goal was to learn. I built reports.", "must_mention": ["result", "quantifiers"], "locale": "en"}
+{"id": "no-action", "transcript": "The team task had a result of 10 reports.", "must_mention": ["action"], "locale": "en"}
+{"id": "numbers", "transcript": "In a project my goal was clear. I built a tool and improved it.", "must_mention": ["quantifiers"], "locale": "en"}
+{"id": "complete", "transcript": "In a project my goal was clear. I built a tool and reduced errors 20%.", "must_mention": ["structure", "evidence", "focus"], "locale": "en"}
+{"id": "te", "transcript": "ప్రాజెక్ట్ లక్ష్యం చేశాను ఫలితం 10", "must_mention": ["structure", "evidence", "focus"], "locale": "te"}
+{"id": "hi", "transcript": "परियोजना लक्ष्य बनाया परिणाम 10", "must_mention": ["structure", "evidence", "focus"], "locale": "hi"}
