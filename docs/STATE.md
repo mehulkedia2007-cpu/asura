@@ -245,3 +245,9 @@ missing Hindi roadmap fallback and prose-only tool omission, now covered by
 regressions. Cold cloud scheme refresh exceeded the browser wait; refresh is
 now bounded to 45 seconds, retains sourced cached evidence and marks partial
 results. Final public verification is pending publication of these two fixes.
+
+The first public retest returned scheme results within the deadline but exposed
+detail starvation during summary indexing. Relevant details now precede bulk
+summary writes; document vectors are deferred to the batch worker. The browser
+regression also checks honest unknown eligibility when live source rules are
+incomplete. API regressions now pass 102 tests; final cloud retest follows.

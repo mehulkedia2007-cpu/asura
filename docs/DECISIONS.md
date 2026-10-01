@@ -241,3 +241,17 @@ seeds. Resolve frontend HTTP/voice configuration at request time and gate the
 online badge on actual persistence readiness. No local credentials or rehearsal
 files are bundled. The six-hour persistent arq worker is not provided by Vercel;
 source freshness continues through request-time refresh. See DEPLOYMENT.md.
+
+## D29 · 2026-10-01 · Bound interactive source refresh and preserve real tool execution
+
+Keep interactive scheme refresh within 45 seconds, with an eight-second query
+embedding budget and lexical fallback. Fetch relevant eligibility detail before
+broad summary indexing and defer document embeddings to the existing batch
+worker. Preserve fetched/cached evidence and expose timeout/partial refresh
+warnings. Incomplete source rules stay unknown and do not prompt for personal
+facts that cannot establish eligibility. Browser checks branch on source-backed
+predicates rather than assuming every live catalog contains the same scheme.
+Explicit roadmap requests in all three languages execute the shared tool even
+when the model returns prose only or providers are unavailable; verification
+still rejects unsupported prose. These decisions preserve useful engine output
+during free-provider failures without claiming complete source coverage.

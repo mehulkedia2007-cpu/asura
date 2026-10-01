@@ -44,7 +44,7 @@ def _content(record: dict, locale: str) -> str:
                      ("name_en", "summary_en", "benefit_text", "eligibility_text", "documents_text", "apply_text")).strip()[:6000]
 
 
-async def upsert(record: dict, *, summary_only: bool = False) -> dict:
+async def upsert(record: dict, *, summary_only: bool = False, embed_documents: bool = True) -> dict:
     scheme_id = record["id"]
     if summary_only:
         async with engine.connect() as conn:
@@ -101,7 +101,7 @@ async def upsert(record: dict, *, summary_only: bool = False) -> dict:
         if existing and existing[0] == content_hash and existing[1] == EMBEDDING_KIND:
             indexed.append(locale)
             continue
-        vector = None if summary_only else await embed(content, "RETRIEVAL_DOCUMENT")
+        vector = None if summary_only or not embed_documents else await embed(content, "RETRIEVAL_DOCUMENT")
         async with engine.begin() as conn:
             await conn.execute(text("""
                 INSERT INTO scheme_chunks(scheme_id, locale, content, content_hash, embedding, embedding_kind)

@@ -12,6 +12,7 @@ from daari_core.eligibility import evaluate
 from daari.ap_portal import search as search_ap_portal
 from daari.myscheme_client import detail, search_pages
 from daari.scheme_index import coverage, retrieve, upsert
+from daari.scheme_ranking import rank_records
 from daari.scheme_rules import extract as extract_llm_rules
 
 REFRESH_TIMEOUT_S = 45.0
@@ -165,13 +166,10 @@ async def search(query: str, profile: dict, refresh: bool = False, locale: str =
             candidates = [item for raw, stamp in raw_items if (item := normalize(raw, stamp))]
             portal_schemes, portal_errors = await search_ap_portal(client, query, refresh)
             errors.extend(portal_errors)
-            for scheme in [*candidates, *portal_schemes]:
-                await upsert(scheme, summary_only=True)
-            first_pass = await retrieve(query, limit=20, use_embeddings=False)
-            rank = {item["id"]: i for i, item in enumerate(first_pass["records"])}
-            candidates.sort(key=lambda item: (item["state"] != "Andhra Pradesh",
-                                              rank.get(item["id"], 1000)))
-            for scheme in candidates[:5]:
+            # Fetch useful detail before broad summary indexing consumes the
+            # request budget. Document embeddings belong to the batch worker.
+            ranked_candidates = rank_records(query, candidates, limit=5, dedupe_duplicates=True)
+            for scheme in ranked_candidates:
                 payload, detail_errors = await detail(client, scheme["id"], locale, refresh)
                 errors.extend(detail_errors)
                 if payload:
@@ -185,7 +183,9 @@ async def search(query: str, profile: dict, refresh: bool = False, locale: str =
                         errors.append(extraction_error)
                     if extracted["all"] or extracted["any"]:
                         scheme["rules"], scheme["rules_complete"] = extracted, complete
-                await upsert(scheme)
+                await upsert(scheme, embed_documents=False)
+            for scheme in [*candidates, *portal_schemes]:
+                await upsert(scheme, summary_only=True)
     except TimeoutError:
         errors.append("refresh_timeout")
         truncated = True

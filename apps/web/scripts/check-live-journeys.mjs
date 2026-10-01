@@ -84,28 +84,53 @@ try {
     await page.locator(".source-footer").count(),
     schemes.schemes.length,
   );
-  assert(
-    schemes.next_question,
-    "Live eligibility must ask for an unknown fact",
-  );
-  await page.locator("#scheme-slot").fill("registered construction worker");
-  const recheckResponse = page.waitForResponse(
-    (response) =>
-      response.url().endsWith("/schemes/search") &&
-      response.request().method() === "POST",
-    { timeout: 70000 },
-  );
-  await page
-    .getByRole("button", { name: t.live.checkAgain, exact: true })
-    .click();
-  const rechecked = await (await recheckResponse).json();
-  assert(
-    rechecked.schemes.some(
-      (scheme) =>
-        scheme.id === schemes.next_question.scheme_id &&
-        scheme.eligibility.status === "true",
-    ),
-  );
+  let eligibilityRecheck = false;
+  if (schemes.next_question) {
+    const target = schemes.schemes.find(
+      (scheme) => scheme.id === schemes.next_question.scheme_id,
+    );
+    assert.equal(target.rules_complete, true);
+    const rule = [...target.rules.all, ...target.rules.any].find(
+      (item) => item.field === schemes.next_question.field,
+    );
+    assert(rule, "A follow-up question must have a source-backed predicate");
+    const answer =
+      rule.op === "in"
+        ? rule.value[0]
+        : rule.op === "ne"
+          ? "synthetic alternative"
+          : rule.value;
+    await page.locator("#scheme-slot").fill(String(answer));
+    const recheckResponse = page.waitForResponse(
+      (response) =>
+        response.url().endsWith("/schemes/search") &&
+        response.request().method() === "POST",
+      { timeout: 70000 },
+    );
+    await page
+      .getByRole("button", { name: t.live.checkAgain, exact: true })
+      .click();
+    const rechecked = await (await recheckResponse).json();
+    assert(
+      rechecked.schemes.some(
+        (scheme) =>
+          scheme.id === schemes.next_question.scheme_id &&
+          scheme.eligibility.status === "true",
+      ),
+    );
+    eligibilityRecheck = true;
+  } else {
+    // Incomplete source evidence cannot be repaired with a personal fact.
+    // A live catalog need not contain a complete single-slot predicate.
+    assert(
+      schemes.schemes.every(
+        (scheme) =>
+          !scheme.rules_complete ||
+          scheme.eligibility.missing_fields.length !== 1,
+      ),
+    );
+    assert.equal(await page.locator("#scheme-slot").count(), 0);
+  }
   await page.screenshot({
     path: `${output}/schemes-mobile.png`,
     fullPage: true,
@@ -113,7 +138,8 @@ try {
   report.schemes = {
     returned: schemes.schemes.length,
     eligibilityUnknown: true,
-    eligibilityRecheck: true,
+    eligibilityRecheck,
+    followUpQuestion: schemes.next_question?.field ?? null,
     indexed: schemes.coverage.indexed,
     stale: schemes.stale,
     sourceErrors: schemes.source_errors,
