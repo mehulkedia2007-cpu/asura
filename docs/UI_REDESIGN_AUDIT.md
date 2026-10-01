@@ -107,3 +107,11 @@ oscillator starts, mute persistence, voice suppression, touch and reduced-motion
 updates. Modal accessibility passes light/dark for each locale. Existing route
 coverage remains 57 accessibility states and 108 responsive checks.
 The wider build-plan retrieval and source-quality limits in STATE.md remain.
+
+The public visual review caught a collapsed direction mark caused by a selector
+collision with the previous wordmark styles. Removed those obsolete selectors
+and added desktop/mobile mark-size assertions to check:motion. The corrected
+production build passes that regression and the full UI suite again.
+Public backend journeys return seven sourced leads, five schemes, a successful
+eligibility recheck and six persisted assessment answers with a recalculated
+roadmap. One source ConnectTimeout remains visible.

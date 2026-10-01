@@ -146,13 +146,6 @@ button:disabled {
   line-height: 1;
   letter-spacing: -1.5px;
 }
-.workspace-brand > span,
-.mobile-brand > span {
-  color: var(--signal-text);
-  font-family: var(--font-geist), sans-serif;
-  font-size: 22px;
-  padding-left: 9px;
-}
 .workspace-brand small {
   display: block;
   font-family:
@@ -1489,17 +1482,14 @@ html[lang="hi"] .home-title {
 
 /* Original DAARI paths and feature marks. */
 .brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: inherit;
   font: inherit;
   padding: 0;
 }
-.brand-lockup {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.workspace-brand > .brand-lockup,
-.mobile-brand > .brand-mark {
+.brand-mark {
   width: 32px;
   height: 36px;
   color: var(--signal-text);

@@ -41,6 +41,16 @@ try {
     });
     await page.goto(`${origin}/${locale}`);
     await page.locator(".feature-track").waitFor();
+    const brand = await page
+      .locator(".workspace-brand .brand-mark")
+      .boundingBox();
+    assert(brand.width >= 30, "Desktop direction mark keeps its width");
+    assert.equal(
+      await page
+        .locator(".workspace-brand .brand-lockup")
+        .evaluate((el) => getComputedStyle(el).fontSize),
+      "40px",
+    );
     assert.equal(await page.locator(".feature-set a").count(), 8);
     for (const route of [
       "path",
@@ -200,6 +210,10 @@ try {
     hasTouch: true,
   });
   await touch.goto(`${origin}/en`);
+  const mobileBrand = await touch
+    .locator(".mobile-brand .brand-mark")
+    .boundingBox();
+  assert(mobileBrand.width >= 18, "Mobile direction mark keeps its width");
   assert.equal(await touch.locator(".cursor-orbit").count(), 0);
   assert.equal(
     await touch.evaluate(

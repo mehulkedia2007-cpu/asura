@@ -291,3 +291,9 @@ six modal accessibility states, three modal widths, actual Web Audio node
 creation, persistent mute, voice suppression, keyboard focus, Escape,
 reduced-motion updates and touch. Existing UI checks cover 57 accessibility
 states and 108 responsive route checks. See UI_REDESIGN_AUDIT.md.
+
+Public motion checks pass in all three languages; online core/API/web CI passes.
+Live job, scheme eligibility recheck and six-answer assessment/persistence
+journeys pass. A source ConnectTimeout is reported honestly. A public visual
+review caught and repaired a logo selector collision; desktop/mobile mark-size
+assertions and the complete production UI suite pass on the correction.
