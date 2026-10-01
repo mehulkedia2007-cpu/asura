@@ -36,9 +36,17 @@ try {
     localePages: [],
   };
   for (const locale of ["en", "te", "hi"]) {
-    await page.goto(`${origin}/${locale}/evidence`);
-    await page.locator(".evidence-panel").first().waitFor();
-    assert.equal(await page.getByRole("alert").count(), 0);
+    await page.goto(`${origin}/${locale}/evidence`, {
+      waitUntil: "domcontentloaded",
+    });
+    await page.locator(".evidence-panel").first().waitFor({ timeout: 60000 });
+    // Next's screen-reader route announcer is an empty alert outside the
+    // product. Check the board's actual error alert inside main content.
+    const alerts = await page
+      .locator("#main-content")
+      .getByRole("alert")
+      .allTextContents();
+    assert.equal(alerts.length, 0, `${locale}: ${JSON.stringify(alerts)}`);
     report.evidence.localePages.push(locale);
   }
   const connection = await page.request.get(`${origin}/api/connection`);

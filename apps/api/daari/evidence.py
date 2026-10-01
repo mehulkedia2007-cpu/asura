@@ -167,7 +167,7 @@ def _scheme_metrics() -> dict[str, Any]:
 
 
 async def _live_scheme_metrics() -> dict[str, Any]:
-    """Measure the current local index with the same labels as the snapshot gate."""
+    """Measure this deployment's index with the same labels as the snapshot gate."""
     global _LIVE_SCHEME_CACHE
     now = time.monotonic()
     if _LIVE_SCHEME_CACHE and now - _LIVE_SCHEME_CACHE[0] < 300:
@@ -208,11 +208,11 @@ async def _live_scheme_metrics() -> dict[str, Any]:
                 "precision_en": round(by_locale["en"] / (5 * counts["en"]), 3) if counts["en"] else 0.0,
                 "precision_te": round(by_locale["te"] / (5 * counts["te"]), 3) if counts["te"] else 0.0,
                 "passed": precision >= 0.8,
-                "scope": "current local index; lexical retrieval; same development labels, not independent holdout",
+                "scope": "current deployment index; lexical retrieval; same development labels, not independent holdout",
             }
         except Exception:  # noqa: BLE001 — missing DB/index must be reported as unavailable.
             result = {"available": False, "cases": 0, "passed": False,
-                      "scope": "current local index could not be measured"}
+                      "scope": "current deployment index could not be measured"}
         _LIVE_SCHEME_CACHE = (time.monotonic(), result)
         return result
 

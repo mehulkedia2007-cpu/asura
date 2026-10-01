@@ -1,0 +1,142 @@
+{
+  "tested_revision": "a3ababf2a21c",
+  "ci": "https://github.com/mehulkedia2007-cpu/asura/actions/runs/36901461349",
+  "api_tests": 105,
+  "failure_reproduced": "HTTP 500; translation source files excluded from packaged API",
+  "fix": "Build and bundle actual translation audit; select direct cloud database URL and verified TLS for live metric",
+  "live_checks": {
+    "origin": "https://asura-five.vercel.app",
+    "checkedAt": "2026-10-01T17:49:08.113Z",
+    "voice": [
+      {
+        "locale": "en",
+        "events": [
+          "interim",
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "provider": "groq",
+        "engine": "get_roadmap",
+        "trace": [
+          {
+            "tool": "get_roadmap",
+            "status": "ok"
+          }
+        ],
+        "audio": 1,
+        "browserTts": 0,
+        "elapsedMs": 8100,
+        "stamps": {
+          "t_release": 0,
+          "t_asr_final": 0.1,
+          "t_llm_first_token": 1810.6,
+          "t_llm_response": 6746.4,
+          "t_engine_done": 822.1,
+          "t_audio_first_chunk": 7249.8,
+          "t_done": 7250.8
+        }
+      },
+      {
+        "locale": "te",
+        "events": [
+          "interim",
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "provider": "groq",
+        "engine": "get_roadmap",
+        "trace": [
+          {
+            "tool": "get_roadmap",
+            "status": "ok"
+          }
+        ],
+        "audio": 1,
+        "browserTts": 0,
+        "elapsedMs": 3014,
+        "stamps": {
+          "t_release": 0,
+          "t_asr_final": 0.1,
+          "t_llm_response": 1555.4,
+          "t_engine_done": 1555.9,
+          "t_audio_first_chunk": 2268.3,
+          "t_done": 2269.3
+        }
+      },
+      {
+        "locale": "hi",
+        "events": [
+          "interim",
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "provider": "unavailable",
+        "engine": "get_roadmap",
+        "trace": [
+          {
+            "tool": "get_roadmap",
+            "status": "ok"
+          }
+        ],
+        "audio": 1,
+        "browserTts": 0,
+        "elapsedMs": 1213,
+        "stamps": {
+          "t_release": 0,
+          "t_asr_final": 0,
+          "t_engine_done": 8.5,
+          "t_audio_first_chunk": 476.7,
+          "t_done": 478
+        }
+      }
+    ],
+    "errors": [],
+    "ready": {
+      "ok": true,
+      "sha": "a3ababf2a21c",
+      "db": {
+        "status": "ok",
+        "detail": "schema_ready"
+      },
+      "redis": {
+        "status": "ok",
+        "detail": "pong"
+      }
+    },
+    "evidence": {
+      "sha": "a3ababf2a21c",
+      "translationKeys": 363,
+      "liveSchemeMetricAvailable": true,
+      "localePages": [
+        "en",
+        "te",
+        "hi"
+      ]
+    },
+    "websocketUrl": "wss://asura-api-coral.vercel.app/ws/voice",
+    "passed": true
+  },
+  "live_retrieval": {
+    "available": true,
+    "cases": 40,
+    "precision_at_5": 0.58,
+    "recall_at_5": 0.58,
+    "hit_at_5": 1.0,
+    "precision_en": 0.58,
+    "precision_te": 0.58,
+    "passed": false,
+    "scope": "current local index; lexical retrieval; same development labels, not independent holdout"
+  },
+  "quality_gate_limitation": "Current cloud retrieval precision@5 is 0.58, below 0.80; rendering correctly does not mean this gate passes.",
+  "browser_check_notes": "Require rendered panels and no product alerts; ignore the empty Next.js screen-reader route announcer. Navigate to DOM content loaded then wait for actual panels.",
+  "voice_scope": "Synthetic text over actual WebSockets; provider fallback remains explicit, not a human speech accuracy test."
+}

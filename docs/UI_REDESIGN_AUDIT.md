@@ -22,7 +22,7 @@ The graph settles synchronously and has no ongoing animation during audio. Fancy
 
 | Check | Result / scope |
 |---|---|
-| Core/API/web unit suites | 88 core + 102 API + 7 web = **197 passed** |
+| Core/API/web unit suites | 88 core + 105 API + 7 web = **200 passed** |
 | Static checks | Ruff, Pyright, web Biome, TypeScript and production build pass |
 | Localization | **363 keys**, identical nonempty en/te/hi key sets; rendered Telugu/Hindi glyphs inspected |
 | Browser route regression | 27 locale/route combinations, mobile and desktop; HTTP 200, no page errors or horizontal overflow; simulation, market reordering and localized assessment opening pass |
@@ -35,6 +35,8 @@ The graph settles synchronously and has no ongoing animation during audio. Fancy
 | P5 browser journeys | All three locales: questions, no-coverage result, privacy-redacted notice review/confirmation, prep shortfall, five interview answers, history reload/deletion, transcription confirmation/cancellation pass |
 | P3/P5/P7 deterministic evals | Frozen scheme precision@5 **0.805**; scam precision/recall 1.0; grounding F1 1.0; no-data violations 0; P5 and Constitution regressions pass |
 | Cached voice playback | After warming, 20 turns per locale; first playback p95 en **65 ms**, te **53 ms**, hi **54 ms**; response done p95 4 / 36 / 4 ms; cached gates pass |
+
+The production evidence endpoint and rendered panels now pass in all three locales after fixing API packaging. Current cloud scheme precision@5 is **0.58**, distinct from the original local 0.745 and frozen 0.805 regressions. See `evals/evidence_repair_report.json`.
 
 Production interview/prep journeys and separate Groq ASR probes pass in English, Telugu and Hindi. The ASR probes use generated audio, so they establish provider connectivity and transcript confirmation, not human speech accuracy. Model-provider failures can use the deterministic tool fallback; this is recorded explicitly in the deployment report.
 

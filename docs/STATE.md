@@ -269,4 +269,8 @@ direct cloud database URL and verified TLS connection arguments. Evidence SHA
 comes from the Vercel commit metadata. `check:cloud` now requires a successful
 evidence response and rendered panels without alerts in English/Telugu/Hindi,
 so page-title-only checks cannot miss this failure again. Public verification
-follows publication of this repair.
+passes in all three locales; HTTP 200 returns 363 measured translation keys
+and live-index metrics. The current cloud precision@5 is 0.58, below 0.80,
+which stays visibly failing. All 105 API tests and online CI pass; existing
+three-language WebSocket/tool/audio checks pass, including an explicitly
+reported unavailable-provider fallback. See `evals/evidence_repair_report.json`.
