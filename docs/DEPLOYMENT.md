@@ -3,6 +3,9 @@
 The frontend and API deploy from the same repository as separate Vercel projects.
 Frontend root: `apps/web`, Next.js. API root: `.`, FastAPI entrypoint `app.py`.
 Both persona routes continue importing the shared `packages/core` engine.
+Each project has its own `vercel.json`: root FastAPI, `apps/web` Next.js. The
+repository-level `.vercelignore` is shared by Git deployments, so it must not
+exclude frontend source files. API function packaging excludes web assets.
 
 ## API setup
 

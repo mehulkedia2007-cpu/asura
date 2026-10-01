@@ -6,6 +6,7 @@
   "functions": {
     "app.py": {
       "maxDuration": 300,
+      "excludeFiles": "apps/web/**",
       "includeFiles": "{apps/api/daari/**,packages/core/daari_core/**,data/**,evals/**,docs/**}"
     }
   }
