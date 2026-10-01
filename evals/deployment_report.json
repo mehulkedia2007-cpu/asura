@@ -1,0 +1,282 @@
+{
+  "checked_at": "2026-10-01T17:16:12.645087+00:00",
+  "tested_revision": "69ded2fb7ba972191468d2ec46a22856b3bc6cd7",
+  "frontend": "https://asura-five.vercel.app/en",
+  "api": "https://asura-api-coral.vercel.app",
+  "repository": "https://github.com/mehulkedia2007-cpu/asura",
+  "hosting": {
+    "frontend": "Vercel",
+    "api": "Vercel FastAPI",
+    "postgres": "Neon free",
+    "redis": "Upstash free",
+    "region": "Singapore",
+    "paid_plan_or_card_added": false,
+    "credentials": "Private Vercel environment settings; never committed"
+  },
+  "ci": {
+    "url": "https://github.com/mehulkedia2007-cpu/asura/actions/runs/36897412023",
+    "core": "success",
+    "api": "success",
+    "web": "success"
+  },
+  "unit_tests": {
+    "core": 88,
+    "api": 102,
+    "web": 7,
+    "total": 197
+  },
+  "static_checks": [
+    "Ruff",
+    "Pyright",
+    "Biome",
+    "TypeScript",
+    "Next.js production build",
+    "363 matching locale keys"
+  ],
+  "readiness": {
+    "ok": true,
+    "sha": "69ded2fb7ba9",
+    "db": {
+      "status": "ok",
+      "detail": "schema_ready"
+    },
+    "redis": {
+      "status": "ok",
+      "detail": "pong"
+    }
+  },
+  "websocket": {
+    "origin": "https://asura-five.vercel.app",
+    "checkedAt": "2026-10-01T17:12:32.717Z",
+    "voice": [
+      {
+        "locale": "en",
+        "events": [
+          "interim",
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "provider": "groq",
+        "engine": "get_roadmap",
+        "trace": [
+          {
+            "tool": "get_roadmap",
+            "status": "ok"
+          }
+        ],
+        "audio": 1,
+        "browserTts": 0,
+        "elapsedMs": 8402,
+        "stamps": {
+          "t_release": 0,
+          "t_asr_final": 0,
+          "t_llm_first_token": 1895.5,
+          "t_llm_response": 7025.3,
+          "t_engine_done": 576.7,
+          "t_audio_first_chunk": 7532.6,
+          "t_done": 7533.7
+        }
+      },
+      {
+        "locale": "te",
+        "events": [
+          "interim",
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "provider": "groq",
+        "engine": "get_roadmap",
+        "trace": [
+          {
+            "tool": "get_roadmap",
+            "status": "ok"
+          }
+        ],
+        "audio": 1,
+        "browserTts": 0,
+        "elapsedMs": 2652,
+        "stamps": {
+          "t_release": 0,
+          "t_asr_final": 0,
+          "t_llm_response": 756.8,
+          "t_engine_done": 757.4,
+          "t_audio_first_chunk": 1729.7,
+          "t_done": 1730.8
+        }
+      },
+      {
+        "locale": "hi",
+        "events": [
+          "interim",
+          "transcript",
+          "result",
+          "sentence",
+          "audio",
+          "done"
+        ],
+        "provider": "groq",
+        "engine": "get_roadmap",
+        "trace": [
+          {
+            "tool": "get_roadmap",
+            "status": "ok"
+          }
+        ],
+        "audio": 1,
+        "browserTts": 0,
+        "elapsedMs": 2525,
+        "stamps": {
+          "t_release": 0,
+          "t_asr_final": 0,
+          "t_llm_response": 751.3,
+          "t_engine_done": 751.8,
+          "t_audio_first_chunk": 1543.1,
+          "t_done": 1544.5
+        }
+      }
+    ],
+    "errors": [],
+    "ready": {
+      "ok": true,
+      "sha": "69ded2fb7ba9",
+      "db": {
+        "status": "ok",
+        "detail": "schema_ready"
+      },
+      "redis": {
+        "status": "ok",
+        "detail": "pong"
+      }
+    },
+    "websocketUrl": "wss://asura-api-coral.vercel.app/ws/voice",
+    "passed": true
+  },
+  "live_browser_journeys": {
+    "report": {
+      "leads": {
+        "returned": 7,
+        "sourceStamps": true,
+        "matchBreakdown": true,
+        "sourceErrors": {},
+        "radius": 100
+      },
+      "schemes": {
+        "returned": 5,
+        "eligibilityUnknown": true,
+        "eligibilityRecheck": true,
+        "followUpQuestion": "occupation",
+        "indexed": 90,
+        "stale": false,
+        "sourceErrors": [
+          "ConnectTimeout"
+        ]
+      },
+      "assessment": {
+        "answered": 6,
+        "persistedProfile": true,
+        "recalculatedRoadmap": true
+      }
+    },
+    "errors": []
+  },
+  "interview_browser_journeys": {
+    "checks": [
+      {
+        "locale": "en",
+        "questions": 5,
+        "completed_answers": 5,
+        "reload_history": true,
+        "deletion": true,
+        "mobile_overflow": false,
+        "recorded_audio": true,
+        "asr": "stubbed",
+        "audio_source": "web_audio_generated_stream",
+        "pending_microphone_cancel": true,
+        "transcript_confirmation": true
+      },
+      {
+        "locale": "te",
+        "questions": 5,
+        "completed_answers": 5,
+        "reload_history": true,
+        "deletion": true,
+        "mobile_overflow": false,
+        "recorded_audio": true,
+        "asr": "stubbed",
+        "audio_source": "web_audio_generated_stream",
+        "pending_microphone_cancel": true,
+        "transcript_confirmation": true
+      },
+      {
+        "locale": "hi",
+        "questions": 5,
+        "completed_answers": 5,
+        "reload_history": true,
+        "deletion": true,
+        "mobile_overflow": false,
+        "recorded_audio": true,
+        "asr": "stubbed",
+        "audio_source": "web_audio_generated_stream",
+        "pending_microphone_cancel": true,
+        "transcript_confirmation": true
+      }
+    ],
+    "errors": []
+  },
+  "real_asr_connectivity": {
+    "synthetic_generated_audio": true,
+    "checks": [
+      {
+        "locale": "en",
+        "provider": "groq",
+        "nonempty_transcript": true,
+        "confirmation_required": true
+      },
+      {
+        "locale": "te",
+        "provider": "groq",
+        "nonempty_transcript": true,
+        "confirmation_required": true
+      },
+      {
+        "locale": "hi",
+        "provider": "groq",
+        "nonempty_transcript": true,
+        "confirmation_required": true
+      }
+    ],
+    "tested_before_final_scheme_only_changes": true
+  },
+  "accessibility": {
+    "states": 57,
+    "violations": 0
+  },
+  "responsive": {
+    "checks": 108,
+    "locale_route_combinations": 27,
+    "widths": [
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "errors": [],
+    "source": "check-redesign.mjs completed successfully"
+  },
+  "limitations": [
+    "This verifies the redesign and deployed existing flows, not every requirement in build.md.",
+    "Cloud scheme coverage is 90 records in this run; local 342-record lexical precision@5 0.745 is below the 0.80 live gate. Frozen precision 0.805 is a separate regression.",
+    "The live source adapter reported ConnectTimeout for part of scheme refresh; five sourced records and a complete source-backed slot recheck still passed.",
+    "P2 taxonomy/CAT breadth, learned embeddings, graph breadth, match constraints and broader adapters remain open.",
+    "No persistent six-hour arq worker runs on Vercel; refresh is on request and document embeddings require a batch worker.",
+    "Browser interview microphone tests use generated streams and stubbed ASR. Separate Groq ASR probes use generated audio; no new human speech accuracy claim.",
+    "Production WebSocket timings are single synthetic turns, not p95 latency gates. Earlier provider unavailability successfully exercised deterministic tool fallback.",
+    "Native-language editorial review and full UI-spec details remain open; see docs/UI_REDESIGN_AUDIT.md."
+  ]
+}

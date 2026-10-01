@@ -44,6 +44,10 @@ Missing production configuration returns 503 rather than contacting localhost.
   question retrieval, notice/prep, interview persistence and voice events.
 - Run `pnpm check:journeys`, `pnpm check:ui`, and the three-language P5 browser
   script with `WEB_URL` set to the deployment being checked. Use synthetic data.
+- Run `WEB_URL=https://asura-five.vercel.app pnpm check:cloud` for actual
+  production readiness and three-language WebSocket tool/audio delivery.
+  This sends synthetic text; separate generated-audio ASR probes do not establish
+  human microphone accuracy.
 
 ## Hosting limits
 
@@ -54,6 +58,10 @@ Source refresh happens on request with existing six-hour snapshot freshness.
 Scheme refresh work is bounded to 45 seconds, then returns available stamped
 evidence with a partial-refresh error. Query embedding has an eight-second
 deadline with lexical fallback; incomplete eligibility stays unknown.
+Relevant source details precede broad summary indexing. Interactive requests
+persist those details without waiting for document embeddings; the existing
+batch embedding worker can fill them later. Cloud searches may therefore use
+lexical retrieval and honestly show partial source coverage.
 The separately configured six-hour arq job remains available for a persistent
 worker host; it is not claimed to be running on this serverless deployment.
 

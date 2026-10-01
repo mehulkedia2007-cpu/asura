@@ -216,12 +216,11 @@ three-locale P5 flows; 20 cached voice turns per locale with playback p95
 P7 field evidence is preserved; no new human microphone accuracy test was run.
 
 See `UI_REDESIGN_AUDIT.md` for requirement-by-requirement status and limitations.
-The live index now has 342 schemes; its freshly checked lexical precision@5 is
+The original local index has 342 schemes; its freshly checked lexical precision@5 is
 0.745, below the plan gate. P2 breadth, learned skill embeddings, graph breadth,
 match constraints and wider source retrieval remain open. The redesigned
-frontend can publish to the user's fork/Vercel project, but production engine
-functionality is blocked until a reachable API/WebSocket backend and cloud
-infrastructure are supplied or provisioned.
+frontend and engine are now live on Vercel from the user's GitHub repository;
+see the subsequent cloud verification below.
 
 ## Cloud backend connection — 2026-10-01
 
@@ -230,24 +229,31 @@ explicit user approval. The API now has a Vercel FastAPI entrypoint, pinned
 production requirements, migration/seed build step, TLS-verified cloud URL
 normalization, ephemeral runtime cache paths, origin checks and `/ready`.
 Frontend HTTP and voice addresses resolve from private `DAARI_API_URL`; the
-online badge checks schema/database/cache readiness. Local regressions pass
-88 core, 97 API and 5 web tests, Ruff/Pyright/Biome/TypeScript/build, plus the
-idempotent database initialization. Production connection verification follows
-deployment; this entry does not yet certify the live backend. Remaining full
-build data/retrieval gates above stay open. See `DEPLOYMENT.md`.
+online badge checks schema/database/cache readiness. Both Vercel projects are
+Ready on tested revision `69ded2f`. Full checks pass: 88 core + 102 API + 7 web
+= 197 tests, Ruff/Pyright/Biome/TypeScript/build and 363 matching locale keys.
+All three online CI jobs pass in run 36897412023.
 
-The cloud API and frontend are now deployed with PostgreSQL and Redis readiness
-green. Gemini, Groq, ASR, TTS, Adzuna, myScheme and Nominatim health probes pass.
-Online CI passes all three jobs. Production three-language prep/interview
-journeys and synthetic-audio Groq transcription pass; 57 accessibility states
-and 108 responsive checks pass on the public site. Voice checks exposed a
-missing Hindi roadmap fallback and prose-only tool omission, now covered by
-regressions. Cold cloud scheme refresh exceeded the browser wait; refresh is
-now bounded to 45 seconds, retains sourced cached evidence and marks partial
-results. Final public verification is pending publication of these two fixes.
+Public verification: seven sourced leads, five schemes, source-backed occupation
+question and successful eligibility recheck; six CAT answers persist the profile
+and recalculate the roadmap. Cloud coverage is 90 records, separate from the
+local 342-record relevance audit. A partial source ConnectTimeout is surfaced.
+Relevant details precede broad summary indexing; refresh is bounded to 45
+seconds and query embedding to eight seconds, with lexical fallback. Document
+vectors are deferred to the batch worker, which is not persistently hosted here.
 
-The first public retest returned scheme results within the deadline but exposed
-detail starvation during summary indexing. Relevant details now precede bulk
-summary writes; document vectors are deferred to the batch worker. The browser
-regression also checks honest unknown eligibility when live source rules are
-incomplete. API regressions now pass 102 tests; final cloud retest follows.
+English/Telugu/Hindi interview and prep browser journeys pass, including five
+answers, history reload/deletion, cancellation and transcript confirmation.
+Separate generated-audio Groq ASR probes pass in all three languages. Actual
+production WebSocket turns execute get_roadmap and deliver verified TTS audio
+in each language; final elapsed times are 8402 / 2652 / 2525 ms (single turns,
+not p95). Explicit tool fallback fixes Hindi routing and prose-only responses;
+an earlier unavailable-provider turn also returned a real tool result safely.
+Public accessibility checks pass 57 states with zero violations; 108 responsive
+route checks pass. No new human microphone accuracy claim is made.
+
+Live frontend: https://asura-five.vercel.app/en
+API: https://asura-api-coral.vercel.app
+User repository: https://github.com/mehulkedia2007-cpu/asura
+See `evals/deployment_report.json`, `UI_REDESIGN_AUDIT.md` and `DEPLOYMENT.md`.
+Remaining full build-plan data/retrieval and worker requirements stay open.

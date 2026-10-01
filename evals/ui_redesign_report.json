@@ -1,6 +1,6 @@
 {
   "checked_at": "2026-10-01T15:27:43.642165+00:00",
-  "scope": "Local production frontend with real API/Postgres/Redis. Public backend unavailable; cached voice is not a human ASR field test.",
+  "scope": "Historical local production frontend run with real API/Postgres/Redis. Cached voice is not a human ASR field test. Later public deployment verification is in evals/deployment_report.json.",
   "unit_tests": {
     "core": 88,
     "api": 89,
@@ -81,10 +81,10 @@
     }
   ],
   "limitations": [
-    "Vercel API/WebSocket backend unprovisioned",
     "P2 data/embedding and graph breadth open",
     "Current lexical scheme precision@5 0.745 below 0.80",
     "P5 microphone regression uses generated MediaStream and stubbed ASR",
     "Native translation review pending"
-  ]
+  ],
+  "subsequent_production_report": "evals/deployment_report.json"
 }
