@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Icon } from "@/components/Icon";
+import { JourneyMotion } from "@/components/JourneyMotion";
 import { Link } from "@/i18n/navigation";
 
 export default async function Home() {
@@ -45,6 +46,7 @@ export default async function Home() {
           ))}
         </section>
       </div>
+      <JourneyMotion />
       <div className="section-heading">
         <h2>{t("choose")}</h2>
       </div>

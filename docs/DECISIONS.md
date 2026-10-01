@@ -266,3 +266,21 @@ catalogs and require actual rendered evidence panels in the public cloud check.
 Use the same selected direct database URL and verified TLS arguments for the
 live retrieval metric as the working service. Keep regression metrics and live
 index measurements explicitly scoped.
+
+## D31 · 2026-10-01 · Original DAARI motion and navigation audio
+
+Use DAQ Consulting's project-process rhythm and NordPixel's moving icon band
+as inspiration. Draw an original path-and-arrow DAARI mark; reuse our existing
+feature icons and paper/ink/coral palette. The moving band represents eight
+DAARI tools with real routes. The journey dialog maps three stages to working
+tools and draws a connecting path when a stage changes.
+
+Navigation sounds are a short, original Web Audio tone, created only after a
+user navigation gesture. A translated topbar toggle persists mute preference.
+Voice panels suppress tones and ambient motion. Keep the normal cursor and add
+a fine-pointer spring follower; omit it on touch and reduced-motion devices.
+Use an explicit live media-query subscription because the installed Motion hook
+snapshots reduced motion at mount. CSS reduced-motion rules also cover first
+paint. Pause the feature band on hover, voice use or its pause control; keyboard
+focus makes the original eight links static and hides presentation duplicates.
+The native modal supplies focus containment, Escape dismissal and focus return.

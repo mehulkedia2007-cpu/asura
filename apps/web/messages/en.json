@@ -379,5 +379,15 @@
     "ruralIntro": "Explore nearby jobs and government support. Ask in English, Telugu or Hindi.",
     "evidenceTitle": "Clear reasons. Visible sources.",
     "evidenceIntro": "See where results come from, how they are checked, and what still needs verification."
+  },
+  "experience": {
+    "mute": "Mute navigation sounds",
+    "unmute": "Enable navigation sounds",
+    "start": "Start your journey",
+    "intro": "A little direction, one step at a time. Choose a stage and open the tools you need.",
+    "features": "Your tools, connected",
+    "pause": "Pause motion",
+    "play": "Resume motion",
+    "close": "Close journey"
   }
 }

@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { Brand } from "@/components/Brand";
+import { Experience } from "@/components/Experience";
 import { Icon, type IconName } from "@/components/Icon";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { VoicePanel } from "@/components/VoicePanel";
@@ -97,7 +99,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <Icon name={menuOpen ? "close" : "menu"} />
           </button>
           <Link href="/" className="mobile-brand">
-            DAARI<span>↗</span>
+            <Brand />
           </Link>
           <span className="desktop-breadcrumb">
             {t("yourWorkspace")}
@@ -116,6 +118,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           >
             <Icon name={dark ? "sun" : "moon"} />
           </button>
+          <Experience />
           <VoicePanel />
         </div>
       </header>
@@ -128,7 +131,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           className="workspace-brand"
           onClick={() => setMenuOpen(false)}
         >
-          DAARI<span>↗</span>
+          <Brand />
           <small>{t("brandNote")}</small>
         </Link>
         <nav aria-label={t("navigation")}>

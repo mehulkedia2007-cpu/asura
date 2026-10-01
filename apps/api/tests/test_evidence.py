@@ -50,7 +50,8 @@ def test_packaged_evidence_without_frontend_catalogs(monkeypatch, tmp_path):
     assert response.status_code == 200
     body = response.json()
     assert body["i18n"] == expected
-    assert body["i18n"]["keys"] == 363
+    assert body["i18n"]["keys"] == expected["keys"]
+    assert body["i18n"]["keys"] >= 363
     assert body["ci_sha"] == "123456789abc"
     assert body["constitution"][7]["status"] == "green"
 

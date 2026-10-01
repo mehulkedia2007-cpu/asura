@@ -274,3 +274,20 @@ and live-index metrics. The current cloud precision@5 is 0.58, below 0.80,
 which stays visibly failing. All 105 API tests and online CI pass; existing
 three-language WebSocket/tool/audio checks pass, including an explicitly
 reported unavailable-provider fallback. See `evals/evidence_repair_report.json`.
+
+## DAARI motion and sound — 2026-10-01
+
+Added an original animated path mark, desktop cursor follower, a three-stage
+journey dialog with a drawing line and real feature routes, and a moving strip
+of all eight DAARI tools. Navigation plays an original short Web Audio tone
+after a user gesture; the translated sound toggle remembers mute. Voice panels
+pause ambient motion and suppress tones. Touch and live reduced-motion changes
+remove the cursor effect; keyboard focus makes the feature strip static.
+
+Local checks pass: 88 core + 105 API + 7 web unit tests (200 total), API
+Ruff/Pyright, web Biome/TypeScript and production build. Translation parity
+is now 371 keys. The dedicated motion check covers all three languages,
+six modal accessibility states, three modal widths, actual Web Audio node
+creation, persistent mute, voice suppression, keyboard focus, Escape,
+reduced-motion updates and touch. Existing UI checks cover 57 accessibility
+states and 108 responsive route checks. See UI_REDESIGN_AUDIT.md.

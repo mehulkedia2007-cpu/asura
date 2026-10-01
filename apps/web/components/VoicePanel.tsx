@@ -162,6 +162,19 @@ export function VoicePanel({ large = false }: { large?: boolean }) {
     };
   }, [large, open]);
 
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("daari:voice", { detail: { id: panelId, active: open } }),
+    );
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent("daari:voice", {
+          detail: { id: panelId, active: false },
+        }),
+      );
+    };
+  }, [open, panelId]);
+
   function closePanel() {
     cancel();
     stopPlayback();

@@ -86,3 +86,24 @@ WEB_URL=http://127.0.0.1:3015 VOICE_WS=ws://127.0.0.1:8000/ws/voice node scripts
 ```
 
 Browser reports/screenshots are in ignored `.cache/redesign`, `.cache/web-audit` and `.cache/p5`. Committed summaries are `evals/ui_redesign_report.json` (original local run) and `evals/deployment_report.json` (public production). Lighthouse was run with a temporary official registry install and installed Playwright Chromium; no browser credentials or recordings were committed.
+
+## Motion enhancement — 2026-10-01
+
+References: https://daqconsulting.com/contact and https://nordpixel.ch/.
+Only interaction ideas were adapted; no reference assets or claimed partner
+affiliations were imported. DAARI keeps its source-backed tools and own palette.
+
+- Original SVG direction mark with one-time path drawing.
+- Spring cursor follower on fine-pointer devices; native cursor remains visible.
+- Native journey modal: three stages, drawn connector, existing feature links.
+- Eight-feature icon band; pause/resume, hover pause and static keyboard links.
+- Original quiet navigation tone, user gesture only, persistent mute.
+- Voice use pauses ambient motion and suppresses navigation audio.
+- Live reduced-motion subscription and CSS first-paint fallback.
+
+Verified locally against the production build using 'check:motion' and the
+existing UI suite: all three locales, dialog focus/Escape/routes, real Web Audio
+oscillator starts, mute persistence, voice suppression, touch and reduced-motion
+updates. Modal accessibility passes light/dark for each locale. Existing route
+coverage remains 57 accessibility states and 108 responsive checks.
+The wider build-plan retrieval and source-quality limits in STATE.md remain.

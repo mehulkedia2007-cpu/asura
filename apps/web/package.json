@@ -11,10 +11,12 @@
     "lint": "biome check .",
     "check:ui": "node scripts/check-redesign.mjs",
     "check:journeys": "node scripts/check-live-journeys.mjs",
-    "check:cloud": "node scripts/check-cloud.mjs"
+    "check:cloud": "node scripts/check-cloud.mjs",
+    "check:motion": "node scripts/check-motion.mjs"
   },
   "dependencies": {
     "d3-force": "3.0.0",
+    "motion": "^13.4.6",
     "next": "16.3.5",
     "next-intl": "4.14.5",
     "react": "19.3.0",

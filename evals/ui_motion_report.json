@@ -1,0 +1,55 @@
+{
+  "origin": "http://127.0.0.1:3017",
+  "checks": [
+    {
+      "locale": "en",
+      "featureLinks": 8,
+      "dialogWidths": [
+        390,
+        768,
+        1440
+      ],
+      "dialogAccessibility": [
+        "light",
+        "dark"
+      ],
+      "navigationAudio": "real Web Audio oscillator started; mute persisted; voice suppressed tones",
+      "reducedMotion": "static icons, no cursor, working journey links",
+      "escapeFocus": "passed"
+    },
+    {
+      "locale": "te",
+      "featureLinks": 8,
+      "dialogWidths": [
+        390,
+        768,
+        1440
+      ],
+      "dialogAccessibility": [
+        "light",
+        "dark"
+      ],
+      "navigationAudio": "real Web Audio oscillator started; mute persisted; voice suppressed tones",
+      "reducedMotion": "static icons, no cursor, working journey links",
+      "escapeFocus": "passed"
+    },
+    {
+      "locale": "hi",
+      "featureLinks": 8,
+      "dialogWidths": [
+        390,
+        768,
+        1440
+      ],
+      "dialogAccessibility": [
+        "light",
+        "dark"
+      ],
+      "navigationAudio": "real Web Audio oscillator started; mute persisted; voice suppressed tones",
+      "reducedMotion": "static icons, no cursor, working journey links",
+      "escapeFocus": "passed"
+    }
+  ],
+  "touch": "passed",
+  "errors": []
+}

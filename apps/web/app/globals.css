@@ -1486,3 +1486,282 @@ html[lang="hi"] .home-title {
   border-radius: 4px;
   color: var(--foreground);
 }
+
+/* Original DAARI paths and feature marks. */
+.brand-lockup {
+  color: inherit;
+  font: inherit;
+  padding: 0;
+}
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.workspace-brand > .brand-lockup,
+.mobile-brand > .brand-mark {
+  width: 32px;
+  height: 36px;
+  color: var(--signal-text);
+  flex-shrink: 0;
+}
+.brand-path {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 0;
+  animation: brand-draw 900ms ease both;
+}
+@keyframes brand-draw {
+  from {
+    stroke-dashoffset: 80;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.cursor-orbit {
+  position: fixed;
+  top: -16px;
+  left: -16px;
+  z-index: 150;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--signal-text);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.cursor-orbit-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  right: 1px;
+  top: 4px;
+  border-radius: 50%;
+  background: var(--signal-text);
+}
+.route-signal {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--signal);
+  transform-origin: left;
+  pointer-events: none;
+  z-index: 151;
+}
+.journey-start {
+  margin-top: 20px;
+}
+.feature-ribbon {
+  margin: 32px 0 40px;
+}
+.feature-ribbon-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.feature-ribbon-heading button {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--graphite);
+  font-size: 11px;
+  padding: 8px 10px;
+  min-height: 32px;
+  background: var(--surface);
+}
+.feature-window {
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+}
+.feature-track {
+  display: flex;
+  width: max-content;
+  animation: feature-drift 38s linear infinite;
+}
+.feature-set {
+  display: flex;
+  flex-shrink: 0;
+}
+.feature-item {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  padding: 22px 26px;
+  color: var(--graphite);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.feature-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--signal-text);
+}
+.feature-set a:hover {
+  color: var(--ink);
+  background: var(--surface);
+}
+.feature-window:hover .feature-track,
+.feature-window.is-paused .feature-track,
+:root[data-motion-paused="true"] .feature-track {
+  animation-play-state: paused;
+}
+.feature-window:focus-within .feature-track {
+  animation: none;
+  width: 100%;
+}
+.feature-window:focus-within .feature-set {
+  flex-wrap: wrap;
+  flex-shrink: 1;
+}
+.feature-window:focus-within .feature-copy {
+  display: none;
+}
+@keyframes feature-drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.journey-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(720px, calc(100% - 32px));
+  max-height: calc(100dvh - 40px);
+  overflow: auto;
+  padding: 28px;
+  background: var(--bone);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.journey-dialog::backdrop {
+  background: color-mix(in oklch, var(--ink) 35%, transparent);
+}
+.journey-dialog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.journey-dialog h2 {
+  font-family: var(--font-instrument-serif), serif;
+  font-size: clamp(34px, 5vw, 54px);
+  line-height: 1.1;
+  margin: 18px 0 12px;
+}
+.journey-dialog-intro {
+  color: var(--graphite);
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: 500px;
+}
+.journey-stage-picker {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 30px 0;
+  gap: 12px;
+}
+.journey-stage-picker > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 40px;
+  pointer-events: none;
+}
+.journey-base-line {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.journey-moving-line {
+  stroke: var(--signal-text);
+  stroke-width: 2;
+  fill: none;
+}
+.journey-stage-picker button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  color: var(--graphite);
+  padding: 0 4px;
+}
+.journey-stage-picker button > span {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bone);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+}
+.journey-stage-picker button[aria-pressed="true"] > span {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: white;
+}
+.journey-stage-picker strong {
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.journey-stage-content {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+}
+.journey-stage-note {
+  color: var(--graphite);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.journey-stage-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+@media (max-width: 767px) {
+  .mobile-brand .brand-mark {
+    width: 19px;
+    height: 24px;
+  }
+  .mobile-brand > .brand-lockup {
+    display: inline-flex;
+    gap: 4px;
+  }
+  .sound-toggle {
+    min-width: 30px;
+    min-height: 34px;
+    padding: 4px;
+  }
+  .journey-dialog {
+    padding: 20px;
+  }
+  .feature-item {
+    padding: 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .feature-track {
+    animation: none;
+    width: 100%;
+  }
+  .feature-set {
+    flex-wrap: wrap;
+    flex-shrink: 1;
+  }
+  .feature-copy,
+  .cursor-orbit,
+  .route-signal {
+    display: none;
+  }
+  .brand-path {
+    animation: none;
+  }
+}
