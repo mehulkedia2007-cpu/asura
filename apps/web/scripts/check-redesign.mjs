@@ -134,7 +134,7 @@ try {
     );
     await page.locator(".theme-toggle").click();
     // Only the failure condition is simulated; recovery uses the real local API.
-    await page.route("**/api/engine/catalog**", (route) =>
+    await page.route("**/api/engine/ready**", (route) =>
       route.fulfill({
         status: 503,
         contentType: "application/json",
@@ -145,7 +145,7 @@ try {
     await page
       .getByText(messages.workspace.offlineNotice, { exact: true })
       .waitFor();
-    await page.unroute("**/api/engine/catalog**");
+    await page.unroute("**/api/engine/ready**");
     await page.locator(".connection-banner button").click();
     await page.waitForFunction(
       () => !document.querySelector(".connection-banner"),

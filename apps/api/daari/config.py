@@ -9,6 +9,7 @@ let `str(settings)` leak a secret.
 
 from pathlib import Path
 
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -24,7 +25,10 @@ class Settings(BaseSettings):
     # Local infra — non-secret, defaults match docker-compose.yml / .env.example.
     DATABASE_URL: str = "postgresql+asyncpg://daari:daari@localhost:5432/daari"
     DATABASE_URL_UNPOOLED: str | None = None
-    REDIS_URL: str = "redis://localhost:6379/0"
+    REDIS_URL: str = Field(
+        default="redis://localhost:6379/0",
+        validation_alias=AliasChoices("REDIS_URL", "KV_URL", "UPSTASH_REDIS_URL"),
+    )
     OLLAMA_BASE_URL: str = "http://localhost:11434"
 
     # LLM / live-source keys — secret, optional, never defaulted to a real value.

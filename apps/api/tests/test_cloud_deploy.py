@@ -29,6 +29,11 @@ def test_neon_direct_url_takes_precedence():
     assert config.database_url == "postgresql://direct/db"
 
 
+def test_upstash_integration_url_alias_is_supported():
+    config = Settings(_env_file=None, KV_URL="rediss://default:synthetic@cache.example:6379")
+    assert config.REDIS_URL == "rediss://default:synthetic@cache.example:6379"
+
+
 def test_cache_uses_tmp_on_vercel_but_keeps_local_rehearsal(monkeypatch, tmp_path):
     monkeypatch.setattr(settings, "CACHE_ROOT", None)
     monkeypatch.setattr(settings, "VERCEL", False)

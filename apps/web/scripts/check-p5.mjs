@@ -60,7 +60,7 @@ try {
     await page
       .getByLabel(t.notice, { exact: true })
       .fill(
-        "Company: TCS\nRole: Prime\nInterview date: 2026-10-04\nCTC: 7 LPA\nEligibility: BTech\nRounds: Coding, Technical, HR\nMode: Online\nContact: Ravi Kumar 9876543210",
+        `Company: TCS\nRole: Prime\nInterview date: ${new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10)}\nCTC: 7 LPA\nEligibility: BTech\nRounds: Coding, Technical, HR\nMode: Online\nContact: Ravi Kumar 9876543210`,
       );
     await page.getByRole("button", { name: t.extract, exact: true }).click();
     await page.getByLabel(t.confirm, { exact: true }).waitFor();
