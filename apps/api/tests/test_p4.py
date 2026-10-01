@@ -204,6 +204,30 @@ def test_offline_job_fallback_uses_search_terms_instead_of_whole_sentence():
     assert loop._fallback("Find driver jobs") == ("search_jobs", {"query": "driver"})
 
 
+def test_offline_roadmap_fallback_recognizes_all_product_languages():
+    for request in (
+        "Show my roadmap to become a data analyst",
+        "డేటా అనలిస్ట్ కోసం నా అభ్యాస ప్రణాళిక చూపించు",
+        "डेटा एनालिस्ट बनने के लिए मेरा रोडमैप दिखाओ",
+        "मेरी अध्ययन योजना दिखाओ",
+    ):
+        assert loop._fallback(request) == ("get_roadmap", {})
+
+
+@pytest.mark.asyncio
+async def test_clear_hindi_roadmap_request_executes_when_provider_returns_only_prose(monkeypatch):
+    async def prose_only(*args, **kwargs):
+        return {"content": "Here is your roadmap", "tool_calls": []}, "test", False
+
+    monkeypatch.setattr(loop, "complete", prose_only)
+    result = await loop.run(loop.AgentRequest(
+        text="डेटा एनालिस्ट बनने के लिए मेरा रोडमैप दिखाओ", locale="hi", goal="data_analyst",
+    ))
+    assert result["engine_result"]["kind"] == "get_roadmap"
+    assert result["trace"][0]["status"] == "ok"
+    assert result["engine_result"]["data"]["total_hours"] > 0
+
+
 @pytest.mark.asyncio
 async def test_agent_falls_back_to_source_title_and_cites_it(monkeypatch):
     async def no_provider(messages, tools):

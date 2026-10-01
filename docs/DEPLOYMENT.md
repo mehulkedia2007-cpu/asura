@@ -51,6 +51,9 @@ Vercel's current FastAPI runtime supports ASGI WebSockets with Fluid compute;
 the API has a 300-second function duration. The browser reconnects on the next
 turn after a closed connection. This is not an always-running arq worker.
 Source refresh happens on request with existing six-hour snapshot freshness.
+Scheme refresh work is bounded to 45 seconds, then returns available stamped
+evidence with a partial-refresh error. Query embedding has an eight-second
+deadline with lexical fallback; incomplete eligibility stays unknown.
 The separately configured six-hour arq job remains available for a persistent
 worker host; it is not claimed to be running on this serverless deployment.
 

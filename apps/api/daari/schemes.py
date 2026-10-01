@@ -1,5 +1,6 @@
 """Live myScheme search with conservative eligibility and stamped evidence."""
 
+import asyncio
 import hashlib
 import re
 from datetime import UTC, datetime
@@ -12,6 +13,8 @@ from daari.ap_portal import search as search_ap_portal
 from daari.myscheme_client import detail, search_pages
 from daari.scheme_index import coverage, retrieve, upsert
 from daari.scheme_rules import extract as extract_llm_rules
+
+REFRESH_TIMEOUT_S = 45.0
 
 
 def _items(payload: dict) -> list[dict]:
@@ -150,34 +153,47 @@ async def search(query: str, profile: dict, refresh: bool = False, locale: str =
         raise ValueError("query is required")
     results: list[dict] = []
     errors: list[str] = []
-    async with httpx.AsyncClient(timeout=15) as client:
-        raw_items, search_errors, truncated = await search_pages(client, query, refresh, locale)
-        errors.extend(search_errors)
-        candidates = [item for raw, stamp in raw_items if (item := normalize(raw, stamp))]
-        portal_schemes, portal_errors = await search_ap_portal(client, query, refresh)
-        errors.extend(portal_errors)
-        for scheme in [*candidates, *portal_schemes]:
-            await upsert(scheme, summary_only=True)
-        first_pass = await retrieve(query, limit=20)
-        rank = {item["id"]: i for i, item in enumerate(first_pass["records"])}
-        candidates.sort(key=lambda item: (item["state"] != "Andhra Pradesh",
-                                          rank.get(item["id"], 1000)))
-        for scheme in candidates[:5]:
-            payload, detail_errors = await detail(client, scheme["id"], locale, refresh)
-            errors.extend(detail_errors)
-            if payload:
-                merge_detail(scheme, payload)
-            if scheme["eligibility_text"] and not scheme["rules_complete"]:
-                extracted, complete, extraction_error = await extract_llm_rules(
-                    scheme["id"], scheme["content_hash"], scheme["eligibility_text"]
-                )
-                if extraction_error:
-                    errors.append(extraction_error)
-                if extracted["all"] or extracted["any"]:
-                    scheme["rules"], scheme["rules_complete"] = extracted, complete
-            await upsert(scheme)
-            results.append(scheme)
-    retrieval = await retrieve(query)
+    candidates: list[dict] = []
+    portal_schemes: list[dict] = []
+    truncated = True
+    try:
+        # Cold indexing can require hundreds of DB writes and upstream calls.
+        # Bound refresh work and retain already-fetched evidence on timeout.
+        async with asyncio.timeout(REFRESH_TIMEOUT_S), httpx.AsyncClient(timeout=15) as client:
+            raw_items, search_errors, truncated = await search_pages(client, query, refresh, locale)
+            errors.extend(search_errors)
+            candidates = [item for raw, stamp in raw_items if (item := normalize(raw, stamp))]
+            portal_schemes, portal_errors = await search_ap_portal(client, query, refresh)
+            errors.extend(portal_errors)
+            for scheme in [*candidates, *portal_schemes]:
+                await upsert(scheme, summary_only=True)
+            first_pass = await retrieve(query, limit=20, use_embeddings=False)
+            rank = {item["id"]: i for i, item in enumerate(first_pass["records"])}
+            candidates.sort(key=lambda item: (item["state"] != "Andhra Pradesh",
+                                              rank.get(item["id"], 1000)))
+            for scheme in candidates[:5]:
+                payload, detail_errors = await detail(client, scheme["id"], locale, refresh)
+                errors.extend(detail_errors)
+                if payload:
+                    merge_detail(scheme, payload)
+                results.append(scheme)
+                if scheme["eligibility_text"] and not scheme["rules_complete"]:
+                    extracted, complete, extraction_error = await extract_llm_rules(
+                        scheme["id"], scheme["content_hash"], scheme["eligibility_text"]
+                    )
+                    if extraction_error:
+                        errors.append(extraction_error)
+                    if extracted["all"] or extracted["any"]:
+                        scheme["rules"], scheme["rules_complete"] = extracted, complete
+                await upsert(scheme)
+    except TimeoutError:
+        errors.append("refresh_timeout")
+        truncated = True
+    try:
+        retrieval = await asyncio.wait_for(retrieve(query), timeout=8)
+    except TimeoutError:
+        errors.append("embedding_timeout")
+        retrieval = await retrieve(query, use_embeddings=False)
     retrieval_scores = {item["id"]: item["retrieval_score"] for item in retrieval["records"]}
     ordered = [*results, *retrieval["records"]]
     deduplicated: dict[str, dict] = {}

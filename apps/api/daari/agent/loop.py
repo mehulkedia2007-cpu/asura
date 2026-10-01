@@ -156,6 +156,9 @@ def _slot_value(field: str, text: str) -> str | int | float | bool | None:
 
 def _fallback(text: str) -> tuple[str, dict] | None:
     lower = text.casefold()
+    # A study plan is a roadmap; the generic Hindi योजना also means scheme.
+    if "अध्ययन योजना" in lower:
+        return "get_roadmap", {}
     if any(word in lower for word in ("scheme", "యోజన", "పథకం", "योजना")):
         return "find_schemes", {"query": text}
     if any(word in lower for word in ("job", "work", "ఉద్యోగ", "పని", "नौकरी", "काम")):
@@ -165,7 +168,10 @@ def _fallback(text: str) -> tuple[str, dict] | None:
                  ("data analyst", ("data analyst", "డేటా అనలిస్ట్", "डेटा एनालिस्ट")))
         query = next((label for label, aliases in terms if any(alias in lower for alias in aliases)), "jobs")
         return "search_jobs", {"query": query}
-    if any(word in lower for word in ("path", "roadmap", "మార్గం", "रास्ता")):
+    if any(word in lower for word in (
+        "path", "roadmap", "learning plan", "study plan", "మార్గం", "రోడ్‌మ్యాప్",
+        "రోడ్ మ్యాప్", "అభ్యాస ప్రణాళిక", "रास्ता", "रोडमैप", "रोड मैप",
+    )):
         return "get_roadmap", {}
     return None
 
@@ -389,10 +395,21 @@ async def run(
                 first_token = model_message.get("_first_token_at")
             calls = model_message.get("tool_calls") or []
             if not calls:
-                final = str(model_message.get("content") or "")
-                await publish(splitter.push("", final=True))
-                break
-            messages.append(model_message)
+                fallback = _fallback(request.text) if not visited else None
+                if fallback:
+                    # Clear tool requests still execute when a provider returns
+                    # prose instead of a function call. Scores stay in the core.
+                    name, arguments = fallback
+                    calls = [{"id": "fallback", "function": {
+                        "name": name, "arguments": json.dumps(arguments),
+                    }}]
+                    model_message = None
+                else:
+                    final = str(model_message.get("content") or "")
+                    await publish(splitter.push("", final=True))
+                    break
+            if model_message is not None:
+                messages.append(model_message)
         for index, call in enumerate(calls):
             name = call.get("function", {}).get("name", "")
             if name not in _BY_NAME or name in visited or index >= 2:

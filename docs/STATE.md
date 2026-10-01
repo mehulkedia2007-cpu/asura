@@ -235,3 +235,13 @@ online badge checks schema/database/cache readiness. Local regressions pass
 idempotent database initialization. Production connection verification follows
 deployment; this entry does not yet certify the live backend. Remaining full
 build data/retrieval gates above stay open. See `DEPLOYMENT.md`.
+
+The cloud API and frontend are now deployed with PostgreSQL and Redis readiness
+green. Gemini, Groq, ASR, TTS, Adzuna, myScheme and Nominatim health probes pass.
+Online CI passes all three jobs. Production three-language prep/interview
+journeys and synthetic-audio Groq transcription pass; 57 accessibility states
+and 108 responsive checks pass on the public site. Voice checks exposed a
+missing Hindi roadmap fallback and prose-only tool omission, now covered by
+regressions. Cold cloud scheme refresh exceeded the browser wait; refresh is
+now bounded to 45 seconds, retains sourced cached evidence and marks partial
+results. Final public verification is pending publication of these two fixes.
