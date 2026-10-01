@@ -255,3 +255,14 @@ Explicit roadmap requests in all three languages execute the shared tool even
 when the model returns prose only or providers are unavailable; verification
 still rejects unsupported prose. These decisions preserve useful engine output
 during free-provider failures without claiming complete source coverage.
+
+## D30 · 2026-10-01 · Bundle measured evidence across deployment boundaries
+
+The API excludes frontend source files. Compute the actual translation catalog
+audit during the API build and bundle its measured JSON report with the evals;
+read source catalogs locally and the build report in the packaged runtime.
+Do not substitute invented passing metrics. Test the layout without frontend
+catalogs and require actual rendered evidence panels in the public cloud check.
+Use the same selected direct database URL and verified TLS arguments for the
+live retrieval metric as the working service. Keep regression metrics and live
+index measurements explicitly scoped.

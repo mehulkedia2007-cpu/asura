@@ -257,3 +257,16 @@ API: https://asura-api-coral.vercel.app
 User repository: https://github.com/mehulkedia2007-cpu/asura
 See `evals/deployment_report.json`, `UI_REDESIGN_AUDIT.md` and `DEPLOYMENT.md`.
 Remaining full build-plan data/retrieval and worker requirements stay open.
+
+## Evidence deployment repair — 2026-10-01
+
+The public evidence board returned HTTP 500 after deployment because its
+translation audit read frontend catalogs excluded from the API bundle. The API
+build now checks those actual catalogs and bundles `evals/i18n_report.json`;
+runtime uses that measured artifact when frontend files are absent. A regression
+emulates the deployed file layout. Live scheme metrics now use the selected
+direct cloud database URL and verified TLS connection arguments. Evidence SHA
+comes from the Vercel commit metadata. `check:cloud` now requires a successful
+evidence response and rendered panels without alerts in English/Telugu/Hindi,
+so page-title-only checks cannot miss this failure again. Public verification
+follows publication of this repair.

@@ -10,6 +10,7 @@ from __future__ import annotations
 import ast
 import asyncio
 import json
+import os
 import time
 from datetime import UTC, datetime
 from functools import lru_cache
@@ -26,7 +27,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 from daari.agent.loop import _safe_verify
 from daari.config import settings
-from daari.db import _to_asyncpg_url
+from daari.db import _connect_args, _to_asyncpg_url
 from daari.embeddings import get_embeddings
 from daari.grounding.verifier import Evidence, verify
 from daari.prep.notice import extract as extract_notice
@@ -177,7 +178,8 @@ async def _live_scheme_metrics() -> dict[str, Any]:
             return _LIVE_SCHEME_CACHE[1]
         try:
             cases = _rows("schemes_golden.jsonl")
-            engine = create_async_engine(_to_asyncpg_url(settings.DATABASE_URL), pool_pre_ping=True)
+            engine = create_async_engine(_to_asyncpg_url(settings.database_url), pool_pre_ping=True,
+                                         connect_args=_connect_args(settings.database_url))
             try:
                 async with engine.connect() as conn:
                     records = list((await conn.execute(text("SELECT record FROM scheme_records"))).scalars())
@@ -314,6 +316,11 @@ def _flatten_catalog(value: dict[str, Any], flat: dict[str, str], prefix: str = 
 
 
 def _i18n() -> dict[str, Any]:
+    # The API deployment excludes frontend source. The build checks the real
+    # catalogs and bundles their measured report alongside the other evals.
+    message_dir = REPO_ROOT / "apps/web/messages"
+    if not all((message_dir / f"{locale}.json").is_file() for locale in ("en", "te", "hi")):
+        return _json("i18n_report.json")
     catalogs = {}
     for locale in ("en", "te", "hi"):
         data = json.loads((REPO_ROOT / "apps/web/messages" / f"{locale}.json").read_text())
@@ -381,6 +388,9 @@ def _constitution() -> list[dict[str, str]]:
 
 
 def _git_sha() -> str:
+    deployed_sha = os.environ.get("VERCEL_GIT_COMMIT_SHA")
+    if deployed_sha:
+        return deployed_sha[:12]
     import subprocess
 
     try:

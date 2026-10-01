@@ -6,6 +6,7 @@ database branch; this command does not import anonymous users or sessions.
 """
 
 import asyncio
+import json
 import sys
 from pathlib import Path
 
@@ -35,6 +36,13 @@ async def seed_catalog() -> None:
 def main() -> None:
     if settings.VERCEL and make_url(settings.database_url).host in {None, "localhost", "127.0.0.1"}:
         raise RuntimeError("Connect cloud PostgreSQL to this Vercel project before deploying")
+    # Runtime excludes apps/web; preserve the actual catalog audit as evidence.
+    from daari.evidence import _i18n
+
+    i18n = _i18n()
+    if not i18n["passed"]:
+        raise RuntimeError("Translation catalog verification failed")
+    (ROOT / "evals/i18n_report.json").write_text(json.dumps(i18n, indent=2) + "\n")
     config = Config(str(ROOT / "apps/api/alembic.ini"))
     config.set_main_option("script_location", str(ROOT / "apps/api/daari/alembic"))
     command.upgrade(config, "head")

@@ -23,6 +23,10 @@ exclude frontend source files. API function packaging excludes web assets.
   Vercel sets `VERCEL=1`. Runtime cache writes use `/tmp/daari-cache`; they are
   best-effort ephemeral caches, not durable storage. PostgreSQL source snapshots,
   anonymous profiles and expiring interview sessions remain durable.
+- The build checks the actual web translation catalogs and bundles their
+  measured `evals/i18n_report.json`. Evidence reads that report when frontend
+  source is excluded from the API function; it does not require web assets at
+  runtime. `check:cloud` verifies the evidence API and all three locale pages.
 - Optional provider keys: `GEMINI_API_KEY`, `GROQ_API_KEY`, `ADZUNA_APP_ID`,
   `ADZUNA_APP_KEY`, `SERPAPI_KEY`. Without them, the documented deterministic
   agent, public source and browser speech fallbacks apply. Never commit keys.

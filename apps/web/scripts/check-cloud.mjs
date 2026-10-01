@@ -21,6 +21,26 @@ try {
   assert.equal(ready.status(), 200);
   report.ready = await ready.json();
   assert.equal(report.ready.ok, true);
+  const evidenceResponse = await page.request.get(
+    `${origin}/api/engine/evidence`,
+  );
+  assert.equal(evidenceResponse.status(), 200, "Evidence endpoint must load");
+  const evidence = await evidenceResponse.json();
+  assert.equal(evidence.phase, "P6");
+  assert.equal(evidence.i18n.passed, true);
+  assert.equal(evidence.live_scheme_retrieval.available, true);
+  report.evidence = {
+    sha: evidence.ci_sha,
+    translationKeys: evidence.i18n.keys,
+    liveSchemeMetricAvailable: evidence.live_scheme_retrieval.available,
+    localePages: [],
+  };
+  for (const locale of ["en", "te", "hi"]) {
+    await page.goto(`${origin}/${locale}/evidence`);
+    await page.locator(".evidence-panel").first().waitFor();
+    assert.equal(await page.getByRole("alert").count(), 0);
+    report.evidence.localePages.push(locale);
+  }
   const connection = await page.request.get(`${origin}/api/connection`);
   assert.equal(connection.status(), 200);
   const endpoint = (await connection.json()).websocketUrl;
