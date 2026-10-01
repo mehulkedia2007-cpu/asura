@@ -12,6 +12,7 @@ from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from daari.config import settings
+from daari.db import _connect_args, _to_asyncpg_url
 
 config = context.config
 
@@ -22,10 +23,7 @@ target_metadata = None
 
 
 def _asyncpg_url() -> str:
-    url = settings.DATABASE_URL
-    if url.startswith("postgresql://"):
-        url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
-    return url
+    return _to_asyncpg_url(settings.database_url)
 
 
 def run_migrations_offline() -> None:
@@ -48,7 +46,10 @@ def _do_run_migrations(connection) -> None:
 async def run_migrations_online() -> None:
     configuration = config.get_section(config.config_ini_section) or {}
     configuration["sqlalchemy.url"] = _asyncpg_url()
-    connectable = async_engine_from_config(configuration, prefix="sqlalchemy.", poolclass=pool.NullPool)
+    connectable = async_engine_from_config(
+        configuration, prefix="sqlalchemy.", poolclass=pool.NullPool,
+        connect_args=_connect_args(settings.database_url),
+    )
 
     async with connectable.connect() as connection:
         await connection.run_sync(_do_run_migrations)

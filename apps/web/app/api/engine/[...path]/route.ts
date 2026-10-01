@@ -1,7 +1,10 @@
 import type { NextRequest } from "next/server";
 
+export const maxDuration = 120;
+
 const allowed = new Set([
   "catalog",
+  "ready",
   "questions/companies",
   "questions/search",
   "questions/refresh",
@@ -37,16 +40,23 @@ async function forward(
   if (!allowed.has(endpoint))
     return Response.json({ detail: "Unknown tool" }, { status: 404 });
   try {
-    const upstream = await fetch(
-      `${process.env.DAARI_API_URL ?? "http://127.0.0.1:8000"}/engine/${endpoint}${request.method === "GET" ? request.nextUrl.search : ""}`,
-      {
-        method: request.method,
-        headers: { "Content-Type": "application/json" },
-        body: request.method === "POST" ? await request.text() : undefined,
-        cache: "no-store",
-        signal: AbortSignal.timeout(60_000),
-      },
-    );
+    const base =
+      process.env.DAARI_API_URL ||
+      (process.env.VERCEL ? undefined : "http://127.0.0.1:8000");
+    if (!base)
+      return Response.json({ detail: "Engine unavailable" }, { status: 503 });
+    const url = new URL(base);
+    if (!["http:", "https:"].includes(url.protocol))
+      throw new Error("Invalid backend URL");
+    url.pathname = `${url.pathname.replace(/\/$/, "")}/${endpoint === "ready" ? "ready" : `engine/${endpoint}`}`;
+    url.search = request.method === "GET" ? request.nextUrl.search : "";
+    const upstream = await fetch(url, {
+      method: request.method,
+      headers: { "Content-Type": "application/json" },
+      body: request.method === "POST" ? await request.text() : undefined,
+      cache: "no-store",
+      signal: AbortSignal.timeout(110_000),
+    });
     return new Response(await upstream.text(), {
       status: upstream.status,
       headers: { "Content-Type": "application/json" },

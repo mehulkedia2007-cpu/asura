@@ -10,7 +10,7 @@ from typing import Any
 
 import httpx
 
-from daari.config import REPO_ROOT, settings
+from daari.config import REPO_ROOT, cache_root, settings
 
 _MODELS = (("gemini", "gemini-3.1-flash-lite"),
            ("groq", "openai/gpt-oss-120b"), ("ollama", "llama3.1:8b"))
@@ -25,7 +25,13 @@ def _cache_file(provider: str, model: str, messages: list[dict], tools: list[dic
               for message in messages]
     raw = json.dumps([provider, model, stable, tools], sort_keys=True, ensure_ascii=False)
     digest = hashlib.sha256(raw.encode()).hexdigest()
-    return REPO_ROOT / settings.LLM_CACHE_DIR / f"{digest}.json"
+    directory = Path(settings.LLM_CACHE_DIR)
+    if not directory.is_absolute():
+        if settings.VERCEL and directory.parts[:1] == (".cache",):
+            directory = cache_root(REPO_ROOT).joinpath(*directory.parts[1:])
+        else:
+            directory = REPO_ROOT / directory
+    return directory / f"{digest}.json"
 
 
 def _groq_messages(messages: list[dict]) -> list[dict]:

@@ -10,6 +10,7 @@ query string and httpx error messages can embed the full request URL.
 """
 
 import asyncio
+import os
 import subprocess
 import time
 from collections.abc import Coroutine
@@ -19,7 +20,8 @@ from typing import Any
 
 import httpx
 import redis.asyncio as redis_async
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from daari.agent.loop import _TOOLS as TOOLS
@@ -50,6 +52,8 @@ _CONTACT_UA = "daari-health/0.1 (SYNORA Track1 hackathon demo; https://github.co
 
 
 def _git_sha() -> str:
+    if sha := os.environ.get("VERCEL_GIT_COMMIT_SHA"):
+        return sha[:12]
     try:
         out = subprocess.run(
             ["git", "rev-parse", "--short", "HEAD"],
@@ -68,6 +72,10 @@ def _git_sha() -> str:
 _SHA = _git_sha()
 
 app = FastAPI(title="daari-api")
+app.add_middleware(
+    CORSMiddleware, allow_origins=settings.cors_origins,
+    allow_methods=["GET", "POST"], allow_headers=["Content-Type"],
+)
 app.include_router(p2_router)
 app.include_router(p3_router)
 app.include_router(p4_router)
@@ -113,6 +121,26 @@ async def _probe_redis() -> dict:
     finally:
         await client.aclose()
     return {"status": "ok" if pong else "error", "detail": "pong" if pong else "no_pong"}
+
+
+async def _probe_schema() -> dict:
+    async with engine.connect() as conn:
+        vector = (await conn.execute(text("SELECT 1 FROM pg_extension WHERE extname='vector'"))).first()
+        version = (await conn.execute(text("SELECT version_num FROM alembic_version"))).scalar()
+        skills = (await conn.execute(text("SELECT count(*) FROM skill_vectors"))).scalar()
+        roles = (await conn.execute(text("SELECT count(*) FROM role_vectors"))).scalar()
+    ready = vector is not None and version == "0007_p5_interviews" and bool(skills) and bool(roles)
+    return {"status": "ok" if ready else "error", "detail": "schema_ready" if ready else "schema_incomplete"}
+
+
+@app.get("/ready")
+async def ready(response: Response) -> dict:
+    """Readiness is database/schema/cache availability, independent of paid providers."""
+    database, cache = await asyncio.gather(_safe(_probe_schema()), _safe(_probe_redis()))
+    ok = database["status"] == cache["status"] == "ok"
+    response.status_code = 200 if ok else 503
+    response.headers["Cache-Control"] = "no-store"
+    return {"ok": ok, "sha": _SHA, "db": database, "redis": cache}
 
 
 async def _probe_gemini(client: httpx.AsyncClient) -> dict:

@@ -6,13 +6,13 @@ from pathlib import Path
 
 import edge_tts
 
-from daari.config import REPO_ROOT, settings
+from daari.config import REPO_ROOT, cache_root, settings
 from daari.voice.lang import Locale
 
 
 def _cache_path(sentence: str, locale: Locale, voice: str) -> Path:
     digest = hashlib.sha256(f"{locale}\n{voice}\n{sentence}".encode()).hexdigest()
-    return REPO_ROOT / ".cache/voice/tts" / f"{digest}.mp3"
+    return cache_root(REPO_ROOT) / "voice/tts" / f"{digest}.mp3"
 
 
 async def synthesize(sentence: str, locale: Locale, *, use_cache: bool = True) -> bytes | None:

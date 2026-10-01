@@ -222,3 +222,16 @@ match constraints and wider source retrieval remain open. The redesigned
 frontend can publish to the user's fork/Vercel project, but production engine
 functionality is blocked until a reachable API/WebSocket backend and cloud
 infrastructure are supplied or provisioned.
+
+## Cloud backend connection — 2026-10-01
+
+Free Neon PostgreSQL and Upstash Redis resources have been provisioned with
+explicit user approval. The API now has a Vercel FastAPI entrypoint, pinned
+production requirements, migration/seed build step, TLS-verified cloud URL
+normalization, ephemeral runtime cache paths, origin checks and `/ready`.
+Frontend HTTP and voice addresses resolve from private `DAARI_API_URL`; the
+online badge checks schema/database/cache readiness. Local regressions pass
+88 core, 97 API and 5 web tests, Ruff/Pyright/Biome/TypeScript/build, plus the
+idempotent database initialization. Production connection verification follows
+deployment; this entry does not yet certify the live backend. Remaining full
+build data/retrieval gates above stay open. See `DEPLOYMENT.md`.

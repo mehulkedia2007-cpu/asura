@@ -229,3 +229,15 @@ contact, and preserve explicit no-fee negation; the added cases pass.
 
 ## D27 · 2026-10-01 · Redesign around existing journeys and measured evidence
 Use one grouped workspace, mobile comparison controls and a static settled d3-force prerequisite map. Deepen coral for contrast, preserve multilingual fonts and show source stamps. Show signed engine scores as decimals because they are not probabilities. Keep frozen benchmark, current live-index measurement, cached voice and cold/field evidence distinct. The redesigned UI does not close P2/P3 data gates or provision a production backend.
+
+## D28 · 2026-10-01 · Deploy the shared API with free cloud persistence
+
+Current Vercel documentation supports FastAPI ASGI WebSockets on Fluid compute.
+Use a separate API project rooted at the monorepo root, free Neon in Singapore
+and free Upstash Redis. User approved both provider terms and transfer of the
+existing provider keys into private Vercel settings. Use verified TLS, direct
+Neon connections and NullPool on serverless, explicit migrations and reviewed
+seeds. Resolve frontend HTTP/voice configuration at request time and gate the
+online badge on actual persistence readiness. No local credentials or rehearsal
+files are bundled. The six-hour persistent arq worker is not provided by Vercel;
+source freshness continues through request-time refresh. See DEPLOYMENT.md.

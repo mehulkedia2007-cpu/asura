@@ -36,13 +36,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let active = true;
     const abort = new AbortController();
-    const timeout = setTimeout(() => abort.abort(), 6000);
+    const timeout = setTimeout(() => abort.abort(), 20_000);
     setConnection("checking");
-    fetch(`/api/engine/catalog?check=${retry}`, { signal: abort.signal })
+    fetch(`/api/engine/ready?check=${retry}`, { signal: abort.signal })
       .then(async (response) => {
         const data = await response.json();
-        if (!response.ok || !Array.isArray(data.skills))
-          throw new Error("unavailable");
+        if (!response.ok || data.ok !== true) throw new Error("unavailable");
         if (active) setConnection("online");
       })
       .catch(() => {

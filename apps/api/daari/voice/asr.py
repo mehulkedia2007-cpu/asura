@@ -6,13 +6,13 @@ from pathlib import Path
 
 import httpx
 
-from daari.config import REPO_ROOT, settings
+from daari.config import REPO_ROOT, cache_root, settings
 from daari.voice.lang import Locale
 
 
 def _cache_path(audio: bytes) -> Path:
     digest = hashlib.sha256(audio).hexdigest()
-    return REPO_ROOT / ".cache/voice/asr" / f"{digest}.json"
+    return cache_root(REPO_ROOT) / "voice/asr" / f"{digest}.json"
 
 
 def register_rehearsal(audio: bytes, transcript: str, locale: Locale) -> None:

@@ -75,11 +75,15 @@ type SpeechWindow = Window & {
   webkitSpeechRecognition?: new () => SpeechRecognitionLike;
 };
 
-function websocketUrl() {
-  if (process.env.NEXT_PUBLIC_WS_URL)
-    return `${process.env.NEXT_PUBLIC_WS_URL}/ws/voice`;
-  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-  return `${protocol}//${window.location.hostname}:8000/ws/voice`;
+async function websocketUrl(): Promise<string> {
+  const response = await fetch("/api/connection", {
+    cache: "no-store",
+    signal: AbortSignal.timeout(20_000),
+  });
+  const data = await response.json();
+  if (!response.ok || typeof data.websocketUrl !== "string")
+    throw new Error("Engine unavailable");
+  return data.websocketUrl;
 }
 
 export function VoicePanel({ large = false }: { large?: boolean }) {
@@ -243,7 +247,7 @@ export function VoicePanel({ large = false }: { large?: boolean }) {
   async function connect(): Promise<WebSocket> {
     if (socket.current?.readyState === WebSocket.OPEN) return socket.current;
     socket.current?.close();
-    const ws = new WebSocket(websocketUrl());
+    const ws = new WebSocket(await websocketUrl());
     socket.current = ws;
     ws.onmessage = (event) => {
       if (socket.current !== ws) return;

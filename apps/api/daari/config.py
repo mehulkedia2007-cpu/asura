@@ -23,6 +23,7 @@ class Settings(BaseSettings):
 
     # Local infra — non-secret, defaults match docker-compose.yml / .env.example.
     DATABASE_URL: str = "postgresql+asyncpg://daari:daari@localhost:5432/daari"
+    DATABASE_URL_UNPOOLED: str | None = None
     REDIS_URL: str = "redis://localhost:6379/0"
     OLLAMA_BASE_URL: str = "http://localhost:11434"
 
@@ -43,6 +44,19 @@ class Settings(BaseSettings):
     APP_ENV: str = "local"
     LOG_LEVEL: str = "info"
     DEFAULT_DISTRICT: str = "Guntur"
+    VERCEL: bool = False
+    CACHE_ROOT: str | None = None
+    CORS_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3015"
+
+    @property
+    def database_url(self) -> str:
+        # Neon injects both URLs. Direct connections avoid PgBouncer statement
+        # name collisions; NullPool releases connections after each operation.
+        return self.DATABASE_URL_UNPOOLED or self.DATABASE_URL
+
+    @property
+    def cors_origins(self) -> list[str]:
+        return [origin.strip().rstrip("/") for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
 
     def __repr_args__(self):
         """Both __repr__ and __str__ derive from this in pydantic v2 — keep it secret-free."""
@@ -50,3 +64,10 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
+def cache_root(repo_root: Path = REPO_ROOT) -> Path:
+    """Keep local replay behavior; serverless filesystems only permit /tmp writes."""
+    if settings.CACHE_ROOT:
+        return Path(settings.CACHE_ROOT)
+    return Path("/tmp/daari-cache") if settings.VERCEL else repo_root / ".cache"

@@ -10,6 +10,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from pydantic import ValidationError
 
 from daari.agent.loop import AgentRequest, run
+from daari.config import settings
 from daari.voice.asr import transcribe
 from daari.voice.lang import detect
 from daari.voice.latency import record, summary
@@ -117,6 +118,10 @@ async def _turn(ws: EventSink, message: dict, released_at: float | None = None) 
 
 @router.websocket("/ws/voice")
 async def voice(ws: WebSocket) -> None:
+    origin = ws.headers.get("origin")
+    if settings.APP_ENV == "production" and origin and origin.rstrip("/") not in settings.cors_origins:
+        await ws.close(code=1008)
+        return
     await ws.accept()
     task: asyncio.Task | None = None
     released_at: float | None = None
