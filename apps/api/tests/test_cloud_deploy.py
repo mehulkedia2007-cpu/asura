@@ -30,7 +30,7 @@ def test_neon_direct_url_takes_precedence():
 
 
 def test_upstash_integration_url_alias_is_supported():
-    config = Settings(_env_file=None, KV_URL="rediss://default:synthetic@cache.example:6379")
+    config = Settings.model_validate({"KV_URL": "rediss://default:synthetic@cache.example:6379"})
     assert config.REDIS_URL == "rediss://default:synthetic@cache.example:6379"
 
 
