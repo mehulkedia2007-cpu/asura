@@ -226,3 +226,6 @@ are promoted to field accuracy.
 The red-team pass also exposed English-only scam payment/contact matching. The
 core rules now catch Telugu and Hindi fee requests, Telugu WhatsApp-only
 contact, and preserve explicit no-fee negation; the added cases pass.
+
+## D27 · 2026-10-01 · Redesign around existing journeys and measured evidence
+Use one grouped workspace, mobile comparison controls and a static settled d3-force prerequisite map. Deepen coral for contrast, preserve multilingual fonts and show source stamps. Show signed engine scores as decimals because they are not probabilities. Keep frozen benchmark, current live-index measurement, cached voice and cold/field evidence distinct. The redesigned UI does not close P2/P3 data gates or provision a production backend.

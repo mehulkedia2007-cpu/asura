@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-30T04:43:03.093832+00:00",
+  "checked_at": "2026-10-01T13:53:32.378075+00:00",
   "scope": "development regression; not an independent holdout or field validation",
   "intel": {
     "cases": 10,

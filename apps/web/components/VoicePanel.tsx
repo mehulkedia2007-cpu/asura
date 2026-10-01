@@ -1,7 +1,8 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { Icon } from "@/components/Icon";
 import { usePathname } from "@/i18n/navigation";
 
 type Citation = { source_url: string; fetched_at: string };
@@ -83,6 +84,10 @@ function websocketUrl() {
 
 export function VoicePanel({ large = false }: { large?: boolean }) {
   const locale = useLocale();
+  const panelId = useId();
+  const trigger = useRef<HTMLButtonElement | null>(null);
+  const textInput = useRef<HTMLInputElement | null>(null);
+  const panelRoot = useRef<HTMLDivElement | null>(null);
   const pathname = usePathname();
   const t = useTranslations("voice");
   const pathT = useTranslations("path");
@@ -131,6 +136,34 @@ export function VoicePanel({ large = false }: { large?: boolean }) {
       window.speechSynthesis?.cancel();
     };
   }, []);
+
+  useEffect(() => {
+    if (large || !open) return;
+    textInput.current?.focus();
+    const dismiss = (event: KeyboardEvent) => {
+      if (event.key === "Escape") trigger.current?.click();
+    };
+    const outside = (event: PointerEvent) => {
+      if (
+        event.target instanceof Node &&
+        !panelRoot.current?.contains(event.target)
+      )
+        trigger.current?.click();
+    };
+    document.addEventListener("keydown", dismiss);
+    document.addEventListener("pointerdown", outside);
+    return () => {
+      document.removeEventListener("keydown", dismiss);
+      document.removeEventListener("pointerdown", outside);
+    };
+  }, [large, open]);
+
+  function closePanel() {
+    cancel();
+    stopPlayback();
+    setOpen(false);
+    trigger.current?.focus();
+  }
 
   function stopPlayback() {
     playbackVersion.current += 1;
@@ -443,29 +476,47 @@ export function VoicePanel({ large = false }: { large?: boolean }) {
 
   const content = (
     <section
-      className={`border border-graphite/30 bg-bone p-5 text-ink ${large ? "space-y-6 p-8" : "mt-3 w-[min(90vw,28rem)] space-y-4"}`}
+      id={panelId}
+      aria-label={t("title")}
+      className={`voice-surface text-ink ${large ? "space-y-6" : "w-[min(90vw,28rem)] space-y-4"}`}
     >
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="font-mono text-xs uppercase tracking-widest text-graphite">
-            DAARI / {t("label")}
-          </p>
-          <h1 className={`${large ? "text-5xl" : "text-2xl"} font-display`}>
-            {t("title")}
-          </h1>
+          <h2 className={large ? "section-label" : "font-display text-3xl"}>
+            {t(large ? "tryPrompt" : "title")}
+          </h2>
         </div>
         {!large && (
           <button
             type="button"
-            onClick={() => setOpen(false)}
+            onClick={closePanel}
             aria-label={t("close")}
-            className="text-2xl"
+            className="icon-button"
           >
-            ×
+            <Icon name="close" />
           </button>
         )}
       </div>
-      <p className="font-ui text-graphite">{t("intro")}</p>
+      {!large && <p className="font-ui text-graphite">{t("intro")}</p>}
+      {large && (
+        <div className="voice-presets">
+          {(["jobsPrompt", "schemesPrompt", "pathPrompt"] as const).map(
+            (key) => (
+              <button
+                type="button"
+                key={key}
+                disabled={busy || recording}
+                onClick={() => {
+                  setTyped(t(key));
+                  textInput.current?.focus();
+                }}
+              >
+                {t(key)}
+              </button>
+            ),
+          )}
+        </div>
+      )}
       {pending && (
         <div className="border-l-2 border-amber pl-3 font-ui">
           <p>{pending.text}</p>
@@ -484,12 +535,14 @@ export function VoicePanel({ large = false }: { large?: boolean }) {
       <button
         type="button"
         onClick={start}
-        className={`w-full rounded bg-signal px-6 py-5 font-ui text-lg text-white ${large ? "min-h-24" : ""}`}
+        className={`voice-prompt w-full bg-signal font-ui text-white ${large ? "min-h-24" : ""}`}
       >
+        <Icon name="voice" />
         {recording ? t("release") : busy ? t("interrupt") : t("speak")}
       </button>
       <form onSubmit={submitText} className="flex gap-2">
         <input
+          ref={textInput}
           value={typed}
           onChange={(event) => setTyped(event.target.value)}
           aria-label={t("textLabel")}
@@ -498,6 +551,7 @@ export function VoicePanel({ large = false }: { large?: boolean }) {
         />
         <button
           type="submit"
+          disabled={!typed.trim()}
           className="rounded border border-graphite/40 px-4 py-2 font-ui"
         >
           {t("send")}
@@ -678,17 +732,20 @@ export function VoicePanel({ large = false }: { large?: boolean }) {
 
   if (large) return content;
   return (
-    <div className="relative">
+    <div className="relative" ref={panelRoot}>
       <button
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        ref={trigger}
+        onClick={() => (open ? closePanel() : setOpen(true))}
         aria-expanded={open}
+        aria-controls={panelId}
         aria-label={t("open")}
-        className="rounded border border-graphite/40 px-3 py-2 font-mono text-sm"
+        className="voice-trigger"
       >
-        ● {t("open")}
+        <Icon name="voice" />
+        {t("open")}
       </button>
-      {open && <div className="absolute top-full left-0 z-50">{content}</div>}
+      {open && <div className="voice-popover">{content}</div>}
     </div>
   );
 }

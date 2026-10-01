@@ -1,7 +1,7 @@
 {
   "phase": "P7",
-  "checked_at": "2026-09-30T05:12:17.058297+00:00",
-  "scope": "Rehearsal and audit; cached regressions are not field validation.",
+  "checked_at": "2026-10-01T14:18:44.397431+00:00",
+  "scope": "Fresh deterministic audit with preserved, reviewed field rehearsal from 2026-09-30; no new field run.",
   "audit": {
     "passed": true,
     "checks": {
@@ -16,7 +16,7 @@
     },
     "verifier": {
       "samples": 20,
-      "p95_ms": 0.012,
+      "p95_ms": 0.011,
       "gate_ms": 400,
       "passed": true
     },
@@ -51,7 +51,7 @@
       "fixture": "data_analyst role with held data_visualization_tableau"
     },
     "i18n": {
-      "keys": 277,
+      "keys": 363,
       "missing": {
         "en": [],
         "te": [],
@@ -255,7 +255,7 @@
         ]
       },
       "p5": {
-        "checked_at": "2026-09-30T04:43:03.093832+00:00",
+        "checked_at": "2026-10-01T13:53:32.378075+00:00",
         "scope": "development regression; not an independent holdout or field validation",
         "intel": {
           "cases": 10,

@@ -134,7 +134,11 @@ try {
         fullPage: true,
       });
       await page.setViewportSize({ width: 1440, height: 1000 });
-      await page.emulateMedia({ colorScheme: "dark" });
+      await page.locator(".theme-toggle").click();
+      assert.equal(
+        await page.locator("html").getAttribute("data-theme"),
+        "dark",
+      );
       assert(
         !(await page.evaluate(
           () => document.documentElement.scrollWidth > innerWidth,
@@ -146,7 +150,11 @@ try {
         fullPage: true,
       });
       await page.setViewportSize({ width: 390, height: 844 });
-      await page.emulateMedia({ colorScheme: "light" });
+      await page.locator(".theme-toggle").click();
+      assert.equal(
+        await page.locator("html").getAttribute("data-theme"),
+        "light",
+      );
     }
     await page.close();
   }

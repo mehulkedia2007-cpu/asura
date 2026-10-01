@@ -8,9 +8,12 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "playwright test -c playwright-unit.config.ts",
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "check:ui": "node scripts/check-redesign.mjs",
+    "check:journeys": "node scripts/check-live-journeys.mjs"
   },
   "dependencies": {
+    "d3-force": "3.0.0",
     "next": "16.3.5",
     "next-intl": "4.14.5",
     "react": "19.3.0",
@@ -20,9 +23,11 @@
     "@biomejs/biome": "2.5.14",
     "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "4.3.3",
+    "@types/d3-force": "3.0.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "axe-core": "4.13.0",
     "tailwindcss": "4.3.3",
     "typescript": "7.0.2"
   },

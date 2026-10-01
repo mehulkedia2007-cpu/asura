@@ -1,0 +1,90 @@
+{
+  "checked_at": "2026-10-01T15:27:43.642165+00:00",
+  "scope": "Local production frontend with real API/Postgres/Redis. Public backend unavailable; cached voice is not a human ASR field test.",
+  "unit_tests": {
+    "core": 88,
+    "api": 89,
+    "web": 3,
+    "total": 180
+  },
+  "static_checks": [
+    "Ruff",
+    "Pyright",
+    "Biome",
+    "TypeScript",
+    "production build"
+  ],
+  "localization_keys": 363,
+  "responsive_checks": 108,
+  "accessibility": {
+    "states": 57,
+    "wcag_a_aa_violations": 0,
+    "lighthouse_mobile_english": {
+      "path": 100,
+      "evidence": 100,
+      "prep": 100,
+      "home": 100,
+      "voice": 100,
+      "interview": 100,
+      "schemes": 100,
+      "questions": 100,
+      "leads": 100
+    }
+  },
+  "route_checks": {
+    "locale_route_combinations": 27,
+    "failed": 0
+  },
+  "live_journeys": {
+    "leads": {
+      "returned": 7,
+      "sourceStamps": true,
+      "matchBreakdown": true,
+      "sourceErrors": {},
+      "radius": 100
+    },
+    "schemes": {
+      "returned": 5,
+      "eligibilityUnknown": true,
+      "eligibilityRecheck": true,
+      "indexed": 342,
+      "stale": true,
+      "sourceErrors": []
+    },
+    "assessment": {
+      "answered": 6,
+      "persistedProfile": true,
+      "recalculatedRoadmap": true
+    }
+  },
+  "cached_voice_browser": [
+    {
+      "locale": "en",
+      "n": 20,
+      "first_playback_p95_ms": 65,
+      "response_done_p95_ms": 4,
+      "passed": true
+    },
+    {
+      "locale": "te",
+      "n": 20,
+      "first_playback_p95_ms": 53,
+      "response_done_p95_ms": 36,
+      "passed": true
+    },
+    {
+      "locale": "hi",
+      "n": 20,
+      "first_playback_p95_ms": 54,
+      "response_done_p95_ms": 4,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Vercel API/WebSocket backend unprovisioned",
+    "P2 data/embedding and graph breadth open",
+    "Current lexical scheme precision@5 0.745 below 0.80",
+    "P5 microphone regression uses generated MediaStream and stubbed ASR",
+    "Native translation review pending"
+  ]
+}

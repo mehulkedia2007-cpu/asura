@@ -3,9 +3,7 @@ import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { LanguageToggle } from "@/components/LanguageToggle";
-import { PrepNav } from "@/components/Preparation";
-import { VoicePanel } from "@/components/VoicePanel";
+import { AppShell } from "@/components/AppShell";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -61,16 +59,12 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
+      data-theme="light"
       className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} ${notoSansTelugu.variable} ${notoSerifTelugu.variable} ${notoSansDevanagari.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-bone text-ink">
         <NextIntlClientProvider messages={messages}>
-          <header className="flex items-center justify-between gap-4 border-graphite/20 border-b px-6 py-5">
-            <VoicePanel />
-            <LanguageToggle />
-          </header>
-          <PrepNav />
-          {children}
+          <AppShell>{children}</AppShell>
         </NextIntlClientProvider>
       </body>
     </html>

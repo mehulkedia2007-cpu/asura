@@ -95,7 +95,7 @@ type Board = {
 
 function Metric({ label, value, detail, passed }: MetricProps) {
   return (
-    <div className="border-graphite/25 border-t pt-3">
+    <div className="evidence-metric">
       <div className="flex items-start justify-between gap-3">
         <p className="font-ui text-graphite text-xs uppercase tracking-[0.14em]">
           {label}
@@ -122,7 +122,7 @@ function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <section className="border-graphite/30 border-t pt-5">
+    <section className="evidence-panel">
       <p className="font-mono text-graphite text-xs uppercase tracking-[0.18em]">
         {eyebrow}
       </p>
@@ -192,7 +192,7 @@ function BoardContent({ board }: { board: Board }) {
         </p>
       </div>
 
-      <div className="mt-16 grid gap-16 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <Panel eyebrow={t("engine")} title={t("shared")}>
           <p className="max-w-xl font-ui text-graphite text-sm">
             {t("sharedIntro")}
@@ -210,7 +210,7 @@ function BoardContent({ board }: { board: Board }) {
             />
           </div>
         </Panel>
-        <div className="border-graphite/25 border-t pt-5">
+        <div className="surface">
           <p className="font-mono text-graphite text-xs uppercase tracking-[0.18em]">
             {t("importGraph")}
           </p>
@@ -224,7 +224,7 @@ function BoardContent({ board }: { board: Board }) {
         </div>
       </div>
 
-      <div className="mt-20">
+      <div className="mt-6">
         <Panel eyebrow={t("regression")} title={t("quality")}>
           <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
             <Metric
@@ -323,7 +323,7 @@ function BoardContent({ board }: { board: Board }) {
         </Panel>
       </div>
 
-      <div className="mt-20 grid gap-16 lg:grid-cols-2">
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Panel eyebrow={t("voiceSection")} title={t("voice")}>
           <p className="max-w-lg font-ui text-graphite text-sm">
             {t("voiceIntro")}
@@ -375,7 +375,7 @@ function BoardContent({ board }: { board: Board }) {
         </Panel>
       </div>
 
-      <div className="mt-20">
+      <div className="mt-6">
         <Panel eyebrow={t("constitutionSection")} title={t("constitution")}>
           <p className="max-w-2xl font-ui text-graphite text-sm">
             {t("constitutionIntro")}
@@ -398,7 +398,7 @@ function BoardContent({ board }: { board: Board }) {
                     <td className="px-3 py-3 font-ui text-ink text-sm">
                       {article.article} · {article.title}
                     </td>
-                    <td className="px-3 py-3 font-mono text-amber text-xs">
+                    <td className="px-3 py-3 font-mono text-graphite text-xs">
                       {article.status.toUpperCase()}
                     </td>
                     <td className="px-3 py-3 font-mono text-graphite text-xs">
@@ -442,9 +442,20 @@ export function EvidenceBoard() {
 
   if (error) {
     return (
-      <p className="border-signal border-l-2 p-4 font-ui text-graphite text-sm">
-        {t("unavailable")}
-      </p>
+      <div className="empty-state" role="alert">
+        <p>{t("unavailable")}</p>
+        <button
+          className="mt-4 border border-graphite/30"
+          type="button"
+          onClick={() => {
+            setError(false);
+            setBoard(null);
+            setRefresh((value) => value + 1);
+          }}
+        >
+          {t("refresh")}
+        </button>
+      </div>
     );
   }
   if (!board) {
@@ -453,7 +464,7 @@ export function EvidenceBoard() {
 
   return (
     <div>
-      <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <p className="font-mono text-graphite text-xs">{t("scope")}</p>
         <button
           type="button"
@@ -464,7 +475,7 @@ export function EvidenceBoard() {
         </button>
       </div>
       <BoardContent board={board} />
-      <div className="mt-16 border-graphite/25 border-t pt-5">
+      <div className="mt-6 border-graphite/25 border-t pt-5">
         <Link
           href="/"
           className="font-ui text-ink text-sm underline underline-offset-4"

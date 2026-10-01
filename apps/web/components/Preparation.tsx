@@ -2,6 +2,8 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+import { Icon } from "@/components/Icon";
+import { PageIntro } from "@/components/PageIntro";
 import { Link } from "@/i18n/navigation";
 
 async function api<T>(endpoint: string, body?: object): Promise<T> {
@@ -102,43 +104,10 @@ const fieldNames = [
   "mode",
 ];
 const inputStyle =
-  "w-full rounded-none border border-graphite/40 bg-bone px-3 py-3 text-ink focus:outline-2 focus:outline-signal";
+  "w-full border border-graphite/30 bg-bone px-3 py-3 text-ink";
 const buttonStyle =
-  "border border-ink bg-ink px-5 py-3 text-bone disabled:opacity-50";
+  "inline-flex items-center justify-center border border-signal bg-signal px-5 py-3 text-white disabled:opacity-50";
 
-export function PrepNav() {
-  const t = useTranslations("p5");
-  const live = useTranslations("live");
-  const voice = useTranslations("voice");
-  const evidence = useTranslations("p6");
-  const links = [
-    ["home", t("home")],
-    ["path", t("path")],
-    ["leads", live("leadsTitle")],
-    ["schemes", live("schemesTitle")],
-    ["questions", t("questions")],
-    ["prep", t("prep")],
-    ["interview", t("interview")],
-    ["voice", voice("open")],
-    ["evidence", evidence("title")],
-  ] as const;
-  return (
-    <nav
-      aria-label={t("prep")}
-      className="flex flex-wrap gap-x-6 gap-y-3 border-graphite/20 border-b px-6 py-4 text-sm print:hidden"
-    >
-      {links.map(([key, label]) => (
-        <Link
-          key={key}
-          href={key === "home" ? "/" : `/${key}`}
-          className="underline underline-offset-4"
-        >
-          {label}
-        </Link>
-      ))}
-    </nav>
-  );
-}
 function CoveragePanel({ coverage }: { coverage: Coverage }) {
   const t = useTranslations("p5");
   return (
@@ -170,7 +139,7 @@ function QuestionCard({ question }: { question: Question }) {
   const locale = useLocale();
   const t = useTranslations("p5");
   return (
-    <article className="min-w-0 border border-graphite/25 p-5">
+    <article className="result-card min-w-0">
       <p className="text-graphite text-xs">
         {t(question.kind)} ·{" "}
         {t.has(question.round) ? t(question.round) : question.round}
@@ -238,6 +207,7 @@ export function Preparation({
   screen: "questions" | "prep" | "interview";
 }) {
   const t = useTranslations("p5");
+  const workspace = useTranslations("workspace");
   const locale = useLocale();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [roles, setRoles] = useState<(Labels & { id: string })[]>([]);
@@ -524,20 +494,24 @@ export function Preparation({
   );
   const current = session?.questions[session.current];
   return (
-    <main
-      className={`mx-auto w-full max-w-6xl px-6 py-10 ${locale === "te" ? "font-telugu-sans" : locale === "hi" ? "font-devanagari-sans" : "font-ui"}`}
-    >
-      <p className="font-mono text-signal text-xs tracking-widest">
-        {t("eyebrow")}
-      </p>
-      <h1
-        className={`mt-4 mb-5 text-4xl leading-tight md:text-6xl ${locale === "en" ? "font-display" : ""}`}
-      >
-        {t(screen)}
-      </h1>
-      <p className="mb-8 max-w-2xl text-graphite leading-relaxed">
-        {t("intro")}
-      </p>
+    <main className="product-page">
+      <PageIntro
+        eyebrow={workspace("prepare")}
+        title={t(screen)}
+        description={t(`${screen}Intro`)}
+        icon={screen}
+      />
+      <nav className="preparation-flow" aria-label={t("prep")}>
+        {(["questions", "prep", "interview"] as const).map((route, index) => (
+          <Link
+            key={route}
+            href={`/${route}`}
+            aria-current={screen === route ? "page" : undefined}
+          >
+            <span className="font-mono">0{index + 1}</span> {t(route)}
+          </Link>
+        ))}
+      </nav>
       {error && (
         <p role="alert" className="my-4 border-signal border-l-4 p-3">
           {t(error)}
@@ -550,69 +524,79 @@ export function Preparation({
       )}
       {screen === "questions" && (
         <section className="space-y-6">
-          {selector}
-          <p className="text-graphite text-xs">{t("generalSeed")}</p>
-          <label className="grid gap-2 text-sm">
-            {t("query")}
-            <input
-              className={inputStyle}
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-          </label>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="control-panel space-y-5">
+            <h2 className="section-label">{t("questionsSetup")}</h2>
+            {selector}
+            <p className="text-graphite text-xs">{t("generalSeed")}</p>
             <label className="grid gap-2 text-sm">
-              {t("rounds")}
-              <select
-                className={inputStyle}
-                value={round}
-                onChange={(e) => setRound(e.target.value)}
-              >
-                <option value="">—</option>
-                {["technical", "managerial", "hr"].map((key) => (
-                  <option key={key} value={key}>
-                    {t(key)}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="grid gap-2 text-sm">
-              {t("yearSpan")}
+              {t("query")}
               <input
-                type="number"
-                min="2000"
-                max="2100"
                 className={inputStyle}
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
               />
             </label>
+            <div className="grid gap-4 md:grid-cols-2">
+              <label className="grid gap-2 text-sm">
+                {t("rounds")}
+                <select
+                  className={inputStyle}
+                  value={round}
+                  onChange={(e) => setRound(e.target.value)}
+                >
+                  <option value="">—</option>
+                  {["technical", "managerial", "hr"].map((key) => (
+                    <option key={key} value={key}>
+                      {t(key)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="grid gap-2 text-sm">
+                {t("yearSpan")}
+                <input
+                  type="number"
+                  min="2000"
+                  max="2100"
+                  className={inputStyle}
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                />
+              </label>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {["search", "refresh"].map((action) => (
+                <button
+                  key={action}
+                  type="button"
+                  disabled={busy || !companies.length || !role.trim()}
+                  className={buttonStyle}
+                  onClick={() =>
+                    void task(async () =>
+                      setResults(
+                        await api<Results>(`questions/${action}`, {
+                          company,
+                          role,
+                          query,
+                          year: year ? Number(year) : null,
+                          round,
+                        }),
+                      ),
+                    )
+                  }
+                >
+                  {t(action)}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-wrap gap-3">
-            {["search", "refresh"].map((action) => (
-              <button
-                key={action}
-                type="button"
-                disabled={busy || !companies.length || !role.trim()}
-                className={buttonStyle}
-                onClick={() =>
-                  void task(async () =>
-                    setResults(
-                      await api<Results>(`questions/${action}`, {
-                        company,
-                        role,
-                        query,
-                        year: year ? Number(year) : null,
-                        round,
-                      }),
-                    ),
-                  )
-                }
-              >
-                {t(action)}
-              </button>
-            ))}
-          </div>
+          {!results && !busy && (
+            <div className="empty-state">
+              <Icon name="questions" />
+              <h2>{t("questions")}</h2>
+              <p>{t("questionsIntro")}</p>
+            </div>
+          )}
           {results && (
             <>
               <CoveragePanel coverage={results.stats} />
@@ -636,40 +620,43 @@ export function Preparation({
       )}
       {screen === "prep" && (
         <section className="space-y-6">
-          <label className="grid gap-3">
-            {t("notice")}
-            <textarea
-              rows={7}
-              className={inputStyle}
-              value={rawNotice}
-              onChange={(event) => {
-                setRawNotice(event.target.value);
-                setFields(null);
-                setConfirmed(false);
-                setPack(null);
-              }}
-            />
-          </label>
-          <p className="text-graphite text-sm">{t("noticeHelp")}</p>
-          <button
-            className={buttonStyle}
-            type="button"
-            disabled={busy || !rawNotice.trim()}
-            onClick={() =>
-              void task(async () => {
-                const result = await api<{ fields: Fields }>("prep/notice", {
-                  text: rawNotice,
-                });
-                setFields(result.fields);
-                setConfirmed(false);
-                setRawNotice("");
-              })
-            }
-          >
-            {t("extract")}
-          </button>
+          <div className="control-panel space-y-5">
+            <h2 className="section-label">{t("noticeSetup")}</h2>
+            <label className="grid gap-3">
+              {t("notice")}
+              <textarea
+                rows={7}
+                className={inputStyle}
+                value={rawNotice}
+                onChange={(event) => {
+                  setRawNotice(event.target.value);
+                  setFields(null);
+                  setConfirmed(false);
+                  setPack(null);
+                }}
+              />
+            </label>
+            <p className="text-graphite text-sm">{t("noticeHelp")}</p>
+            <button
+              className={buttonStyle}
+              type="button"
+              disabled={busy || !rawNotice.trim()}
+              onClick={() =>
+                void task(async () => {
+                  const result = await api<{ fields: Fields }>("prep/notice", {
+                    text: rawNotice,
+                  });
+                  setFields(result.fields);
+                  setConfirmed(false);
+                  setRawNotice("");
+                })
+              }
+            >
+              {t("extract")}
+            </button>
+          </div>
           {fields && (
-            <div className="space-y-5 border-graphite/20 border-t pt-6">
+            <div className="surface space-y-5">
               <h2 className="text-2xl">{t("review")}</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 {fieldNames.map((key) => (
@@ -791,7 +778,7 @@ export function Preparation({
                   ["capacityHours", pack.plan.capacity_hours],
                   ["shortfallHours", pack.plan.shortfall_hours],
                 ].map(([key, value]) => (
-                  <div key={key}>
+                  <div key={key} className="path-stat">
                     <dt className="text-sm">{t(String(key))}</dt>
                     <dd className="mt-2 font-mono text-2xl">{value}</dd>
                   </div>
@@ -821,7 +808,7 @@ export function Preparation({
               <h2 className="text-2xl">{t("schedule")}</h2>
               <ol className="grid gap-3 md:grid-cols-2">
                 {pack.plan.days.map((day) => (
-                  <li key={day.date} className="border border-graphite/25 p-4">
+                  <li key={day.date} className="result-card">
                     <p className="font-mono text-signal">{day.date}</p>
                     {day.allocations.map((row) => (
                       <p key={row.skill} className="mt-2">
@@ -852,7 +839,8 @@ export function Preparation({
       {screen === "interview" && (
         <section className="space-y-6">
           {!session && (
-            <>
+            <div className="control-panel space-y-5">
+              <h2 className="section-label">{t("startHere")}</h2>
               {selector}
               <label className="grid gap-2 text-sm">
                 {t("jobQuery")}
@@ -883,7 +871,7 @@ export function Preparation({
               >
                 {t("start")}
               </button>
-            </>
+            </div>
           )}
           {session && (
             <>
@@ -979,7 +967,7 @@ export function Preparation({
               {session.attempts.map((attempt, i) => (
                 <article
                   key={attempt.question_id}
-                  className="space-y-5 border border-graphite/30 p-5"
+                  className="practice-attempt space-y-5"
                 >
                   <h3 className="font-mono">{i + 1} / 5</h3>
                   <Highlight

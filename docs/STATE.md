@@ -1,6 +1,6 @@
 # STATE — DAARI
 
-Spec: [build.md](../build.md), v6, §13. Updated 2026-09-30.
+Spec: [build.md](../build.md), v6, §13. Updated 2026-10-01.
 
 ## Current phase
 
@@ -197,3 +197,28 @@ those targets apply to the separately passing P4 cached regressions.
   WER is 0.55 and first-audio p95 is 14,428.6 ms; the plan does not define cold
   field thresholds. These results are diagnostic, and P7 readiness does not
   mean the entire build plan is complete.
+
+## UI redesign and verification — 2026-10-01
+
+All nine existing routes now use a grouped workspace shell, responsive navigation,
+paper/ink surfaces, persistent themes, local multilingual type, clearer forms,
+sourced cards and focused preparation flows. The roadmap includes a real
+`d3-force` prerequisite map and a mobile Before/After switch. Voice focus,
+dismissal and recording cancellation were checked. Match scores now display
+signed weighted decimals rather than misleading percentages.
+
+Local checks: 180 core/API/web tests; Ruff/Pyright/Biome/TypeScript/build; 363
+locale keys; 27 route/locale browser journeys; 108 responsive checks; 57 axe
+states with no A/AA violations; Lighthouse accessibility 100 on all nine English
+routes; real leads/schemes search, eligibility recheck and six-question CAT;
+three-locale P5 flows; 20 cached voice turns per locale with playback p95
+65/53/54 ms. Cold rehearsal latency was much slower. The historical reviewed
+P7 field evidence is preserved; no new human microphone accuracy test was run.
+
+See `UI_REDESIGN_AUDIT.md` for requirement-by-requirement status and limitations.
+The live index now has 342 schemes; its freshly checked lexical precision@5 is
+0.745, below the plan gate. P2 breadth, learned skill embeddings, graph breadth,
+match constraints and wider source retrieval remain open. The redesigned
+frontend can publish to the user's fork/Vercel project, but production engine
+functionality is blocked until a reachable API/WebSocket backend and cloud
+infrastructure are supplied or provisioned.

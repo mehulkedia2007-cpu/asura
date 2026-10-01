@@ -2,8 +2,10 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { PageIntro } from "@/components/PageIntro";
+import { type MapSkill, SkillMap } from "@/components/SkillMap";
 
-type Skill = {
+type Skill = MapSkill & {
   id: string;
   label_en: string;
   label_te: string;
@@ -93,6 +95,7 @@ function savedNumbers(key: string, levels = false): Record<string, number> {
 
 export function PathExplorer() {
   const t = useTranslations("path");
+  const workspace = useTranslations("workspace");
   const locale = useLocale();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
@@ -110,6 +113,8 @@ export function PathExplorer() {
   const [item, setItem] = useState<Item | null>(null);
   const [answer, setAnswer] = useState("");
   const [result, setResult] = useState("");
+  const [reload, setReload] = useState(0);
+  const [comparison, setComparison] = useState("after");
 
   useEffect(() => {
     try {
@@ -123,7 +128,7 @@ export function PathExplorer() {
     }
   }, []);
   useEffect(() => {
-    api<{ skills: Skill[]; roles: Role[] }>("catalog")
+    api<{ skills: Skill[]; roles: Role[] }>(`catalog?refresh=${reload}`)
       .then((data) => {
         setSkills(data.skills);
         setRoles(data.roles);
@@ -133,8 +138,8 @@ export function PathExplorer() {
             : (data.roles[0]?.id ?? "data_analyst"),
         );
       })
-      .catch((err) => setError(String(err)));
-  }, []);
+      .catch(() => setError(t("unavailable")));
+  }, [reload, t]);
   useEffect(() => {
     if (!roles.length) return;
     let active = true;
@@ -155,7 +160,7 @@ export function PathExplorer() {
     return () => {
       active = false;
     };
-  }, [goal, persona, roles.length, held, demand, t]);
+  }, [goal, persona, roles, held, demand, t]);
 
   const label = (entry: Skill | Role) =>
     locale === "te"
@@ -186,6 +191,7 @@ export function PathExplorer() {
             };
       const data = await api<Change>(endpoint, update);
       setChange(data);
+      setComparison("after");
       setPath(data.after);
       if (data.held_after) setHeld(data.held_after);
       if (data.demand_after) {
@@ -273,13 +279,13 @@ export function PathExplorer() {
 
   function PathCard({ title, value }: { title: string; value: Path }) {
     return (
-      <section className="rounded-xl border border-graphite/25 bg-background p-5">
-        <h2 className="font-mono text-sm uppercase tracking-wider text-signal">
-          {title}
-        </h2>
-        <p className="mt-2 text-2xl font-semibold">
-          {value.total_hours} {t("hours")} · {value.weeks} {t("weeks")}
-        </p>
+      <section className="path-card">
+        <div className="path-card-title">
+          <h2>{title}</h2>
+          <p>
+            {value.total_hours} {t("hours")} · {value.weeks} {t("weeks")}
+          </p>
+        </div>
         <ol className="mt-6 ml-3 border-graphite/30 border-l">
           {value.steps.map((step, index) => (
             <li key={step.skill} className="relative pb-6 pl-6 last:pb-0">
@@ -314,6 +320,10 @@ export function PathExplorer() {
                     ? ` · ${t("demandWeight")} ${step.demand.toFixed(2)}×`
                     : "")}
               </p>
+              <details className="path-step-source">
+                <summary>{t("source")}</summary>
+                <p>{step.source}</p>
+              </details>
             </li>
           ))}
         </ol>
@@ -322,13 +332,14 @@ export function PathExplorer() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-6 py-10 sm:px-12">
-      <p className="font-mono text-signal text-sm uppercase tracking-widest">
-        DAARI / P2
-      </p>
-      <h1 className="mt-3 font-display text-5xl sm:text-7xl">{t("title")}</h1>
-      <p className="mt-3 max-w-2xl text-graphite">{t("intro")}</p>
-      <div className="mt-8 grid gap-4 rounded-xl border border-graphite/25 p-5 sm:grid-cols-4">
+    <main className="product-page">
+      <PageIntro
+        eyebrow={workspace("discover")}
+        title={t("title")}
+        description={t("intro")}
+        icon="path"
+      />
+      <div className="control-panel path-controls">
         <label className="flex flex-col gap-2 text-sm">
           {t("persona")}
           <select
@@ -396,7 +407,7 @@ export function PathExplorer() {
             ))}
           </select>
         </label>
-        <div className="flex flex-wrap gap-3 sm:col-span-4">
+        <div className="path-actions">
           <button
             type="button"
             disabled={busy || !path}
@@ -429,22 +440,85 @@ export function PathExplorer() {
         </div>
       </div>
       {error && (
-        <p role="alert" className="mt-5 text-signal">
-          {error}
-        </p>
+        <div role="alert" className="mt-5">
+          <p>{error}</p>
+          <button
+            type="button"
+            className="mt-2 underline"
+            disabled={busy}
+            onClick={() => setReload((value) => value + 1)}
+          >
+            {t("retry")}
+          </button>
+        </div>
       )}
       {busy && (
         <p className="mt-5" role="status">
           {t("loading")}
         </p>
       )}
+      {path && (
+        <section className="path-summary" aria-label={t("plan")}>
+          <div className="path-stat">
+            <p className="section-label">{t("steps")}</p>
+            <strong>{path.steps.length}</strong>
+          </div>
+          <div className="path-stat">
+            <p className="section-label">{t("hours")}</p>
+            <strong>
+              {path.total_hours}
+              <span> {t("hours")}</span>
+            </strong>
+          </div>
+          <div className="path-stat">
+            <p className="section-label">{t("weeks")}</p>
+            <strong>
+              {path.weeks}
+              <span> {t("weeks")}</span>
+            </strong>
+            <small>{t("pace")}</small>
+          </div>
+        </section>
+      )}
+      {Object.keys(held).length > 0 && (
+        <section className="surface mt-6">
+          <h2 className="section-label">{t("heldTitle")}</h2>
+          <div className="path-map">
+            {Object.entries(held).map(([id, value]) => (
+              <span key={id}>
+                {skillName(id)} <b>{value}/5</b>
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
       {item && (
-        <section className="mt-6 rounded-xl border border-graphite/25 p-5">
+        <section className="surface mt-6">
           <h2 className="font-semibold">
             {t("question")} {(assessment?.answered.length ?? 0) + 1} / 6
           </h2>
+          <div className="assessment-progress" aria-hidden="true">
+            {[0, 1, 2, 3, 4, 5].map((index) => (
+              <span
+                key={index}
+                className={
+                  index < (assessment?.answered.length ?? 0)
+                    ? "complete"
+                    : index === (assessment?.answered.length ?? 0)
+                      ? "current"
+                      : ""
+                }
+              />
+            ))}
+          </div>
+          {assessment && (
+            <p className="mt-3 font-mono text-xs text-graphite">
+              {t("uncertainty")}: {assessment.theta.toFixed(2)} ±{" "}
+              {assessment.se.toFixed(2)}
+            </p>
+          )}
           {item.display_language !== locale && (
-            <p className="mt-2 text-amber-800 text-sm" role="note">
+            <p className="mt-2 text-graphite text-sm" role="note">
               {t("englishQuestion")}
             </p>
           )}
@@ -476,8 +550,12 @@ export function PathExplorer() {
         </p>
       )}
       {change && (
-        <section className="mt-6 rounded-xl border border-sage/50 bg-sage/10 p-5">
+        <section className="diff-panel mt-6">
           <h2 className="font-semibold">{t("change")}</h2>
+          <p className="diff-meta">
+            {t("cause")}:{" "}
+            {t(change.diff.cause === "market" ? "market" : "learner")}
+          </p>
           <p className="mt-2">
             {t("removed")}:{" "}
             {change.diff.removed.map(skillName).join(", ") || t("none")} ·{" "}
@@ -493,7 +571,32 @@ export function PathExplorer() {
           </p>
         </section>
       )}
-      <div className="mt-6 grid gap-5 lg:grid-cols-2">
+      {path && (
+        <SkillMap
+          skills={skills}
+          missing={path.steps.map((step) => step.skill)}
+          held={held}
+          demand={demand}
+        />
+      )}
+      {change && (
+        <fieldset className="comparison-switch" aria-label={t("change")}>
+          {["before", "after"].map((view) => (
+            <button
+              key={view}
+              type="button"
+              aria-pressed={comparison === view}
+              onClick={() => setComparison(view)}
+            >
+              {t(view)}
+            </button>
+          ))}
+        </fieldset>
+      )}
+      <div
+        className={`path-comparison mt-6 grid gap-5 ${change ? "lg:grid-cols-2" : ""}`}
+        data-view={comparison}
+      >
         {change && <PathCard title={t("before")} value={change.before} />}
         {path && (
           <PathCard title={change ? t("after") : t("current")} value={path} />

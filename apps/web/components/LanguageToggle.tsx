@@ -15,23 +15,18 @@ export function LanguageToggle() {
   };
 
   return (
-    <nav aria-label={t("languageLabel")} className="flex items-center gap-3">
-      {routing.locales.map((loc, i) => (
-        <span key={loc} className="flex items-center gap-3">
-          {i > 0 && (
-            <span aria-hidden="true" className="h-3 w-px bg-graphite/40" />
-          )}
-          <Link
-            href={pathname}
-            locale={loc}
-            aria-current={loc === locale ? "true" : undefined}
-            className={`font-mono text-sm tracking-wide transition-colors ${
-              loc === locale ? "text-ink" : "text-graphite hover:text-ink"
-            }`}
-          >
-            {codes[loc]}
-          </Link>
-        </span>
+    <nav aria-label={t("languageLabel")} className="language-switch">
+      {routing.locales.map((loc) => (
+        <Link
+          href={pathname}
+          locale={loc}
+          key={loc}
+          aria-current={loc === locale ? "true" : undefined}
+          hrefLang={loc}
+          className={loc === locale ? "selected" : ""}
+        >
+          {codes[loc]}
+        </Link>
       ))}
     </nav>
   );

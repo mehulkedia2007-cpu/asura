@@ -1,8 +1,18 @@
+import { getTranslations } from "next-intl/server";
+import { PageIntro } from "@/components/PageIntro";
 import { VoicePanel } from "@/components/VoicePanel";
 
-export default function VoicePage() {
+export default async function VoicePage() {
+  const t = await getTranslations("voice");
+  const workspace = await getTranslations("workspace");
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center gap-8 px-6 py-12">
+    <main className="product-page voice-page">
+      <PageIntro
+        eyebrow={workspace("support")}
+        title={t("title")}
+        description={t("intro")}
+        icon="voice"
+      />
       <VoicePanel large />
     </main>
   );

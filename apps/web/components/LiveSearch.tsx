@@ -1,7 +1,9 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Icon } from "@/components/Icon";
+import { PageIntro } from "@/components/PageIntro";
 
 type Lead = {
   id: string;
@@ -71,6 +73,7 @@ type Result = {
 
 export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
   const t = useTranslations("live");
+  const workspace = useTranslations("workspace");
   const locale = useLocale();
   const [query, setQuery] = useState("");
   const [place, setPlace] = useState("Guntur, Andhra Pradesh");
@@ -82,6 +85,38 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
   const [newSchemeIds, setNewSchemeIds] = useState<string[]>([]);
   const [extraProfile, setExtraProfile] = useState<Record<string, string>>({});
   const [slotAnswer, setSlotAnswer] = useState("");
+  const [skillLabels, setSkillLabels] = useState<Record<string, string>>({});
+  useEffect(() => {
+    let active = true;
+    fetch("/api/engine/catalog")
+      .then((response) => response.json())
+      .then((data) => {
+        if (active && Array.isArray(data.skills))
+          setSkillLabels(
+            Object.fromEntries(
+              data.skills.map(
+                (skill: {
+                  id: string;
+                  label_en: string;
+                  label_te: string;
+                  label_hi: string;
+                }) => [
+                  skill.id,
+                  locale === "te"
+                    ? skill.label_te
+                    : locale === "hi"
+                      ? skill.label_hi
+                      : skill.label_en,
+                ],
+              ),
+            ),
+          );
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [locale]);
 
   async function search(
     refresh = false,
@@ -125,7 +160,12 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
         body: JSON.stringify(body),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.detail ?? t("unavailable"));
+      if (!response.ok)
+        throw new Error(
+          response.status >= 500
+            ? t("unavailable")
+            : (data.detail ?? t("unavailable")),
+        );
       setResult(data);
       if (kind === "leads") {
         localStorage.setItem(
@@ -153,18 +193,15 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
   }
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-6 py-10 sm:px-12">
-      <p className="font-mono text-signal text-sm uppercase tracking-widest">
-        DAARI / P3
-      </p>
-      <h1 className="mt-3 font-display text-5xl sm:text-7xl">
-        {t(kind === "leads" ? "leadsTitle" : "schemesTitle")}
-      </h1>
-      <p className="mt-3 max-w-2xl text-graphite">
-        {t(kind === "leads" ? "leadsIntro" : "schemesIntro")}
-      </p>
+    <main className="product-page">
+      <PageIntro
+        eyebrow={workspace("discover")}
+        title={t(kind === "leads" ? "leadsTitle" : "schemesTitle")}
+        description={t(kind === "leads" ? "leadsIntro" : "schemesIntro")}
+        icon={kind}
+      />
       <form
-        className="mt-8 flex flex-wrap gap-3 rounded-xl border border-graphite/25 p-5"
+        className="control-panel flex flex-wrap gap-4"
         onSubmit={(event) => {
           event.preventDefault();
           void search();
@@ -175,6 +212,9 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
           <input
             className="rounded border border-graphite/30 bg-background p-2"
             value={query}
+            placeholder={t(
+              kind === "leads" ? "searchPlaceholder" : "schemePlaceholder",
+            )}
             onChange={(event) => setQuery(event.target.value)}
             required
           />
@@ -231,6 +271,15 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
           </button>
         </div>
       </form>
+      {!result && !busy && !error && (
+        <section className="empty-state">
+          <Icon name={kind} />
+          <h2>
+            {t(kind === "leads" ? "emptyLeadsTitle" : "emptySchemesTitle")}
+          </h2>
+          <p>{t(kind === "leads" ? "emptyLeadsIntro" : "emptySchemesIntro")}</p>
+        </section>
+      )}
       {busy && (
         <p role="status" className="mt-5">
           {t("loading")}
@@ -264,7 +313,10 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
         </p>
       )}
       {result && (
-        <p className="mt-5 text-graphite">
+        <p
+          className="status-note font-mono text-xs text-graphite"
+          role="status"
+        >
           {kind === "leads"
             ? `${result.leads?.length ?? 0} ${t("results")} · ${t("radius")} ${result.radius_km ?? 0} km`
             : `${result.schemes?.length ?? 0} ${t("results")}`}
@@ -337,10 +389,7 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
       )}
       <div className="mt-5 grid gap-4 md:grid-cols-2">
         {result?.leads?.map((lead) => (
-          <article
-            key={lead.id}
-            className="rounded-xl border border-graphite/25 p-5"
-          >
+          <article key={lead.id} className="result-card">
             <div className="flex items-start justify-between gap-3">
               <h2 className="text-xl font-semibold">{lead.title}</h2>
               {lead.scam.badge !== "none" && (
@@ -352,7 +401,7 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             <p className="mt-1 text-graphite">
               {lead.org} · {lead.location}
             </p>
-            <p className="mt-2">
+            <p className="mt-2 font-mono text-xs">
               {lead.remote
                 ? t("remote")
                 : lead.distance_km == null
@@ -361,10 +410,35 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
               {lead.pay ? `· ${lead.pay}` : ""}
             </p>
             {lead.match && (
-              <p className="mt-2 text-sm">
-                {t("match")}: {Math.round(lead.match.score * 100)} ·{" "}
-                {t("missing")}: {lead.match.missing.join(", ") || t("none")}
-              </p>
+              <div className="match-panel">
+                <div>
+                  <span>{t("match")}</span>
+                  <strong>{lead.match.score.toFixed(2)}</strong>
+                </div>
+                <details>
+                  <summary>{t("breakdown")}</summary>
+                  <dl>
+                    {Object.entries(lead.match.components).map(
+                      ([name, value]) => (
+                        <div key={name}>
+                          <dt>{t.has(name) ? t(name) : name}</dt>
+                          <dd>{value.toFixed(3)}</dd>
+                        </div>
+                      ),
+                    )}
+                  </dl>
+                </details>
+                <p>
+                  {t("missing")}:{" "}
+                  {lead.match.missing.length
+                    ? lead.match.missing.map((id) => (
+                        <span key={id} className="missing-skill">
+                          {skillLabels[id] ?? id}
+                        </span>
+                      ))
+                    : t("none")}
+                </p>
+              </div>
             )}
             {lead.scam.reasons.length > 0 && (
               <p className="mt-2 text-signal text-sm">
@@ -374,25 +448,24 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             {lead.new_since_visit && (
               <p className="mt-2 text-sage">{t("new")}</p>
             )}
-            <p className="mt-3 text-graphite text-xs">
-              {lead.source} · {t("fetched")}{" "}
-              {new Date(lead.fetched_at).toLocaleString()}
-            </p>
-            <a
-              className="mt-2 inline-block text-signal underline"
-              href={lead.source_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("sourceLink")}
-            </a>
+            <div className="source-footer">
+              <p>
+                {lead.source} · {t("fetched")}{" "}
+                {new Date(lead.fetched_at).toLocaleString()}
+              </p>
+              <a
+                className="text-signal underline underline-offset-4"
+                href={lead.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("sourceLink")}
+              </a>
+            </div>
           </article>
         ))}
         {result?.schemes?.map((scheme) => (
-          <article
-            key={scheme.id}
-            className="rounded-xl border border-graphite/25 p-5"
-          >
+          <article key={scheme.id} className="result-card">
             <h2 className="text-xl font-semibold">
               {locale === "te" && scheme.name_te
                 ? scheme.name_te
@@ -401,7 +474,9 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             {newSchemeIds.includes(scheme.id) && (
               <p className="mt-1 text-sage">{t("new")}</p>
             )}
-            <p className="mt-1 text-graphite">
+            <p
+              className={`eligibility-badge ${scheme.eligibility.status === "true" ? "eligible" : "unknown"}`}
+            >
               {scheme.level} · {t("eligibility")}:{" "}
               {t(
                 scheme.eligibility.status === "true" ? "qualifies" : "unknown",
@@ -423,7 +498,12 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             )}
             {scheme.eligibility.missing_fields.length > 0 && (
               <p className="mt-3">
-                {t("missing")}: {scheme.eligibility.missing_fields.join(", ")}
+                {t("unknownQuestion")}{" "}
+                {scheme.eligibility.missing_fields
+                  .map((field) =>
+                    t.has(`field_${field}`) ? t(`field_${field}`) : field,
+                  )
+                  .join(", ")}
               </p>
             )}
             {scheme.eligibility_text && (
@@ -455,19 +535,21 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
                 ))}
               </details>
             )}
-            <p className="mt-3 text-graphite text-xs">
-              {scheme.source ?? "myScheme"} · {t("fetched")}{" "}
-              {new Date(scheme.fetched_at).toLocaleString()}
-              {scheme.as_of ? ` · ${t("sourceUpdated")} ${scheme.as_of}` : ""}
-            </p>
-            <a
-              className="mt-2 inline-block text-signal underline"
-              href={scheme.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("sourceLink")}
-            </a>
+            <div className="source-footer">
+              <p>
+                {scheme.source ?? "myScheme"} · {t("fetched")}{" "}
+                {new Date(scheme.fetched_at).toLocaleString()}
+                {scheme.as_of ? ` · ${t("sourceUpdated")} ${scheme.as_of}` : ""}
+              </p>
+              <a
+                className="text-signal underline underline-offset-4"
+                href={scheme.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("sourceLink")}
+              </a>
+            </div>
           </article>
         ))}
       </div>

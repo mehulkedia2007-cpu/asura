@@ -1,66 +1,114 @@
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
+import { Icon } from "@/components/Icon";
 import { Link } from "@/i18n/navigation";
 
 export default async function Home() {
-  const locale = await getLocale();
-  const t = await getTranslations("brand");
-  const pathT = await getTranslations("path");
-  const liveT = await getTranslations("live");
-  const voiceT = await getTranslations("voice");
-
-  const isTelugu = locale === "te";
-  const isDevanagari = locale === "hi";
-
-  const wordmarkFont = isTelugu ? "font-telugu-serif" : "font-display";
-  const statusFont = isTelugu
-    ? "font-telugu-sans"
-    : isDevanagari
-      ? "font-devanagari-sans"
-      : "font-mono";
-
+  const t = await getTranslations("home");
+  const nav = await getTranslations("workspace");
   return (
-    <main className="flex flex-1 flex-col items-start justify-center gap-6 px-6 py-16 sm:px-16">
-      <h1
-        className={`${wordmarkFont} text-[clamp(3.5rem,12vw,8rem)] leading-none text-ink`}
-      >
-        {t("wordmark")}
-      </h1>
-      <div aria-hidden="true" className="h-px w-16 bg-graphite" />
-      <p
-        className={`${statusFont} flex items-center gap-2 text-graphite text-lg`}
-      >
-        <span
-          aria-hidden="true"
-          className="inline-block h-2 w-2 rounded-full bg-sage"
-        />
-        {t("status")}
+    <main className="product-page home-page">
+      <p className="home-kicker">
+        <span aria-hidden="true" />
+        {t("eyebrow")}
       </p>
-      <nav className="flex flex-wrap gap-3">
-        <Link
-          href="/path"
-          className="rounded bg-signal px-5 py-3 font-ui text-white"
-        >
-          {pathT("open")} →
+      <div className="home-hero">
+        <div className="home-hero-copy">
+          <h1 className="home-title">
+            {t("title")}
+            <br />
+            <em>{t("titleAccent")}</em>
+          </h1>
+          <p>{t("intro")}</p>
+          <div className="home-actions">
+            <Link href="/path" className="primary-link">
+              {t("primary")}
+              <Icon name="arrow" />
+            </Link>
+            <Link href="/leads" className="secondary-link">
+              {t("secondary")}
+              <Icon name="arrow" />
+            </Link>
+          </div>
+        </div>
+        <section className="home-route" aria-label={t("how")}>
+          <h2 className="section-label">{t("how")}</h2>
+          {[1, 2, 3].map((step) => (
+            <div className="journey-row" key={step}>
+              <span className="journey-step" aria-hidden="true">
+                0{step}
+              </span>
+              <div>
+                <h3>{t(`step${step}`)}</h3>
+                <p>{t(`step${step}Note`)}</p>
+              </div>
+            </div>
+          ))}
+        </section>
+      </div>
+      <div className="section-heading">
+        <h2>{t("choose")}</h2>
+      </div>
+      <div className="journey-grid">
+        <section className="journey-card">
+          <div className="journey-card-header">
+            <span className="journey-icon">
+              <Icon name="path" />
+            </span>
+            <span className="section-label">{t("studentTag")}</span>
+          </div>
+          <h3>{t("studentTitle")}</h3>
+          <p>{t("studentIntro")}</p>
+          <div className="journey-card-links">
+            <Link href="/path">
+              {nav("path")}
+              <Icon name="arrow" />
+            </Link>
+            <Link href="/prep">
+              {nav("prep")}
+              <Icon name="arrow" />
+            </Link>
+            <Link href="/interview">
+              {nav("interview")}
+              <Icon name="arrow" />
+            </Link>
+          </div>
+        </section>
+        <section className="journey-card">
+          <div className="journey-card-header">
+            <span className="journey-icon">
+              <Icon name="schemes" />
+            </span>
+            <span className="section-label">{t("ruralTag")}</span>
+          </div>
+          <h3>{t("ruralTitle")}</h3>
+          <p>{t("ruralIntro")}</p>
+          <div className="journey-card-links">
+            <Link href="/leads">
+              {nav("leads")}
+              <Icon name="arrow" />
+            </Link>
+            <Link href="/schemes">
+              {nav("schemes")}
+              <Icon name="arrow" />
+            </Link>
+            <Link href="/voice">
+              {nav("voice")}
+              <Icon name="arrow" />
+            </Link>
+          </div>
+        </section>
+      </div>
+      <section className="evidence-callout">
+        <Icon name="evidence" />
+        <div>
+          <h2>{t("evidenceTitle")}</h2>
+          <p>{t("evidenceIntro")}</p>
+        </div>
+        <Link href="/evidence" className="secondary-link">
+          {nav("viewEvidence")}
+          <Icon name="arrow" />
         </Link>
-        <Link
-          href="/leads"
-          className="rounded border border-graphite/40 px-5 py-3 font-ui"
-        >
-          {liveT("leadsTitle")} →
-        </Link>
-        <Link
-          href="/schemes"
-          className="rounded border border-graphite/40 px-5 py-3 font-ui"
-        >
-          {liveT("schemesTitle")} →
-        </Link>
-        <Link
-          href="/voice"
-          className="rounded border border-graphite/40 px-5 py-3 font-ui"
-        >
-          {voiceT("open")} →
-        </Link>
-      </nav>
+      </section>
     </main>
   );
 }
