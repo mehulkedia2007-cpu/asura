@@ -169,7 +169,9 @@
     "level2": "Know the basics",
     "level3": "Can do simple tasks",
     "level4": "Can work on my own",
-    "level5": "Can help others learn"
+    "level5": "Can help others learn",
+    "progressHelp": "To record a skill you have learned: choose the skill, choose your current level, then press Save skill and update my plan. Saved skills appear in green with their level. Skills still needed for the job remain in your plan. Clicking a map skill only opens its details.",
+    "demandHelp": "Job demand is a what-if example: choose a skill from your plan and press See a change in job demand. It shows how more job listings asking for that skill could change your learning order. It is not a live forecast and does not mark a skill as learned."
   },
   "voice": {
     "label": "voice",
@@ -296,7 +298,11 @@
     "questionsSetup": "Find your company and role",
     "noticeSetup": "Start with your placement notice",
     "sampleNotice": "Try a sample placement notice",
-    "sampleNoticeHelp": "This example is for practice only. It is not a real job opening. Replace it with your college notice when ready."
+    "sampleNoticeHelp": "This example is for practice only. It is not a real job opening. Replace it with your college notice when ready.",
+    "customRole": "Other — type your own job title",
+    "customRolePlaceholder": "For example, Robotics Engineer",
+    "roleHelp": "Choose a title or select Other to type your own. Suggested titles do not mean we have reported questions for every company.",
+    "topicHelp": "Optional: enter a subject such as SQL, Excel or communication to narrow the questions. Leave blank to see all matching topics."
   },
   "p6": {
     "title": "Sources and checks",

@@ -95,6 +95,32 @@ type Session = {
   jd_status: string;
   locale: string;
 };
+const commonJobTitles = [
+  "Software Developer",
+  "Web Developer",
+  "Data Analyst",
+  "Accountant",
+  "Sales Executive",
+  "Customer Support Executive",
+  "HR Executive",
+  "Office Assistant",
+  "Teacher",
+  "Nurse",
+  "Mechanical Engineer",
+  "Electrical Engineer",
+  "Civil Engineer",
+  "Digital Marketing Executive",
+  "Graphic Designer",
+  "Quality Analyst",
+  "Cybersecurity Analyst",
+  "Cloud Engineer",
+  "AI Engineer",
+  "UX Designer",
+  "Agriculture Officer",
+  "Lab Technician",
+  "Supply Chain Analyst",
+  "Renewable Energy Engineer",
+];
 const fieldNames = [
   "company",
   "role",
@@ -214,6 +240,7 @@ export function Preparation({
   const [roles, setRoles] = useState<(Labels & { id: string })[]>([]);
   const [company, setCompany] = useState("tcs");
   const [role, setRole] = useState("Prime");
+  const [customRole, setCustomRole] = useState(false);
   const [goal, setGoal] = useState("data_analyst");
   const [query, setQuery] = useState("");
   const [year, setYear] = useState("");
@@ -443,6 +470,12 @@ export function Preparation({
       setError("micError");
     }
   }
+  const jobTitles = [
+    ...new Set([
+      ...(companies.find((item) => item.id === company)?.roles ?? []),
+      ...commonJobTitles,
+    ]),
+  ];
   const selector = (
     <div className="grid gap-4 md:grid-cols-3">
       <label className="grid gap-2 text-sm">
@@ -453,6 +486,7 @@ export function Preparation({
           value={company}
           onChange={(event) => {
             setCompany(event.target.value);
+            setCustomRole(false);
             setRole(
               companies.find((c) => c.id === event.target.value)?.roles[0] ??
                 "",
@@ -472,22 +506,41 @@ export function Preparation({
       </label>
       <label className="grid gap-2 text-sm">
         {t("role")}
-        <input
-          list="company-job-titles"
+        <select
+          aria-label={t("role")}
           className={inputStyle}
-          value={role}
+          value={customRole ? "__custom" : role}
           onChange={(event) => {
-            setRole(event.target.value);
+            const custom = event.target.value === "__custom";
+            setCustomRole(custom);
+            setRole(custom ? "" : event.target.value);
             setResults(null);
           }}
-        />
-        <datalist id="company-job-titles">
-          {(companies.find((item) => item.id === company)?.roles ?? []).map(
-            (name) => (
-              <option key={name} value={name} />
-            ),
+        >
+          {role && !jobTitles.includes(role) && !customRole && (
+            <option value={role}>{role}</option>
           )}
-        </datalist>
+          {jobTitles.map((name) => (
+            <option key={name} value={name}>
+              {name}
+            </option>
+          ))}
+          <option value="__custom">{t("customRole")}</option>
+        </select>
+        {customRole && (
+          <input
+            aria-label={t("customRole")}
+            maxLength={100}
+            placeholder={t("customRolePlaceholder")}
+            className={inputStyle}
+            value={role}
+            onChange={(event) => {
+              setRole(event.target.value);
+              setResults(null);
+            }}
+          />
+        )}
+        <p className="text-graphite text-xs">{t("roleHelp")}</p>
       </label>
       {screen !== "questions" && (
         <label className="grid gap-2 text-sm">
@@ -548,10 +601,13 @@ export function Preparation({
             <label className="grid gap-2 text-sm">
               {t("query")}
               <input
+                aria-label={t("query")}
                 className={inputStyle}
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
+                placeholder="SQL, Excel, communication"
               />
+              <p className="text-graphite text-xs">{t("topicHelp")}</p>
             </label>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="grid gap-2 text-sm">
@@ -894,7 +950,7 @@ export function Preparation({
               </label>
               <button
                 className={buttonStyle}
-                disabled={busy}
+                disabled={busy || !role.trim()}
                 type="button"
                 onClick={() =>
                   void task(async () =>

@@ -292,7 +292,7 @@ export function PathExplorer() {
             <li key={step.skill} className="relative pb-6 pl-6 last:pb-0">
               <span
                 aria-hidden="true"
-                className="absolute rounded-full border-2 border-background bg-sage"
+                className="absolute rounded-full border-2 border-background bg-amber"
                 style={{
                   width: `${Math.round(12 * step.demand)}px`,
                   height: `${Math.round(12 * step.demand)}px`,
@@ -445,6 +445,8 @@ export function PathExplorer() {
           )}
         </div>
       </div>
+      <p className="mt-4 text-sm text-graphite">{t("progressHelp")}</p>
+      <p className="mt-2 text-sm text-graphite">{t("demandHelp")}</p>
       {error && (
         <div role="alert" className="mt-5">
           <p>{error}</p>
@@ -491,7 +493,7 @@ export function PathExplorer() {
           <h2 className="section-label">{t("heldTitle")}</h2>
           <div className="path-map">
             {Object.entries(held).map(([id, value]) => (
-              <span key={id}>
+              <span key={id} className="text-sage">
                 {skillName(id)} <b>{value}/5</b>
               </span>
             ))}
