@@ -30,3 +30,11 @@ These are observed results, not a guarantee that every search has current vacanc
 The updated `DAARI-user-demo.md` records the production walkthrough results and chapter timestamps after publication. The video uses an explicitly fictional placement notice and sample answers.
 
 Final visual review found a central-sponsored scholarship explicitly for Afghan students in the source library. Scheme admission now excludes titles targeted to foreign students/nationals while preserving overseas-study support for Indian applicants; a regression covers both cases.
+
+## Production release checks
+
+- Functional release `18e0000`: both Vercel projects ready; `/ready` returned `ok: true`, matching revision, database ready and Redis pong.
+- GitHub CI run `38026217012`: core, API and web jobs all succeeded (216 unit/regression tests total).
+- Production UI audit repeated successfully: 57 accessibility states, 108 responsive checks, all three locales.
+- Production named-scheme library: 208 scoped choices; no Afghan-student-only title remained.
+- Pasted companies absent from the interview-report library retain their own visible option, rather than appearing to select a different company. The walkthrough verifies both company and role before starting practice.
