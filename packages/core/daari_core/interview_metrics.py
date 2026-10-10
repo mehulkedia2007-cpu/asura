@@ -6,7 +6,7 @@ import re
 STAR = {
     "situation": ("project", "team", "when", "ప్రాజెక్ట్", "బృందం", "परियोजना", "टीम"),
     "task": ("task", "goal", "needed", "responsible", "లక్ష్యం", "బాధ్యత", "लक्ष्य", "जिम्मेदारी"),
-    "action": ("built", "created", "analysed", "analyzed", "implemented", "చేశాను", "నిర్మించాను", "बनाया", "किया"),
+    "action": ("i used", "i checked", "i wrote", "i compared", "i tested", "i explained", "built", "created", "analysed", "analyzed", "implemented", "చేశాను", "నిర్మించాను", "बनाया", "किया"),
     "result": ("result", "reduced", "improved", "achieved", "ఫలితం", "తగ్గింది", "परिणाम", "सुधार"),
 }
 FILLERS = ("um", "uh", "erm", "you know", "అంటే", "అమ్", "मतलब", "उम्म")

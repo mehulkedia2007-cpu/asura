@@ -53,3 +53,9 @@ def test_prep_unions_corpus_skills_without_mutation(skills_data, roles_data):
     result = required_path(taxonomy, {}, goal, {extra: 5}, {})
     assert extra in {s.skill for s in result.steps}
     assert taxonomy.roles[goal].required_skills == before
+
+
+def test_common_first_person_actions_are_recognized():
+    for phrase in ("I used SQL", "I checked the totals", "I wrote a report", "I compared records", "I tested the change", "I explained the problem"):
+        assert measure(phrase)["star"]["action"]
+    assert not measure("A used car was checked by someone else")["star"]["action"]

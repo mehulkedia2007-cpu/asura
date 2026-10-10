@@ -10,7 +10,7 @@
 
 ## Checks before deployment
 
-- Core: 88 tests passed.
+- Core: 89 tests passed.
 - API: 120 tests passed, Ruff clean, Pyright zero errors.
 - Web: 8 tests passed; Biome, TypeScript and production build passed.
 - Browser accessibility/layout: 57 accessibility states and 108 responsive route checks across all three languages passed.
@@ -34,7 +34,9 @@ Final visual review found a central-sponsored scholarship explicitly for Afghan 
 ## Production release checks
 
 - Functional release `18e0000`: both Vercel projects ready; `/ready` returned `ok: true`, matching revision, database ready and Redis pong.
-- GitHub CI run `38026217012`: core, API and web jobs all succeeded (216 unit/regression tests total).
+- GitHub CI run `38026217012`: core, API and web jobs all succeeded (216 tests at that revision; the final feedback regression raises the total to 217).
 - Production UI audit repeated successfully: 57 accessibility states, 108 responsive checks, all three locales.
 - Production named-scheme library: 208 scoped choices; no Afghan-student-only title remained.
 - Pasted companies absent from the interview-report library retain their own visible option, rather than appearing to select a different company. The walkthrough verifies both company and role before starting practice.
+
+Video review additionally caught an action-keyword false negative for “I used SQL”. Added common first-person action phrases with exact boundaries, a negative control for third-person descriptions, and plain-English feedback headings. The updated demo asserts that its first answer is recognized as an action. Metrics remain lexical practice aids, not semantic grading.

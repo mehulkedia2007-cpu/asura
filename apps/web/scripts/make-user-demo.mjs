@@ -271,6 +271,8 @@ try {
         );
       const result = await click("/interview/answer", t.p5.submit);
       assert.equal(result.attempts.length, 1);
+      assert.equal(result.attempts[0].metrics.star.action, true);
+      assert(!result.attempts[0].feedback.some((row) => row.code === "action"));
       assert(result.attempts[0].feedback.length > 0);
       proof.practice = {
         questions: session.questions.length,
