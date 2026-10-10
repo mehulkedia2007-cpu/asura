@@ -127,6 +127,16 @@ def test_google_relative_dates_are_anchored_to_source_fetch_not_latest_request()
     assert google_jobs.posted_date("unknown", stamp) is None
 
 
+def test_appsc_accepts_its_registered_official_portal_and_rejects_foreign_links():
+    date = datetime.now(UTC).strftime("%d/%m/%Y")
+    title = f"Recruitment notification: applications invited for engineer dated {date}"
+    html = f'<a href="/Documents/notice.pdf">{title}</a><a href="https://example.com/notice.pdf">{title}</a>'
+    entry = {"id": "appsc", "label": "APPSC", "parser": "appsc_recruitment", "url_template": "https://portal-psc.ap.gov.in/HomePages/RecruitmentNotifications"}
+    rows = parse(html, entry, datetime.now(UTC).isoformat(), "engineer")
+    assert len(rows) == 1
+    assert rows[0]["source_url"] == "https://portal-psc.ap.gov.in/Documents/notice.pdf"
+
+
 @pytest.mark.asyncio
 async def test_google_jobs_never_spends_on_paid_plan_or_exhausted_free_quota(monkeypatch):
     monkeypatch.setattr(google_jobs.settings, "SERPAPI_KEY", "test-private-key")

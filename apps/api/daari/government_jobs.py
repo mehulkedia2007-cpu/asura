@@ -64,7 +64,7 @@ def parse(html: str, entry: dict, stamp: str, query: str) -> list[dict]:
         for label, href in links.links:
             url = urljoin(entry["url_template"], href)
             host = urlparse(url).hostname or ""
-            if host == "psc.ap.gov.in" or host.endswith(".psc.ap.gov.in"):
+            if host in {"psc.ap.gov.in", urlparse(entry["url_template"]).hostname} or host.endswith(".psc.ap.gov.in"):
                 date = re.search(r"\b\d{2}[./-]\d{2}[./-]\d{4}\b", label)
                 if date:
                     candidates.append((label, date.group(), url))

@@ -23,7 +23,7 @@
 
 ## Retest results
 
-- 88 core tests, 116 API tests and 7 web tests; lint, API types, web types and production build.
+- 88 core tests, 117 API tests and 7 web tests; lint, API types, web types and production build.
 - 57 accessibility states, 108 responsive route checks, all three languages.
 - Motion/sound and cursor-responsive background checks passed, including reduced motion, pause and fallback paths.
 - AP controls passed in en/te/hi: remote opt-in, government browsing with an empty keyword, stale card clearing and cancelled-response rejection. The real government browser check rendered official notices without invented distance.
