@@ -24,6 +24,8 @@ def ap_or_national(record: dict) -> bool:
         return False
     if any(re.search(r"\b" + re.escape(region) + r"\b", title) for region in _OTHER_REGIONS):
         return False
+    if re.search(r"(?:for|to) (?:afghan|foreign|international|non.indian) (?:students|nationals|citizens)", title):
+        return False
     if re.search(r"(?:of|from) asean member countries|foreign nationals only|non.indian citizens only", purpose):
         return False
     state = str(record.get("state") or "").strip().casefold()

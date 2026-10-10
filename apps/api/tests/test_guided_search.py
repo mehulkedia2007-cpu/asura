@@ -29,3 +29,11 @@ async def test_named_scheme_returns_only_selected_source_without_network(monkeyp
 async def test_no_saved_match_keeps_real_source_fallback_available(monkeypatch):
     monkeypatch.setattr(schemes, "browse", AsyncMock(return_value=[]))
     assert await schemes.search_saved("farmer", {}) is None
+
+
+def test_named_scheme_library_excludes_foreign_student_targets():
+    from daari.scheme_scope import ap_or_national
+
+    assert not ap_or_national({"level": "Central", "name_en": "Awarding Teleeducation Scholarships To Afghan Students"})
+    assert not ap_or_national({"level": "Central", "name_en": "Scholarship for International Students"})
+    assert ap_or_national({"level": "Central", "name_en": "National Overseas Scholarship For Scheduled Caste Candidates"})
