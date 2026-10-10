@@ -53,6 +53,7 @@ type Result = {
   errors?: Record<string, string>;
   error?: string | null;
   stale?: boolean;
+  refresh_status?: "not_requested" | "updated" | "unavailable";
   source_errors?: string[];
   truncated?: boolean;
   coverage?: {
@@ -194,7 +195,9 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
         body: JSON.stringify(body),
         signal: AbortSignal.any([
           controller.signal,
-          AbortSignal.timeout(90_000),
+          AbortSignal.timeout(
+            kind === "schemes" ? (refresh ? 15_000 : 8_000) : 90_000,
+          ),
         ]),
       });
       const data = await response.json();
@@ -216,15 +219,25 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
         if (data.demand)
           localStorage.setItem("daari-demand", JSON.stringify(data.demand));
       } else {
-        const seen = new Set<string>(
-          JSON.parse(localStorage.getItem("daari-seen-schemes") ?? "[]"),
-        );
+        let seen = new Set<string>();
+        try {
+          const previous = JSON.parse(
+            localStorage.getItem("daari-seen-schemes") ?? "[]",
+          );
+          if (Array.isArray(previous)) seen = new Set(previous);
+        } catch {
+          // A damaged visit history must not turn a successful search into an error.
+        }
         const ids = (data.schemes ?? []).map((item: Scheme) => item.id);
         setNewSchemeIds(ids.filter((id: string) => !seen.has(id)));
-        localStorage.setItem(
-          "daari-seen-schemes",
-          JSON.stringify([...new Set([...seen, ...ids])]),
-        );
+        try {
+          localStorage.setItem(
+            "daari-seen-schemes",
+            JSON.stringify([...new Set([...seen, ...ids])]),
+          );
+        } catch {
+          // Browser storage may be unavailable; results still remain usable.
+        }
       }
     } catch (cause) {
       if (!controller.signal.aborted)
@@ -447,7 +460,23 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
           {error}
         </p>
       )}
-      {result?.stale && <p className="mt-5 text-signal">{t("stale")}</p>}
+      {result?.stale && (
+        <p role="note" className="mt-5 text-graphite">
+          {t("stale")}
+        </p>
+      )}
+      {kind === "schemes" && result?.refresh_status === "updated" && (
+        <p role="status" className="mt-5 text-sage">
+          {t("refreshDone")}
+        </p>
+      )}
+      {kind === "schemes" &&
+        result?.refresh_status === "unavailable" &&
+        !result.source_errors?.length && (
+          <p role="status" className="mt-5 text-graphite">
+            {t("refreshNoChange")}
+          </p>
+        )}
       {result?.error && (
         <p className="mt-5 text-signal">
           {t("sourceError")}: {result.error}
@@ -455,7 +484,9 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
       )}
       {result?.source_errors && result.source_errors.length > 0 && (
         <p className="mt-5 text-signal">
-          {t("sourceError")}: {result.source_errors.join(", ")}
+          {kind === "schemes"
+            ? t("schemeRefreshUnavailable")
+            : `${t("sourceError")}: ${result.source_errors.join(", ")}`}
         </p>
       )}
       {result?.truncated && (
@@ -669,7 +700,11 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             >
               {scheme.level} · {t("eligibility")}:{" "}
               {t(
-                scheme.eligibility.status === "true" ? "qualifies" : "unknown",
+                scheme.eligibility.status === "true"
+                  ? "qualifies"
+                  : scheme.eligibility.status === "false"
+                    ? "doesNotQualify"
+                    : "unknown",
               )}
             </p>
             {(locale === "te" && scheme.summary_te
@@ -683,7 +718,12 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             )}
             {scheme.eligibility.reasons.length > 0 && (
               <p className="mt-3 text-sm">
-                {t("whyQualifies")}: {scheme.eligibility.reasons.join("; ")}
+                {t(
+                  scheme.eligibility.status === "false"
+                    ? "unmatchedRules"
+                    : "whyQualifies",
+                )}
+                : {scheme.eligibility.reasons.join("; ")}
               </p>
             )}
             {scheme.eligibility.missing_fields.length > 0 && (

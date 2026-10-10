@@ -44,14 +44,14 @@ async def cached_get(client: httpx.AsyncClient, key: str, url: str,
 
 
 async def search_pages(client: httpx.AsyncClient, query: str, refresh: bool,
-                       locale: str = "en") -> tuple[list[tuple[dict, str]], list[str], bool]:
+                       locale: str = "en", *, max_results: int = 1000) -> tuple[list[tuple[dict, str]], list[str], bool]:
     """Page up to 1,000 matches; return raw records, source stamps and truncation."""
     from daari.schemes import _items
 
     results: list[tuple[dict, str]] = []
     errors: list[str] = []
     total = 0
-    for offset in range(0, 1000, 100):
+    for offset in range(0, min(max_results, 1000), 100):
         cache, error = await cached_get(client, f"myscheme:{locale}:{query.casefold()}:{offset}",
             source("myscheme_ap")["url_template"],
             {"lang": locale, "q": "[]", "keyword": query, "sort": "", "from": offset, "size": 100},

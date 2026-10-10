@@ -318,3 +318,7 @@ all three languages. Record the remaining live scheme accuracy gap explicitly.
 ## 2026-10-10 · Guided search and plain-language preparation
 
 Expose common job searches and exact named schemes from the scoped source index, preserving original source dates and unknown eligibility. Expand to 20 introductory roles using existing supported skills and occupational references without inventing qualification codes. Keep the pasted notice visible, offer an explicitly fictional sample, and explain every preparation stage in all three languages. Use a real browser recording with assertions for the user demo; never mock live responses or present the sample notice as a vacancy.
+
+## 2026-10-10 · Bound interactive scheme search and refresh
+
+Use the saved official-source index for ordinary searches, including no-match queries. Keep external refresh explicit and limited to six seconds, with focused selected-scheme detail and partial-provider fallback. Broad indexing, embeddings and model extraction remain outside the interactive request. Cache only public catalog records for 30 seconds; clone before evaluating personal facts and invalidate on writes. Preserve explicitly selected records when checked profile rules do not match and explain the mismatch. Keep source dates truthful and show stale-snapshot notices as information.

@@ -1,8 +1,11 @@
 """Hybrid pgvector/tsvector index for stamped government scheme records."""
 
+import asyncio
+import copy
 import hashlib
 import json
 import math
+import time
 from datetime import datetime
 from typing import Any
 
@@ -16,6 +19,29 @@ from daari.scheme_scope import ap_or_national
 
 EMBEDDING_KIND = "gemini-embedding-001:768"
 _MODEL = "models/gemini-embedding-001"
+_catalog_cache: tuple[float, list[dict], list[dict]] | None = None
+_catalog_lock = asyncio.Lock()
+CATALOG_TTL_S = 30.0
+
+
+def invalidate_catalog() -> None:
+    global _catalog_cache
+    _catalog_cache = None
+
+
+async def _catalog_snapshot() -> tuple[list[dict], list[dict]]:
+    """Reuse public source records briefly, never a user's eligibility decision."""
+    global _catalog_cache
+    async with _catalog_lock:
+        if _catalog_cache is None or time.monotonic() - _catalog_cache[0] >= CATALOG_TTL_S:
+            async with engine.connect() as conn:
+                records = list((await conn.execute(text("SELECT record FROM scheme_records"))).scalars())
+                checks = (await conn.execute(text("""
+                    SELECT source_id, status, error, links, checked_at FROM source_checks ORDER BY source_id
+                """))).mappings().all()
+            _catalog_cache = (time.monotonic(), records, [dict(row) for row in checks])
+        return copy.deepcopy((_catalog_cache[1], _catalog_cache[2]))
+
 
 
 async def embed(content: str, task_type: str) -> list[float] | None:
@@ -75,6 +101,7 @@ async def upsert(record: dict, *, summary_only: bool = False, embed_documents: b
                               embedding=NULL, embedding_kind=NULL
                             WHERE scheme_chunks.content_hash != EXCLUDED.content_hash
                         """), {"id": scheme_id, "locale": locale, "content": content, "hash": digest})
+            invalidate_catalog()
             return {"scheme_id": scheme_id, "locales": [], "skipped": "already_indexed"}
     stored = {key: value for key, value in record.items() if key != "eligibility"}
     encoded = json.dumps(stored, ensure_ascii=False)
@@ -114,6 +141,7 @@ async def upsert(record: dict, *, summary_only: bool = False, embed_documents: b
                     "hash": content_hash, "vector": json.dumps(vector) if vector else None,
                     "kind": EMBEDDING_KIND if vector else None})
         indexed.append(locale)
+    invalidate_catalog()
     return {"scheme_id": scheme_id, "locales": indexed}
 
 
@@ -190,26 +218,21 @@ async def retrieve(query: str, limit: int = 8, *, use_embeddings: bool = True) -
 
 async def browse() -> list[dict]:
     """Real, source-stamped AP/national records for the scheme chooser."""
-    async with engine.connect() as conn:
-        records = list((await conn.execute(text("SELECT record FROM scheme_records"))).scalars())
+    records, _ = await _catalog_snapshot()
     return sorted((r for r in records if ap_or_national(r)),
                   key=lambda r: (r.get("state") != "Andhra Pradesh", r["name_en"].casefold()))
 
 
 async def coverage() -> dict[str, Any]:
-    """Counts from indexed source records, including the newest refresh stamp."""
-    async with engine.connect() as conn:
-        rows = (await conn.execute(text("SELECT record, fetched_at FROM scheme_records"))).all()
-        checks = (await conn.execute(text("""
-            SELECT source_id, status, error, links, checked_at FROM source_checks ORDER BY source_id
-        """))).mappings().all()
-    records = [row[0] for row in rows]
+    """Counts describe the same scoped library shown to the user."""
+    all_records, checks = await _catalog_snapshot()
+    records = [r for r in all_records if ap_or_national(r)]
     return {
         "indexed": len(records),
         "ap": sum(record.get("state") == "Andhra Pradesh" for record in records),
         "central": sum("central" in str(record.get("level", "")).casefold() for record in records),
         "other": sum(record.get("state") != "Andhra Pradesh" and
                      "central" not in str(record.get("level", "")).casefold() for record in records),
-        "latest_refresh": max((row[1] for row in rows), default=None),
-        "sources": [dict(row) for row in checks],
+        "latest_refresh": max((record["fetched_at"] for record in records), default=None),
+        "sources": checks,
     }

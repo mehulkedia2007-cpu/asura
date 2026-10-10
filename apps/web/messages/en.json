@@ -28,7 +28,7 @@
     "search": "Search",
     "refresh": "Refresh sources",
     "loading": "Looking for results…",
-    "stale": "These saved details may have changed. Check the official website before applying.",
+    "stale": "Showing saved source details. Use Refresh sources to check for updates, or open the official website before applying.",
     "sourceError": "Source issue",
     "results": "results",
     "radius": "Search radius",
@@ -103,9 +103,14 @@
     "schemeFarmer": "Support for farmers",
     "schemeWomen": "Support for women",
     "noJobsHelp": "Try a different job or nearby AP town. For work from home, tick the remote jobs option. You can also check the official job portal below.",
-    "noSchemesHelp": "Choose a named scheme from the list above, or try a broader need such as training. No result does not mean you cannot get support.",
+    "noSchemesHelp": "No match in the saved library. Try another need or a named scheme above. Use Refresh sources to check official sites for new matches.",
     "officialJobs": "Open the National Career Service job portal",
-    "officialSchemes": "Explore schemes on myScheme"
+    "officialSchemes": "Explore schemes on myScheme",
+    "refreshDone": "Official source details checked. Review the date on each result.",
+    "schemeRefreshUnavailable": "Some official sources could not be checked quickly. Saved results are kept below; you can open the official website or try again later.",
+    "doesNotQualify": "Does not match the rules we could check",
+    "unmatchedRules": "Rules that do not match",
+    "refreshNoChange": "No newer details were found. Your saved results remain below."
   },
   "path": {
     "noAssessment": "There are no assessment questions for this skill yet. You can still add your own skill level.",

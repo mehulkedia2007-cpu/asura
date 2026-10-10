@@ -50,17 +50,7 @@ async def search_leads(args: LeadSearch) -> dict:
 @router.post("/schemes/search")
 async def search_schemes(args: SchemeSearch) -> dict:
     try:
-        if not args.refresh:
-            saved = await schemes.search_saved(args.query, args.profile, args.scheme_id)
-            if saved is not None:
-                return saved
-        refreshed = await schemes.search(args.query, args.profile, args.refresh, args.locale)
-        if args.scheme_id:
-            selected = await schemes.search_saved(args.query, args.profile, args.scheme_id)
-            if selected is not None:
-                selected["source_errors"] = refreshed["source_errors"]
-                return selected
-        return refreshed
+        return await schemes.search_interactive(args.query, args.profile, args.refresh, args.locale, args.scheme_id)
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
 

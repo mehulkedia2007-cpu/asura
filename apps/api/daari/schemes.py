@@ -8,6 +8,7 @@ from typing import Any
 
 import httpx
 from daari_core.eligibility import evaluate
+from sqlalchemy.exc import SQLAlchemyError
 
 from daari.ap_portal import search as search_ap_portal
 from daari.myscheme_client import detail, search_pages
@@ -17,6 +18,7 @@ from daari.scheme_rules import extract as extract_llm_rules
 from daari.scheme_scope import ap_or_national
 
 REFRESH_TIMEOUT_S = 45.0
+INTERACTIVE_REFRESH_TIMEOUT_S = 6.0
 
 
 def _items(payload: dict) -> list[dict]:
@@ -198,18 +200,104 @@ async def search(query: str, profile: dict, refresh: bool = False, locale: str =
     return await _present(query, profile, results, retrieval, errors, len(candidates) + len(portal_schemes), truncated)
 
 
-async def search_saved(query: str, profile: dict, scheme_id: str | None = None) -> dict | None:
+async def search_saved(query: str, profile: dict, scheme_id: str | None = None) -> dict:
+    query = query.strip()
+    if not query:
+        raise ValueError("Enter a scheme name or the help you need.")
     records = await browse()
     if scheme_id:
         records = [r for r in records if r["id"] == scheme_id]
         if not records:
             raise ValueError("This scheme is no longer available. Choose another scheme.")
     else:
-        records = rank_records(query, records, limit=20, dedupe_duplicates=True)
-    if not records:
-        return None
+        # A pasted official title should return that scheme, not loosely related titles.
+        exact_names = [r for r in records if query.strip().casefold() in {
+            str(r.get("name_en") or "").strip().casefold(), str(r.get("name_te") or "").strip().casefold()}]
+        if exact_names:
+            records = exact_names
+            scheme_id = records[0]["id"]
+        else:
+            records = rank_records(query, records, limit=20, dedupe_duplicates=True)
     retrieval = {"records": records, "kind": "saved_sources", "embedding_kind": None}
     return await _present(query, profile, [], retrieval, [], len(records), False, exact=bool(scheme_id))
+
+
+async def search_interactive(query: str, profile: dict, refresh: bool = False,
+                             locale: str = "en", scheme_id: str | None = None) -> dict:
+    """Search saved evidence immediately; optional refresh has a six-second budget.
+
+    Broad indexing, model extraction and embeddings remain worker jobs. A failed
+    refresh never removes the selected scheme or changes its original date.
+    """
+    saved = await search_saved(query, profile, scheme_id)
+    saved["refresh_status"] = "not_requested"
+    if not refresh:
+        return saved
+    if not scheme_id and len(saved["schemes"]) == 1:
+        first = saved["schemes"][0]
+        if query.strip().casefold() in {str(first.get("name_en") or "").casefold(), str(first.get("name_te") or "").casefold()}:
+            scheme_id = first["id"]
+    records: list[dict] = []
+    errors: list[str] = []
+
+    async def save(record: dict, *, summary_only: bool) -> None:
+        # Publish fetched evidence even if persistence runs out of request time.
+        records.append(record)
+        try:
+            await upsert(record, summary_only=summary_only, embed_documents=False)
+        except SQLAlchemyError:
+            errors.append("index_update_failed")
+
+    async def national(client: httpx.AsyncClient) -> None:
+        if scheme_id and saved["schemes"] and saved["schemes"][0].get("source", "myScheme") == "myScheme":
+            record = dict(saved["schemes"][0])
+            payload, detail_errors = await detail(client, scheme_id, locale, True)
+            errors.extend(detail_errors)
+            if payload:
+                await save(merge_detail(record, payload), summary_only=False)
+            return
+        raw, search_errors, _ = await search_pages(client, query, True, locale, max_results=100)
+        errors.extend(search_errors)
+        candidates = [r for item, stamp in raw if (r := normalize(item, stamp)) and ap_or_national(r)]
+        for record in rank_records(query, candidates, limit=5, dedupe_duplicates=True):
+            if not scheme_id or record["id"] == scheme_id:
+                await save(record, summary_only=True)
+
+    async def state(client: httpx.AsyncClient) -> None:
+        found, source_errors = await search_ap_portal(client, query, True)
+        errors.extend(source_errors)
+        for record in rank_records(query, found, limit=5, dedupe_duplicates=True):
+            if not scheme_id or record["id"] == scheme_id:
+                await save(record, summary_only=True)
+
+    try:
+        async with asyncio.timeout(INTERACTIVE_REFRESH_TIMEOUT_S), httpx.AsyncClient(timeout=4) as client:
+            if scheme_id and not scheme_id.startswith("ap-msme:"):
+                await national(client)
+            elif scheme_id:
+                await state(client)
+            else:
+                tasks = [asyncio.create_task(national(client)), asyncio.create_task(state(client))]
+                try:
+                    await asyncio.gather(*tasks)
+                finally:
+                    for task in tasks:
+                        if not task.done():
+                            task.cancel()
+                    await asyncio.gather(*tasks, return_exceptions=True)
+    except TimeoutError:
+        errors.append("refresh_timeout")
+    except SQLAlchemyError:
+        errors.append("index_update_failed")
+    # Fresh records win only when actually obtained; unchanged saved dates stay honest.
+    combined = {r["id"]: r for r in [*saved["schemes"], *records] if ap_or_national(r)}
+    if scheme_id:
+        combined = {k: r for k, r in combined.items() if k == scheme_id}
+    retrieval = {"records": [], "kind": "saved_sources", "embedding_kind": None}
+    result = await _present(query, profile, list(combined.values()), retrieval, errors,
+                            len(combined), False, exact=bool(scheme_id))
+    result["refresh_status"] = "updated" if records and not errors else "unavailable"
+    return result
 
 
 async def _present(query: str, profile: dict, results: list, retrieval: dict, errors: list,
@@ -238,7 +326,7 @@ async def _present(query: str, profile: dict, results: list, retrieval: dict, er
             "reasons": decision.reasons if decision else (),
             "missing_fields": decision.missing_fields if decision else (),
         }
-        if scheme["eligibility"]["status"] != "false":
+        if exact or scheme["eligibility"]["status"] != "false":
             visible.append(scheme)
         if len(visible) >= 5:
             break
