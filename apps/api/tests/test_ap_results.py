@@ -93,6 +93,13 @@ def test_other_state_schemes_and_central_restricted_schemes_are_excluded():
                       "beneficiaryState": ["Kerala"]}, "stamp") is None
 
 
+def test_legacy_central_records_cannot_hide_regional_restrictions():
+    assert not ap_or_national({"level": "Central", "name_en": "Northeast BPO Promotion Scheme"})
+    assert not ap_or_national({"level": "Central", "summary_en": "Promote units in the North-Eastern region"})
+    assert not ap_or_national({"level": "Central", "name_en": "Kerala youth support"})
+    assert ap_or_national({"level": "Central", "name_en": "India BPO Promotion Scheme", "benefit_text": "Countrywide operations, excluding the North East region"})
+
+
 def test_specific_scheme_topic_cannot_be_filled_with_generic_training():
     records = [{"id": "generic", "name_en": "Vocational training", "benefit_text": "Learn skills"},
                {"id": "digital", "name_en": "Electronics training", "benefit_text": "Learn digital skills"}]

@@ -23,7 +23,7 @@
 
 ## Retest results
 
-- 88 core tests, 115 API tests and 7 web tests; lint, API types, web types and production build.
+- 88 core tests, 116 API tests and 7 web tests; lint, API types, web types and production build.
 - 57 accessibility states, 108 responsive route checks, all three languages.
 - Motion/sound and cursor-responsive background checks passed, including reduced motion, pause and fallback paths.
 - AP controls passed in en/te/hi: remote opt-in, government browsing with an empty keyword, stale card clearing and cancelled-response rejection. The real government browser check rendered official notices without invented distance.
@@ -31,5 +31,6 @@
 - Frozen 40-query scheme regression: precision@5 **0.805**, passing the ≥0.80 gate. Current 342-record local live index lexical precision@5 is **0.745**, below the gate. These are development regressions, not field accuracy.
 - Real official AP High Court recruitment notices were returned with dates and source links. APPSC was unreachable from this local environment; this is surfaced as a source error.
 - IT training returned digital/electronics/internship support records; an unrelated ASEAN-only research fellowship was excluded. Cached scheme records are marked stale where their source has not refreshed.
+- Production retesting exposed a legacy Central record restricted to North-East India. Source-text scope checks now reject regional restrictions even when old snapshots lack beneficiary-state metadata. The official [NEBPS source](https://www.meity.gov.in/writereaddata/files/NEBPS_12_v0.3.pdf) confirms its eight-state regional scope.
 
 The source registry currently has one district recruitment adapter (Guntur), alongside statewide AP sources. Other district-specific adapters, broader scheme portal ingestion, complete vacancy deadline extraction and the live retrieval accuracy gate remain open. A source-linked notice does not establish that an application window is currently open.
