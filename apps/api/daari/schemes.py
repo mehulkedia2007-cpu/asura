@@ -11,7 +11,7 @@ from daari_core.eligibility import evaluate
 
 from daari.ap_portal import search as search_ap_portal
 from daari.myscheme_client import detail, search_pages
-from daari.scheme_index import coverage, retrieve, upsert
+from daari.scheme_index import browse, coverage, retrieve, upsert
 from daari.scheme_ranking import rank_records
 from daari.scheme_rules import extract as extract_llm_rules
 from daari.scheme_scope import ap_or_national
@@ -195,7 +195,26 @@ async def search(query: str, profile: dict, refresh: bool = False, locale: str =
     except TimeoutError:
         errors.append("embedding_timeout")
         retrieval = await retrieve(query, use_embeddings=False)
-    retrieval_scores = {item["id"]: item["retrieval_score"] for item in retrieval["records"]}
+    return await _present(query, profile, results, retrieval, errors, len(candidates) + len(portal_schemes), truncated)
+
+
+async def search_saved(query: str, profile: dict, scheme_id: str | None = None) -> dict | None:
+    records = await browse()
+    if scheme_id:
+        records = [r for r in records if r["id"] == scheme_id]
+        if not records:
+            raise ValueError("This scheme is no longer available. Choose another scheme.")
+    else:
+        records = rank_records(query, records, limit=20, dedupe_duplicates=True)
+    if not records:
+        return None
+    retrieval = {"records": records, "kind": "saved_sources", "embedding_kind": None}
+    return await _present(query, profile, [], retrieval, [], len(records), False, exact=bool(scheme_id))
+
+
+async def _present(query: str, profile: dict, results: list, retrieval: dict, errors: list,
+                   candidates_found: int, truncated: bool, exact: bool = False) -> dict:
+    retrieval_scores = {item["id"]: item.get("retrieval_score", 0) for item in retrieval["records"]}
     ordered = [*results, *retrieval["records"]]
     deduplicated: dict[str, dict] = {}
     for scheme in ordered:
@@ -203,6 +222,8 @@ async def search(query: str, profile: dict, refresh: bool = False, locale: str =
     visible = []
     ranked = rank_records(query, [item for item in deduplicated.values() if ap_or_national(item)],
                           limit=len(deduplicated), prior=retrieval_scores, dedupe_duplicates=True)
+    if exact:
+        ranked = list(deduplicated.values())
     for scheme in ranked:
         scheme["stale"] = bool(scheme.get("stale")) or (
             datetime.now(UTC) - datetime.fromisoformat(scheme["fetched_at"])
@@ -230,7 +251,7 @@ async def search(query: str, profile: dict, refresh: bool = False, locale: str =
                                                  for rule in group if rule["field"] == missing[0]]}
             break
     return {"schemes": visible, "source_errors": errors, "truncated": truncated,
-            "candidates_found": len(candidates) + len(portal_schemes),
+            "candidates_found": candidates_found,
             "stale": any(item.get("stale") for item in visible),
             "retrieval_kind": retrieval["kind"], "embedding_kind": retrieval["embedding_kind"],
             "searched_at": datetime.now(UTC).isoformat(), "source": "myScheme",

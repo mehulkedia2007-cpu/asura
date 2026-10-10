@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { EvidenceBoard } from "@/components/EvidenceBoard";
+import { HowTo } from "@/components/HowTo";
 import { PageIntro } from "@/components/PageIntro";
 
 export default async function EvidencePage() {
@@ -13,6 +14,7 @@ export default async function EvidencePage() {
         description={t("intro")}
         icon="evidence"
       />
+      <HowTo section="evidence" />
       <div>
         <EvidenceBoard />
       </div>

@@ -2,6 +2,12 @@
 
 Spec: [build.md](../build.md), v6, §13. Updated 2026-10-10.
 
+## Guided usability update on 2026-10-10
+
+Expanded learning paths from 2 to 20 starter roles using the existing 24 skills. Added simple skill-level descriptions, page instructions and a clearly labelled fictional placement-notice sample in English, Telugu and Hindi (428 matching message keys). Kept the original notice visible for field review and linked the generated plan to interview practice. Renamed the English evidence page to “Sources and checks” and explained that private notices and answers are not published there.
+
+Jobs now offer common search choices and helpful no-result actions. Schemes offer need categories and exact selection from the saved official-source library, scoped to AP/national records. Saved search avoids blocking on external refresh; original source dates and stale warnings remain. Exact selection does not establish eligibility or guarantee an active application window. No fabricated jobs or schemes were inserted. Starter roles are introductory plans, not complete qualifications.
+
 ## Andhra Pradesh search repair on 2026-10-10
 
 Nearby job searches now verify AP addresses, exclude old/unrelated/unmeasured listings and make India-eligible remote results opt-in. A free-plan-only, budgeted Google Jobs fallback completes the three planned job feeds. Government recruitment is a separate mode backed by official AP notices, with publication dates and a deadline-verification reminder. Scheme admission rejects other-state and explicit foreign-only records; specific topics no longer receive generic padding. Editing filters clears stale cards and aborts older responses. See [AP search verification](AP_SEARCH_VERIFICATION.md) for the build-plan comparison, checks and remaining source/accuracy limits.

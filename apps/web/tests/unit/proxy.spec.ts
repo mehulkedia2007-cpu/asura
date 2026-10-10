@@ -57,3 +57,28 @@ test("missing production backend fails without attempting localhost", async () =
     else process.env.VERCEL = previous.vercel;
   }
 });
+
+test("named scheme options reach the backend through the public proxy", async () => {
+  const previous = { api: process.env.DAARI_API_URL, fetch: globalThis.fetch };
+  try {
+    process.env.DAARI_API_URL = "https://api.example";
+    let forwarded = "";
+    globalThis.fetch = async (input) => {
+      forwarded = input.toString();
+      return Response.json({ schemes: [{ id: "official-scheme" }] });
+    };
+    const response = await GET(
+      new NextRequest("https://web.example/api/engine/schemes/options"),
+      { params: Promise.resolve({ path: ["schemes", "options"] }) },
+    );
+    expect(forwarded).toBe("https://api.example/engine/schemes/options");
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      schemes: [{ id: "official-scheme" }],
+    });
+  } finally {
+    globalThis.fetch = previous.fetch;
+    if (previous.api === undefined) delete process.env.DAARI_API_URL;
+    else process.env.DAARI_API_URL = previous.api;
+  }
+});

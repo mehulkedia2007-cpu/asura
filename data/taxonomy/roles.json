@@ -124,5 +124,242 @@
         "level": 2
       }
     ]
+  },
+  {
+    "id": "data_entry_operator",
+    "label_en": "Data entry operator",
+    "label_te": "డేటా ఎంట్రీ ఆపరేటర్",
+    "label_hi": "डेटा एंट्री ऑपरेटर",
+    "required_skills": {
+      "digital_literacy": 2,
+      "ms_excel_basic": 2,
+      "basic_numeracy": 2,
+      "time_management": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/Office-and-Administrative-Support/home.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "office_assistant",
+    "label_en": "Office assistant",
+    "label_te": "ఆఫీస్ అసిస్టెంట్",
+    "label_hi": "कार्यालय सहायक",
+    "required_skills": {
+      "digital_literacy": 2,
+      "ms_excel_basic": 2,
+      "spoken_english": 2,
+      "time_management": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/Office-and-Administrative-Support/home.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "customer_support",
+    "label_en": "Customer support agent",
+    "label_te": "కస్టమర్ సపోర్ట్",
+    "label_hi": "ग्राहक सहायता कर्मचारी",
+    "required_skills": {
+      "customer_service_basic": 3,
+      "spoken_english": 3,
+      "digital_literacy": 2,
+      "critical_thinking_problem_solving": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/Office-and-Administrative-Support/home.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "retail_sales",
+    "label_en": "Shop sales assistant",
+    "label_te": "దుకాణం సేల్స్ అసిస్టెంట్",
+    "label_hi": "दुकान बिक्री सहायक",
+    "required_skills": {
+      "customer_service_basic": 2,
+      "basic_numeracy": 2,
+      "cash_handling": 2,
+      "digital_literacy": 1
+    },
+    "source": "Career-task reference: https://www.bls.gov/OOH/. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "cashier",
+    "label_en": "Cashier",
+    "label_te": "క్యాషియర్",
+    "label_hi": "कैशियर",
+    "required_skills": {
+      "cash_handling": 3,
+      "cash_reconciliation": 3,
+      "basic_numeracy": 3,
+      "customer_service_basic": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/oes/2023/may/oes430000.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "receptionist",
+    "label_en": "Receptionist",
+    "label_te": "రిసెప్షనిస్ట్",
+    "label_hi": "रिसेप्शनिस्ट",
+    "required_skills": {
+      "spoken_english": 3,
+      "customer_service_basic": 2,
+      "digital_literacy": 2,
+      "time_management": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/Office-and-Administrative-Support/home.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "accounts_assistant",
+    "label_en": "Accounts assistant",
+    "label_te": "అకౌంట్స్ అసిస్టెంట్",
+    "label_hi": "लेखा सहायक",
+    "required_skills": {
+      "basic_numeracy": 3,
+      "cash_reconciliation": 3,
+      "ms_excel_basic": 3,
+      "excel_advanced": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/Office-and-Administrative-Support/home.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "warehouse_assistant",
+    "label_en": "Warehouse assistant",
+    "label_te": "గోదాం సహాయకుడు",
+    "label_hi": "गोदाम सहायक",
+    "required_skills": {
+      "package_handling_safety": 3,
+      "basic_numeracy": 2,
+      "digital_literacy": 2,
+      "time_management": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/oes/2023/may/oes430000.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "inventory_clerk",
+    "label_en": "Stock and inventory clerk",
+    "label_te": "స్టాక్ లెక్కల సహాయకుడు",
+    "label_hi": "स्टॉक और भंडार सहायक",
+    "required_skills": {
+      "package_handling_safety": 2,
+      "ms_excel_basic": 3,
+      "basic_numeracy": 3,
+      "time_management": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/oes/2023/may/oes430000.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "call_centre_agent",
+    "label_en": "Call centre agent",
+    "label_te": "కాల్ సెంటర్ ఉద్యోగి",
+    "label_hi": "कॉल सेंटर कर्मचारी",
+    "required_skills": {
+      "spoken_english": 3,
+      "customer_service_basic": 3,
+      "digital_literacy": 2,
+      "time_management": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/Office-and-Administrative-Support/home.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "back_office_assistant",
+    "label_en": "Back office assistant",
+    "label_te": "బ్యాక్ ఆఫీస్ అసిస్టెంట్",
+    "label_hi": "बैक ऑफिस सहायक",
+    "required_skills": {
+      "digital_literacy": 3,
+      "ms_excel_basic": 3,
+      "data_cleaning": 2,
+      "time_management": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/Office-and-Administrative-Support/home.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "computer_operator",
+    "label_en": "Computer operator",
+    "label_te": "కంప్యూటర్ ఆపరేటర్",
+    "label_hi": "कंप्यूटर ऑपरेटर",
+    "required_skills": {
+      "digital_literacy": 3,
+      "ms_excel_basic": 2,
+      "database_fundamentals": 1,
+      "critical_thinking_problem_solving": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/oes/2023/may/oes430000.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "excel_reporting_assistant",
+    "label_en": "Excel reporting assistant",
+    "label_te": "ఎక్సెల్ రిపోర్టింగ్ అసిస్టెంట్",
+    "label_hi": "एक्सेल रिपोर्टिंग सहायक",
+    "required_skills": {
+      "ms_excel_basic": 3,
+      "excel_advanced": 3,
+      "data_cleaning": 2,
+      "basic_numeracy": 3
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/Office-and-Administrative-Support/home.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "junior_python_developer",
+    "label_en": "Junior Python developer",
+    "label_te": "జూనియర్ పైథాన్ డెవలపర్",
+    "label_hi": "जूनियर पायथन डेवलपर",
+    "required_skills": {
+      "python_programming": 4,
+      "database_fundamentals": 2,
+      "sql_querying": 2,
+      "critical_thinking_problem_solving": 3,
+      "spoken_english": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "sql_assistant",
+    "label_en": "SQL and database assistant",
+    "label_te": "SQL డేటాబేస్ అసిస్టెంట్",
+    "label_hi": "SQL और डेटाबेस सहायक",
+    "required_skills": {
+      "database_fundamentals": 3,
+      "sql_querying": 3,
+      "data_cleaning": 2,
+      "critical_thinking_problem_solving": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "delivery_coordinator",
+    "label_en": "Delivery coordinator",
+    "label_te": "డెలివరీ సమన్వయకర్త",
+    "label_hi": "डिलीवरी समन्वयक",
+    "required_skills": {
+      "route_navigation_gps": 3,
+      "local_area_familiarity": 3,
+      "time_management": 3,
+      "customer_service_basic": 2,
+      "ms_excel_basic": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/oes/2023/may/oes430000.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "billing_assistant",
+    "label_en": "Billing assistant",
+    "label_te": "బిల్లింగ్ అసిస్టెంట్",
+    "label_hi": "बिलिंग सहायक",
+    "required_skills": {
+      "basic_numeracy": 3,
+      "cash_handling": 2,
+      "ms_excel_basic": 2,
+      "customer_service_basic": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/oes/2023/may/oes430000.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
+  },
+  {
+    "id": "front_desk_assistant",
+    "label_en": "Hotel front desk assistant",
+    "label_te": "హోటల్ ఫ్రంట్ డెస్క్ అసిస్టెంట్",
+    "label_hi": "होटल फ्रंट डेस्क सहायक",
+    "required_skills": {
+      "spoken_english": 3,
+      "customer_service_basic": 3,
+      "digital_literacy": 2,
+      "cash_handling": 2,
+      "time_management": 2
+    },
+    "source": "Career-task reference: https://www.bls.gov/oes/2023/may/oes430000.htm. DAARI introductory learning plan; skill levels and study hours are planning estimates, not an Indian qualification or a complete job certification."
   }
 ]

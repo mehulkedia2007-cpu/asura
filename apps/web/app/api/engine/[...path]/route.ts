@@ -26,6 +26,7 @@ const allowed = new Set([
   "assess/answer",
   "leads/search",
   "schemes/search",
+  "schemes/options",
   "schemes/coverage",
   "schemes/sources",
   "evidence",

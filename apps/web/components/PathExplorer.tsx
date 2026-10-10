@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { HowTo } from "@/components/HowTo";
 import { PageIntro } from "@/components/PageIntro";
 import { type MapSkill, SkillMap } from "@/components/SkillMap";
 
@@ -339,12 +340,14 @@ export function PathExplorer() {
         description={t("intro")}
         icon="path"
       />
+      <HowTo section="path" />
       <div className="control-panel path-controls">
         <label className="flex flex-col gap-2 text-sm">
           {t("persona")}
           <select
             disabled={busy}
             className="rounded border border-graphite/30 bg-background p-2"
+            aria-label={t("persona")}
             value={persona}
             onChange={(event) => {
               setChange(null);
@@ -359,6 +362,7 @@ export function PathExplorer() {
           {t("goal")}
           <select
             disabled={busy || !roles.length}
+            aria-label={t("goal")}
             className="rounded border border-graphite/30 bg-background p-2"
             value={goal}
             onChange={(event) => {
@@ -379,6 +383,7 @@ export function PathExplorer() {
           <select
             disabled={busy || !skills.length}
             className="rounded border border-graphite/30 bg-background p-2"
+            aria-label={t("skill")}
             value={selected}
             onChange={(event) => {
               setSelected(event.target.value);
@@ -397,12 +402,13 @@ export function PathExplorer() {
           {t("level")}
           <select
             className="rounded border border-graphite/30 bg-background p-2"
+            aria-label={t("level")}
             value={level}
             onChange={(event) => setLevel(Number(event.target.value))}
           >
             {[1, 2, 3, 4, 5].map((v) => (
               <option key={v} value={v}>
-                {v}
+                {v} · {t(`level${v}`)}
               </option>
             ))}
           </select>

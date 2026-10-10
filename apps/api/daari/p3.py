@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 from daari import leads, schemes
 from daari.portal_sources import probe_all
-from daari.scheme_index import coverage
+from daari.scheme_index import browse, coverage
 from daari.taxonomy_loader import get_taxonomy
 
 router = APIRouter(prefix="/engine", tags=["P3 live data"])
@@ -29,6 +29,7 @@ class SchemeSearch(BaseModel):
     profile: dict = Field(default_factory=dict)
     refresh: bool = False
     locale: Literal["en", "te", "hi"] = "en"
+    scheme_id: str | None = Field(default=None, max_length=150)
 
 
 @router.post("/leads/search")
@@ -49,9 +50,25 @@ async def search_leads(args: LeadSearch) -> dict:
 @router.post("/schemes/search")
 async def search_schemes(args: SchemeSearch) -> dict:
     try:
-        return await schemes.search(args.query, args.profile, args.refresh, args.locale)
+        if not args.refresh:
+            saved = await schemes.search_saved(args.query, args.profile, args.scheme_id)
+            if saved is not None:
+                return saved
+        refreshed = await schemes.search(args.query, args.profile, args.refresh, args.locale)
+        if args.scheme_id:
+            selected = await schemes.search_saved(args.query, args.profile, args.scheme_id)
+            if selected is not None:
+                selected["source_errors"] = refreshed["source_errors"]
+                return selected
+        return refreshed
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
+
+
+@router.get("/schemes/options")
+async def scheme_options() -> dict:
+    return {"schemes": [{key: r.get(key) for key in ("id", "name_en", "name_te", "state", "url", "fetched_at")}
+                        for r in await browse()]}
 
 
 @router.get("/schemes/coverage")

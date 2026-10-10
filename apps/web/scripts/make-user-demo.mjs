@@ -1,46 +1,53 @@
+// Actual browser actions and server responses. RECORD=0 runs the same checks without narration.
 import assert from "node:assert/strict";
-import { execFileSync, spawnSync } from "node:child_process";
-import {
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { chromium } from "@playwright/test";
 
-const origin = process.env.WEB_URL ?? "http://localhost:3000";
-const repoRoot = resolve("../..");
-const output = join(repoRoot, "docs", "DAARI-user-demo.mp4");
-const temp = mkdtempSync(join(tmpdir(), "daari-user-demo-"));
-const frameDir = join(temp, "frames");
-const audioDir = join(temp, "audio");
-const segmentDir = join(temp, "segments");
-for (const dir of [frameDir, audioDir, segmentDir]) mkdirSync(dir);
-
-const scenes = [];
+const origin = process.env.WEB_URL ?? "http://127.0.0.1:3017";
+const record = process.env.RECORD !== "0";
+const dir = mkdtempSync(join(tmpdir(), "daari-demo-"));
+const docs = resolve("../../docs");
+const proofDir = resolve("../../.cache/user-demo");
+mkdirSync(proofDir, { recursive: true });
+const t = JSON.parse(readFileSync("messages/en.json", "utf8"));
+const chapters = [];
+const proof = {
+  origin,
+  checked_at: new Date().toISOString(),
+  sample_notice: true,
+};
 const browser = await chromium.launch();
 const context = await browser.newContext({
-  viewport: { width: 1440, height: 900 },
+  viewport: { width: 1280, height: 800 },
   colorScheme: "light",
+  ...(record
+    ? { recordVideo: { dir, size: { width: 1280, height: 800 } } }
+    : {}),
 });
 const page = await context.newPage();
-page.setDefaultTimeout(20_000);
-
-function say(text, path) {
-  const result = spawnSync(
-    "/usr/bin/say",
-    ["-v", "Aman", "-r", "170", "-o", path, "--data-format=LEI16@44100", text],
-    { encoding: "utf8" },
-  );
-  if (result.status !== 0) {
-    throw new Error(result.stderr || "macOS speech synthesis failed");
-  }
+const started = Date.now();
+page.setDefaultTimeout(30000);
+const errors = [];
+page.on("pageerror", (e) => errors.push(e.message));
+const button = (name) => page.getByRole("button", { name, exact: true });
+async function go(route) {
+  await page.goto(`${origin}/en${route}`);
+  await page.locator("main h1").waitFor();
 }
-
-function audioDuration(path) {
+async function click(endpoint, name) {
+  const pending = page.waitForResponse(
+    (r) => r.url().endsWith(endpoint) && r.request().method() === "POST",
+    { timeout: 120000 },
+  );
+  await button(name).click();
+  const response = await pending;
+  assert(response.ok(), `${endpoint}: ${response.status()}`);
+  return response.json();
+}
+function duration(file) {
   return Number(
     execFileSync(
       "/opt/homebrew/bin/ffprobe",
@@ -50,324 +57,306 @@ function audioDuration(path) {
         "-show_entries",
         "format=duration",
         "-of",
-        "default=noprint_wrappers=1:nokey=1",
-        path,
+        "csv=p=0",
+        file,
       ],
       { encoding: "utf8" },
     ).trim(),
   );
 }
-
-function escapeHtml(value) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-async function capture(title, narration) {
-  const index = scenes.length + 1;
-  const raw = await page.screenshot({ type: "png" });
-  const frame = join(frameDir, `${String(index).padStart(2, "0")}.png`);
-  const voice = join(audioDir, `${String(index).padStart(2, "0")}.wav`);
-  const slide = await context.newPage();
-  await slide.setViewportSize({ width: 1280, height: 720 });
-  await slide.setContent(`<!doctype html>
-    <html><head><meta charset="utf-8"><style>
-      *{box-sizing:border-box}html,body{margin:0;width:1280px;height:720px;overflow:hidden;background:#171816;color:#f7f3eb;font-family:Arial,Helvetica,sans-serif}
-      .screen{position:absolute;inset:0;width:1280px;height:720px;object-fit:cover}
-      .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,21,19,.72) 0,transparent 20%,transparent 55%,rgba(20,21,19,.25) 66%,rgba(20,21,19,.98) 100%)}
-      .brand{position:absolute;top:20px;left:38px;font-size:18px;font-weight:700;letter-spacing:.18em}
-      .badge{position:absolute;top:22px;right:38px;padding:8px 12px;border:1px solid rgba(247,243,235,.55);border-radius:3px;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
-      .copy{position:absolute;left:56px;right:56px;bottom:28px}
-      .step{color:#f18965;font-family:monospace;font-size:15px;letter-spacing:.16em;text-transform:uppercase}
-      h1{font-family:Georgia,serif;font-weight:400;font-size:42px;line-height:1.05;margin:10px 0 9px}
-      p{font-size:19px;line-height:1.35;max-width:1120px;margin:0;color:#f2eee6}
-    </style></head><body>
-      <img class="screen" src="data:image/png;base64,${raw.toString("base64")}" />
-      <div class="shade"></div><div class="brand">DAARI</div>
-      <div class="badge">User walkthrough · Sample journey</div>
-      <div class="copy"><div class="step">${String(index).padStart(2, "0")} / 14 · DAARI</div>
-      <h1>${escapeHtml(title)}</h1><p>${escapeHtml(narration)}</p></div>
-    </body></html>`);
-  await slide.screenshot({ path: frame, type: "png" });
-  await slide.close();
-  say(narration, voice);
-  scenes.push({ frame, voice, duration: audioDuration(voice) });
-}
-
-async function waitForLiveResults() {
-  const busy = page.getByRole("status");
-  await busy.waitFor({ timeout: 10_000 });
-  await busy.waitFor({ state: "detached", timeout: 90_000 });
-  await page.waitForFunction(() => {
-    const main = document.querySelector("main");
-    return Boolean(
-      main?.querySelector("article") ||
-        main?.innerText.includes("No source-backed results are available") ||
-        main?.querySelector('[role="alert"]'),
+async function scene(title, narration, action) {
+  const voice = join(dir, `${chapters.length}.wav`);
+  if (record)
+    execFileSync("/usr/bin/say", [
+      "-v",
+      "Aman",
+      "-r",
+      "155",
+      "-o",
+      voice,
+      "--data-format=LEI16@44100",
+      narration,
+    ]);
+  const start = (Date.now() - started) / 1000;
+  await action();
+  await page.screenshot({ path: join(proofDir, `${chapters.length + 1}.png`) });
+  if (record)
+    await page.waitForTimeout(
+      Math.max(
+        2500,
+        duration(voice) * 1000 - (Date.now() - started - start * 1000) + 1500,
+      ),
     );
+  chapters.push({
+    title,
+    narration,
+    voice,
+    start,
+    end: (Date.now() - started) / 1000,
   });
+  console.log(`PASS: ${title}`);
 }
-
-async function clickButton(name) {
-  await page.getByRole("button", { name, exact: true }).click();
-}
-
 try {
-  const messages = JSON.parse(readFileSync("messages/en.json", "utf8"));
-  await page.goto(`${origin}/en`);
-  await page.getByRole("heading", { name: "DAARI", exact: true }).waitFor();
-  await capture(
-    "Start with your goal",
-    "Welcome to DAARI. Use My path to plan skills, job leads and government schemes to explore opportunities, Interview intelligence to see reported questions, and Placement prep to build a study plan. The same features are available in English, Telugu and Hindi.",
+  await scene(
+    "Start here",
+    "Welcome to DAARI. This recording uses the working website. My learning path helps you plan skills. Job opportunities helps you find work. Government support helps you explore schemes. Get interview ready has three steps: read past questions, make a preparation plan, and practise your answers. Each page has simple instructions.",
+    async () => {
+      await go("");
+    },
   );
-
-  await page.goto(`${origin}/en/path`);
-  await page
-    .getByRole("button", { name: messages.path.simulate, exact: true })
-    .waitFor();
-  await page
-    .getByLabel(messages.path.skill, { exact: true })
-    .selectOption("sql_querying");
-  await capture(
-    "Choose a role and skill",
-    "On My path, choose Student or Rural learner, select a goal role, then choose a skill and your current level. The roadmap lists prerequisites, required skills, estimated hours and the overall study time.",
-  );
-  await clickButton(messages.path.simulate);
-  await page
-    .getByRole("heading", { name: messages.path.after, exact: true })
-    .waitFor();
-  await page
-    .getByRole("heading", { name: messages.path.after, exact: true })
-    .scrollIntoViewIfNeeded();
-  await capture(
-    "Compare the skill update",
-    "Select Simulate skill update to compare your current roadmap with the plan after learning SQL. DAARI explains what changed, updates your saved skill level, and shows how the path moves toward your goal.",
-  );
-  await clickButton(messages.path.shock);
-  await page
-    .getByRole("heading", { name: messages.path.after, exact: true })
-    .waitFor();
-  await capture(
-    "Explore market demand",
-    "Market shock lets you explore how more job listings for a skill could change the roadmap. It is a scenario tool, so use it to understand trade-offs rather than as a promise of a job.",
-  );
-  await clickButton(messages.path.assess);
-  const answer = page.getByRole("textbox", {
-    name: messages.path.answer,
-    exact: true,
-  });
-  await answer.waitFor();
-  await answer.fill("SELECT employee_id FROM employees;");
-  await clickButton(messages.path.submit);
-  await page.getByRole("status").last().waitFor();
-  await capture(
-    "Check a skill with a short assessment",
-    "Choose Assess this skill to answer a short adaptive question. Submit your response to see the expected answer, explanation, estimated level and uncertainty. The questions help estimate a level; you can still edit your own skills.",
-  );
-
-  await page.goto(`${origin}/en/leads`);
-  await page
-    .getByLabel(messages.live.query, { exact: true })
-    .fill("Data Analyst");
-  await page
-    .getByLabel(messages.live.place, { exact: true })
-    .fill("Guntur, Andhra Pradesh");
-  await clickButton(messages.live.search);
-  await waitForLiveResults();
-  await capture(
-    "Search nearby job leads",
-    "In Live job leads, enter a role or keyword and a town or district. Review each result's source, location, match details and risk signals. If sources have no current results, try another term or open the source directly.",
-  );
-
-  await page.goto(`${origin}/en/schemes`);
-  await page.getByLabel(messages.live.query, { exact: true }).fill("student");
-  await clickButton(messages.live.search);
-  await waitForLiveResults();
-  await capture(
-    "Check government schemes",
-    "Search Government schemes by a need such as student support. Add profile facts when you have them to check source-backed rules. Eligibility stays unknown when the available sources do not support a decision, and every record links back to its source.",
-  );
-
-  await page.goto(`${origin}/en/questions`);
-  await page.waitForFunction(
-    () => document.querySelector("select")?.options.length > 0,
-  );
-  await clickButton(messages.p5.search);
-  await page.getByText(messages.p5.available, { exact: true }).waitFor();
-  await capture(
-    "Review interview reports",
-    "Interview intelligence lets you search company and role reports, filter by topic or round, and inspect source dates. Candidate reports describe past experiences; they do not predict what you will be asked.",
-  );
-  await page.getByLabel(messages.p5.role, { exact: true }).fill("Data Analyst");
-  await clickButton(messages.p5.search);
-  await page.getByText(messages.p5.none, { exact: true }).waitFor();
-  await capture(
-    "Use practice when reports are missing",
-    "Coverage depends on the company and role. When DAARI has no report for a search, that is shown clearly; you can still practise with the skill question bank instead of treating missing reports as evidence.",
-  );
-
-  await page.goto(`${origin}/en/prep`);
-  await page
-    .getByLabel(messages.p5.notice, { exact: true })
-    .fill(
-      "Company: Example Analytics\nRole: Data Analyst\nInterview date: 2026-11-30\nCTC: 7 LPA\nEligibility: BTech\nRounds: Coding, Technical, HR\nMode: Online",
-    );
-  await clickButton(messages.p5.extract);
-  await page.getByLabel(messages.p5.confirm, { exact: true }).waitFor();
-  await page.getByLabel(messages.p5.confirm, { exact: true }).check();
-  await clickButton(messages.p5.build);
-  await page.getByText(messages.p5.shortfall, { exact: true }).waitFor();
-  await capture(
-    "Turn a notice into a prep plan",
-    "Paste a placement notice. Check every extracted field against the original, correct anything uncertain, and confirm before building the plan. DAARI orders practice by prerequisite and interview date, then shows whether the available study hours are enough.",
-  );
-
-  await page.goto(`${origin}/en/interview`);
-  await clickButton(messages.p5.start);
-  await page.getByLabel(messages.p5.answer, { exact: true }).waitFor();
-  for (let index = 0; index < 5; index++) {
-    await page
-      .getByLabel(messages.p5.answer, { exact: true })
-      .fill(
-        "I used SQL to check the data, explained the result, and worked with my team on the next step.",
+  await scene(
+    "Choose from 20 learning paths",
+    "Choose the job you want from twenty starter career paths, including office assistant, customer support and data analyst. Select a skill you already know and save it. The learning steps and estimated hours update. These starting plans are not a complete qualification or a promise of employment.",
+    async () => {
+      await go("/path");
+      const select = page.getByLabel(t.path.goal, { exact: true });
+      await page.waitForFunction(() =>
+        [...document.querySelectorAll("select")].some(
+          (s) => s.options.length === 20,
+        ),
       );
-    await clickButton(messages.p5.submit);
-    await page.waitForFunction(
-      (count) => document.querySelectorAll("mark").length === count,
-      index + 1,
-    );
-  }
-  await page.getByText(messages.p5.complete, { exact: true }).waitFor();
-  await capture(
-    "Practise and review your answers",
-    "Start a five-question practice session, answer in your own words, and review feedback tied to your transcript. Your attempt history survives a reload for up to 24 hours. Delete a practice session when you are finished.",
+      proof.roles = await select.locator("option").count();
+      assert.equal(proof.roles, 20);
+      await select.selectOption("office_assistant");
+      await page.locator(".skill-map").waitFor();
+      await select.selectOption("data_analyst");
+      await page
+        .getByLabel(t.path.skill, { exact: true })
+        .selectOption("sql_querying");
+      await click("/simulate-skill-update", t.path.simulate);
+      await page
+        .getByRole("heading", { name: t.path.after, exact: true })
+        .scrollIntoViewIfNeeded();
+    },
   );
-  await clickButton(messages.p5.delete);
-  await page
-    .getByRole("button", { name: messages.p5.start, exact: true })
-    .waitFor();
-
-  await page.goto(`${origin}/en/voice`);
-  const voiceInput = page.getByRole("textbox", {
-    name: messages.voice.textLabel,
-    exact: true,
-  });
-  await voiceInput.fill("Show me a roadmap to become a data analyst.");
-  await clickButton(messages.voice.send);
-  await page
-    .getByText(messages.voice.answer, { exact: true })
-    .waitFor({ timeout: 100_000 });
-  await capture(
-    "Ask DAARI by voice or text",
-    "Ask DAARI a question by speaking or typing. The voice assistant can look up your path, nearby jobs and government schemes, then show evidence links for supported answers. If your microphone is unavailable, typing remains available.",
+  await scene(
+    "Search real job sources",
+    "Choose Sales and shop work, enter Vijayawada in Andhra Pradesh, and press Search. Results show the employer, location, source and date. Open the original advertisement before applying. If no jobs match your search, try another town or role, or choose remote work. A result is not a guarantee that the vacancy is still open.",
+    async () => {
+      await go("/leads");
+      await page
+        .getByLabel(t.live.chooseJob, { exact: true })
+        .selectOption("sales");
+      await page
+        .getByLabel(t.live.place, { exact: true })
+        .fill("Vijayawada, Andhra Pradesh");
+      const data = await click("/leads/search", t.live.search);
+      assert.equal(data.region, "Andhra Pradesh");
+      assert.equal(data.include_remote, false);
+      assert(
+        data.leads.every(
+          (x) => !x.remote && x.source_url && x.distance_km <= 100,
+        ),
+      );
+      proof.jobs = {
+        count: data.leads.length,
+        errors: data.errors,
+        query: "sales",
+        place: "Vijayawada, Andhra Pradesh",
+      };
+      if (data.leads.length)
+        await page.locator(".result-card").first().scrollIntoViewIfNeeded();
+      else await page.getByText(t.live.noData, { exact: true }).waitFor();
+    },
   );
-
-  await page.goto(`${origin}/en/evidence`);
-  await page.getByRole("heading", { level: 1 }).waitFor();
-  await page.waitForFunction(
-    () => !document.body.innerText.includes("Assembling the evidence board…"),
-    { timeout: 30_000 },
+  await scene(
+    "Choose a government scheme",
+    "Choose a need such as training, or a named scheme from the official-source library. Here we select FutureSkills Prime and search. These are Andhra Pradesh or national schemes. Saved details may be older. Open the source to check the current rules and application process. DAARI does not claim you qualify when the rules are incomplete.",
+    async () => {
+      await go("/schemes");
+      const select = page.getByLabel(t.live.chooseScheme, { exact: true });
+      await select
+        .locator('option[value="scheme:fspip"]')
+        .waitFor({ state: "attached" });
+      await select.selectOption("scheme:fspip");
+      const data = await click("/schemes/search", t.live.search);
+      assert.equal(data.schemes.length, 1);
+      assert.equal(data.schemes[0].id, "fspip");
+      assert(data.schemes[0].url);
+      proof.scheme = {
+        id: data.schemes[0].id,
+        url: data.schemes[0].url,
+        eligibility: data.schemes[0].eligibility.status,
+        stale: data.stale,
+      };
+      await page.locator(".result-card").first().scrollIntoViewIfNeeded();
+    },
   );
-  await capture(
-    "Understand the evidence and limits",
-    "The Evidence board shows regression results, source coverage, grounding checks, voice measurements and limitations. Read its scope before relying on any metric: test fixtures and cached rehearsals are not field validation.",
+  await scene(
+    "Use the question library",
+    "Choose a company and its job title, then search reports. Read questions shared by past candidates and check the source and date. These reports do not predict your interview. If your company or role has no reports, use Interview practice to work on skills instead.",
+    async () => {
+      await go("/questions");
+      await page.waitForFunction(
+        () => document.querySelector("select")?.options.length > 0,
+      );
+      const data = await click("/questions/search", t.p5.search);
+      proof.question_library = { count: data.questions.length };
+      assert(data.questions.length > 0);
+      await page.locator(".result-card").first().scrollIntoViewIfNeeded();
+    },
   );
-
-  await page.goto(`${origin}/te`);
-  await page.locator("main h1").waitFor();
-  await capture(
-    "Continue in your language",
-    "Use the language control to switch between English, Telugu and Hindi. DAARI keeps you on the same feature when the language changes, so you can continue your path, search or practice in the language you prefer.",
+  await scene(
+    "Paste a placement notice: practice example",
+    "Open Preparation plan and paste your college placement notice. I am using the sample button so you can repeat these steps. Example Analytics is a fictional practice company, not a real opening. Read notice extracts the company, job title and interview date. The original text stays visible so you can compare the details.",
+    async () => {
+      await go("/prep");
+      await button(t.p5.sampleNotice).click();
+      const notice = page.getByLabel(t.p5.notice, { exact: true });
+      const sample = await notice.inputValue();
+      assert(sample.includes("practice only"));
+      await notice.fill("");
+      await notice.fill(sample);
+      const data = await click("/prep/notice", t.p5.extract);
+      assert.equal(
+        data.fields.company.value,
+        "Example Analytics (practice only)",
+      );
+      assert.equal(data.fields.role.value, "Data Analyst");
+      proof.notice = {
+        company: data.fields.company.value,
+        role: data.fields.role.value,
+        interview_date: data.fields.interview_date.value,
+      };
+      assert.equal(await notice.inputValue(), sample);
+      await page
+        .getByRole("heading", { name: t.p5.review, exact: true })
+        .scrollIntoViewIfNeeded();
+    },
   );
-
+  await scene(
+    "Check details and build your study plan",
+    "Check every extracted field and correct mistakes. Choose your career goal and daily study hours. Tick the confirmation box after checking the notice, then build the plan. The schedule uses your saved skills and interview date. The warning here shows there is more to learn than your available time allows. Start with the first skills in the plan.",
+    async () => {
+      await page.getByLabel(t.p5.hours, { exact: true }).fill("2");
+      await page.getByLabel(t.p5.confirm, { exact: true }).check();
+      const data = await click("/prep/pack", t.p5.build);
+      assert(data.plan.days.length > 0);
+      assert(data.plan.required_hours > 0);
+      proof.plan = {
+        days: data.plan.days.length,
+        required_hours: data.plan.required_hours,
+        capacity_hours: data.plan.capacity_hours,
+        feasible: data.plan.feasible,
+      };
+      await page
+        .getByRole("heading", { name: t.p5.schedule, exact: true })
+        .scrollIntoViewIfNeeded();
+    },
+  );
+  await scene(
+    "Practise an interview answer",
+    "Open Start interview practice from your plan. Your company and job title carry over. Start five questions, then type an answer, or record one and check the transcript. I am sending a practice answer. Feedback quotes your own words and suggests improvements. The counts are practice aids, not a hiring score.",
+    async () => {
+      await page.getByRole("link", { name: t.p5.mock, exact: true }).click();
+      await page.getByLabel(t.p5.role, { exact: true }).waitFor();
+      assert.equal(
+        await page.getByLabel(t.p5.role, { exact: true }).inputValue(),
+        "Data Analyst",
+      );
+      const session = await click("/interview/start", t.p5.start);
+      assert.equal(session.questions.length, 5);
+      await page
+        .getByLabel(t.p5.answer, { exact: true })
+        .fill(
+          "In my college project, our sales report had duplicate records. My task was to clean the data. I used SQL to find duplicate rows and checked totals with my team. As a result, we delivered an accurate report on time. Next time I would add checks before importing the data.",
+        );
+      const result = await click("/interview/answer", t.p5.submit);
+      assert.equal(result.attempts.length, 1);
+      assert(result.attempts[0].feedback.length > 0);
+      proof.practice = {
+        questions: session.questions.length,
+        answers: 1,
+        feedback_points: result.attempts[0].feedback.length,
+      };
+      await page.locator(".practice-attempt").first().scrollIntoViewIfNeeded();
+    },
+  );
+  await scene(
+    "Finish and review practice",
+    "Continue through the remaining questions. Each answer gets feedback and appears in your attempt history. Practise in your own words; these demonstration answers are only examples. You can delete the session when finished. The interface tells you that attempts expire after twenty-four hours.",
+    async () => {
+      for (let i = 1; i < 5; i++) {
+        await page
+          .getByLabel(t.p5.answer, { exact: true })
+          .fill(
+            "In a college project, I needed to check a report. I compared the records, explained the problem to my team and tested the change. We completed the task on time. I would document the checks more clearly next time.",
+          );
+        const data = await click("/interview/answer", t.p5.submit);
+        assert.equal(data.attempts.length, i + 1);
+      }
+      proof.practice.answers = 5;
+      await page
+        .getByRole("heading", { name: t.p5.complete, exact: true })
+        .scrollIntoViewIfNeeded();
+    },
+  );
+  await scene(
+    "What does public evidence mean?",
+    "Sources and checks is the page previously called Evidence in public. It explains where information comes from, what was tested and what still needs improvement. Public means anyone can see these checks. Your placement notice and private answers are not published here. A passing test does not guarantee every live answer is correct. You do not need this page to use the other tools.",
+    async () => {
+      await click("/interview/delete", t.p5.delete);
+      const pending = page.waitForResponse((r) =>
+        r.url().includes("/engine/evidence"),
+      );
+      await go("/evidence");
+      const response = await pending;
+      assert(response.ok());
+      proof.evidence = { status: response.status() };
+      await page.getByText(t.help.evidence3, { exact: true }).waitFor();
+    },
+  );
+  assert.deepEqual(errors, []);
+  proof.chapters = chapters.length;
+  proof.browser_errors = errors;
+  const video = record ? page.video() : null;
+  await context.close();
   await browser.close();
-  for (const [index, scene] of scenes.entries()) {
-    const segment = join(
-      segmentDir,
-      `${String(index + 1).padStart(2, "0")}.mp4`,
+  writeFileSync(join(proofDir, "proof.json"), JSON.stringify(proof, null, 2));
+  if (record) {
+    const args = ["-y", "-i", await video.path()];
+    for (const c of chapters) args.push("-i", c.voice);
+    const filters = chapters.map(
+      (c, i) => `[${i + 1}:a]adelay=${Math.round(c.start * 1000)}:all=1[a${i}]`,
     );
-    const fadeOut = Math.max(0.1, scene.duration - 0.3).toFixed(3);
+    filters.push(
+      `${chapters.map((_, i) => `[a${i}]`).join("")}amix=inputs=${chapters.length}:normalize=0[a]`,
+    );
+    const output = join(docs, "DAARI-user-demo.mp4");
     execFileSync(
       "/opt/homebrew/bin/ffmpeg",
       [
-        "-y",
-        "-loop",
-        "1",
-        "-framerate",
-        "30",
-        "-i",
-        scene.frame,
-        "-i",
-        scene.voice,
-        "-vf",
-        `scale=1280:720,format=yuv420p,fade=t=in:st=0:d=0.25,fade=t=out:st=${fadeOut}:d=0.25`,
-        "-af",
-        "aresample=48000,afade=t=in:st=0:d=0.12",
+        ...args,
+        "-filter_complex",
+        filters.join(";"),
+        "-map",
+        "0:v",
+        "-map",
+        "[a]",
         "-c:v",
         "libx264",
         "-preset",
-        "veryfast",
+        "fast",
         "-crf",
-        "22",
+        "25",
+        "-pix_fmt",
+        "yuv420p",
         "-c:a",
         "aac",
         "-b:a",
-        "128k",
-        "-t",
-        scene.duration.toFixed(3),
-        "-shortest",
-        segment,
+        "96k",
+        "-movflags",
+        "+faststart",
+        output,
       ],
       { stdio: "ignore" },
     );
-  }
-  const list = join(temp, "segments.txt");
-  writeFileSync(
-    list,
-    scenes
-      .map(
-        (_scene, index) =>
-          `file '${join(segmentDir, `${String(index + 1).padStart(2, "0")}.mp4`)}'`,
-      )
-      .join("\n"),
-  );
-  mkdirSync(join(repoRoot, "docs"), { recursive: true });
-  execFileSync(
-    "/opt/homebrew/bin/ffmpeg",
-    [
-      "-y",
-      "-f",
-      "concat",
-      "-safe",
-      "0",
-      "-i",
-      list,
-      "-c",
-      "copy",
-      "-movflags",
-      "+faststart",
-      output,
-    ],
-    { stdio: "ignore" },
-  );
-  const seconds = audioDuration(output);
-  assert(scenes.length === 14, `Expected 14 chapters, got ${scenes.length}`);
-  console.log(
-    JSON.stringify({
-      output,
-      chapters: scenes.length,
-      duration_seconds: Math.round(seconds),
-    }),
-  );
+    writeFileSync(
+      join(docs, "DAARI-user-demo.md"),
+      `# DAARI: how to use it\n\nRecorded against ${origin} on ${proof.checked_at}. Actual browser actions and API results; no mocked responses. The placement notice and answers are practice examples.\n\n${chapters.map((c) => `## ${Math.floor(c.start / 60)}:${String(Math.floor(c.start % 60)).padStart(2, "0")} — ${c.title}\n\n${c.narration}`).join("\n\n")}\n\n## Observed results\n\n\`\`\`json\n${JSON.stringify(proof, null, 2)}\n\`\`\`\n`,
+    );
+    console.log(JSON.stringify({ output, duration: duration(output), proof }));
+  } else console.log(JSON.stringify(proof));
 } finally {
-  if (!browser.isConnected()) {
-    rmSync(temp, { recursive: true, force: true });
-  } else {
-    await browser.close();
-    rmSync(temp, { recursive: true, force: true });
-  }
+  await browser.close();
 }

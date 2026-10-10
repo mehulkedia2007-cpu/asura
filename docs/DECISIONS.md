@@ -314,3 +314,7 @@ Filter schemes using state/beneficiary restrictions and topic evidence; ministry
 terminology alone cannot make an unrelated scheme relevant. Clear old results
 and cancel pending searches when filters change. Preserve the shared engine and
 all three languages. Record the remaining live scheme accuracy gap explicitly.
+
+## 2026-10-10 · Guided search and plain-language preparation
+
+Expose common job searches and exact named schemes from the scoped source index, preserving original source dates and unknown eligibility. Expand to 20 introductory roles using existing supported skills and occupational references without inventing qualification codes. Keep the pasted notice visible, offer an explicitly fictional sample, and explain every preparation stage in all three languages. Use a real browser recording with assertions for the user demo; never mock live responses or present the sample notice as a vacancy.

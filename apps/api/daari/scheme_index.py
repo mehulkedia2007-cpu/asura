@@ -188,6 +188,14 @@ async def retrieve(query: str, limit: int = 8, *, use_embeddings: bool = True) -
             "embedding_kind": EMBEDDING_KIND if vector is not None else None}
 
 
+async def browse() -> list[dict]:
+    """Real, source-stamped AP/national records for the scheme chooser."""
+    async with engine.connect() as conn:
+        records = list((await conn.execute(text("SELECT record FROM scheme_records"))).scalars())
+    return sorted((r for r in records if ap_or_national(r)),
+                  key=lambda r: (r.get("state") != "Andhra Pradesh", r["name_en"].casefold()))
+
+
 async def coverage() -> dict[str, Any]:
     """Counts from indexed source records, including the newest refresh stamp."""
     async with engine.connect() as conn:

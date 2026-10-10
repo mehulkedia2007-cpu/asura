@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+import { HowTo } from "@/components/HowTo";
 import { Icon } from "@/components/Icon";
 import { PageIntro } from "@/components/PageIntro";
 import { Link } from "@/i18n/navigation";
@@ -447,6 +448,7 @@ export function Preparation({
       <label className="grid gap-2 text-sm">
         {t("company")}
         <select
+          aria-label={t("company")}
           className={inputStyle}
           value={company}
           onChange={(event) => {
@@ -468,6 +470,7 @@ export function Preparation({
       <label className="grid gap-2 text-sm">
         {t("role")}
         <input
+          list="company-job-titles"
           className={inputStyle}
           value={role}
           onChange={(event) => {
@@ -475,21 +478,31 @@ export function Preparation({
             setResults(null);
           }}
         />
+        <datalist id="company-job-titles">
+          {(companies.find((item) => item.id === company)?.roles ?? []).map(
+            (name) => (
+              <option key={name} value={name} />
+            ),
+          )}
+        </datalist>
       </label>
-      <label className="grid gap-2 text-sm">
-        {t("goal")}
-        <select
-          className={inputStyle}
-          value={goal}
-          onChange={(event) => setGoal(event.target.value)}
-        >
-          {roles.map((r) => (
-            <option key={r.id} value={r.id}>
-              {label(r)}
-            </option>
-          ))}
-        </select>
-      </label>
+      {screen !== "questions" && (
+        <label className="grid gap-2 text-sm">
+          {t("goal")}
+          <select
+            aria-label={t("goal")}
+            className={inputStyle}
+            value={goal}
+            onChange={(event) => setGoal(event.target.value)}
+          >
+            {roles.map((r) => (
+              <option key={r.id} value={r.id}>
+                {label(r)}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
     </div>
   );
   const current = session?.questions[session.current];
@@ -501,6 +514,7 @@ export function Preparation({
         description={t(`${screen}Intro`)}
         icon={screen}
       />
+      <HowTo section={screen} />
       <nav className="preparation-flow" aria-label={t("prep")}>
         {(["questions", "prep", "interview"] as const).map((route, index) => (
           <Link
@@ -603,7 +617,14 @@ export function Preparation({
               {results.refresh?.errors.length ? (
                 <p role="status">{t("sourceErrors")}</p>
               ) : null}
-              {!results.questions.length && <p>{t("noMatches")}</p>}
+              {!results.questions.length && (
+                <div className="surface space-y-3">
+                  <p>{t("noMatches")}</p>
+                  <Link className="text-signal underline" href="/interview">
+                    {t("interview")}
+                  </Link>
+                </div>
+              )}
               {results.nearest_roles.length > 0 && (
                 <p>
                   {t("nearest")}: {results.nearest_roles.join(", ")}
@@ -627,6 +648,7 @@ export function Preparation({
               <textarea
                 rows={7}
                 className={inputStyle}
+                aria-label={t("notice")}
                 value={rawNotice}
                 onChange={(event) => {
                   setRawNotice(event.target.value);
@@ -638,6 +660,23 @@ export function Preparation({
             </label>
             <p className="text-graphite text-sm">{t("noticeHelp")}</p>
             <button
+              type="button"
+              className="border border-graphite/30 px-4 py-2"
+              onClick={() => {
+                const date = new Date();
+                date.setDate(date.getDate() + 21);
+                setRawNotice(
+                  `Company: Example Analytics (practice only)\nRole: Data Analyst\nInterview date: ${date.toISOString().slice(0, 10)}\nCTC: 4 LPA\nEligibility: Final-year students\nRounds: Aptitude, Technical, HR\nMode: Online`,
+                );
+                setFields(null);
+                setPack(null);
+                setConfirmed(false);
+              }}
+            >
+              {t("sampleNotice")}
+            </button>
+            <p className="text-sm text-graphite">{t("sampleNoticeHelp")}</p>
+            <button
               className={buttonStyle}
               type="button"
               disabled={busy || !rawNotice.trim()}
@@ -648,7 +687,6 @@ export function Preparation({
                   });
                   setFields(result.fields);
                   setConfirmed(false);
-                  setRawNotice("");
                 })
               }
             >
@@ -688,6 +726,7 @@ export function Preparation({
               <label className="grid gap-2">
                 {t("goal")}
                 <select
+                  aria-label={t("goal")}
                   className={inputStyle}
                   value={goal}
                   onChange={(e) => {
@@ -890,6 +929,7 @@ export function Preparation({
                     <textarea
                       rows={7}
                       className={inputStyle}
+                      aria-label={t("answer")}
                       value={answer}
                       disabled={busy || recording || micPending}
                       onChange={(e) => {

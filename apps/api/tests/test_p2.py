@@ -10,7 +10,12 @@ client = TestClient(app)
 def test_catalog_and_shared_persona_engine():
     catalog = client.get('/engine/catalog').json()
     assert len(catalog['skills']) == 24
-    assert len(catalog['roles']) == 2
+    assert len(catalog['roles']) == 20
+    assert len({role['id'] for role in catalog['roles']}) == 20
+    for role in catalog['roles']:
+        assert role['label_en'] and role['label_te'] and role['label_hi'] and role['source']
+        response = client.post('/engine/roadmap', json={'goal': role['id'], 'held': {}, 'persona': 'student'})
+        assert response.status_code == 200, role['id']
     assert len(catalog['tools']) == 5
     assert all(t['parameters']['type'] == 'object' for t in catalog['tools'])
     payload = {'goal': 'data_analyst', 'held': {'ms_excel_basic': 2}}

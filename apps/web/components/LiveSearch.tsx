@@ -83,6 +83,10 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
   const [jobType, setJobType] = useState("local");
   const [includeRemote, setIncludeRemote] = useState(false);
   const [query, setQuery] = useState("");
+  const [schemeId, setSchemeId] = useState("");
+  const [choices, setChoices] = useState<
+    { id: string; name_en: string; name_te?: string }[]
+  >([]);
   const [place, setPlace] = useState("Guntur, Andhra Pradesh");
   const [age, setAge] = useState("");
   const [income, setIncome] = useState("");
@@ -93,6 +97,15 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
   const [extraProfile, setExtraProfile] = useState<Record<string, string>>({});
   const [slotAnswer, setSlotAnswer] = useState("");
   const [skillLabels, setSkillLabels] = useState<Record<string, string>>({});
+  useEffect(() => {
+    if (kind !== "schemes") return;
+    const controller = new AbortController();
+    fetch("/api/engine/schemes/options", { signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : Promise.reject()))
+      .then((data) => setChoices(data.schemes ?? []))
+      .catch(() => {});
+    return () => controller.abort();
+  }, [kind]);
   useEffect(() => {
     let active = true;
     fetch("/api/engine/catalog")
@@ -163,6 +176,7 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             }
           : {
               query,
+              scheme_id: schemeId || null,
               profile: {
                 state: "Andhra Pradesh",
                 age: age ? Number(age) : null,
@@ -231,6 +245,75 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
       <p className="status-note">
         {t(kind === "leads" ? "apJobsScope" : "apSchemesScope")}
       </p>
+      <label className="surface mb-5 grid gap-2">
+        {t(kind === "leads" ? "chooseJob" : "chooseScheme")}
+        <select
+          aria-label={t(kind === "leads" ? "chooseJob" : "chooseScheme")}
+          value={schemeId ? `scheme:${schemeId}` : query}
+          onChange={(event) => {
+            invalidate();
+            const value = event.target.value;
+            const chosen = choices.find(
+              (item) => `scheme:${item.id}` === value,
+            );
+            setSchemeId(chosen?.id ?? "");
+            setQuery(chosen ? chosen.name_en.slice(0, 100) : value);
+          }}
+        >
+          <option value="">{t("choosePrompt")}</option>
+          {(kind === "leads"
+            ? [
+                ["sales", "jobSales"],
+                ["customer service", "jobSupport"],
+                ["data entry", "jobEntry"],
+                ["delivery", "jobDelivery"],
+                ["python", "jobPython"],
+              ]
+            : [
+                ["skill training", "schemeTraining"],
+                ["education scholarship", "schemeEducation"],
+                ["business loan", "schemeBusiness"],
+                ["farmer", "schemeFarmer"],
+                ["women", "schemeWomen"],
+              ]
+          ).map(([value, key]) => (
+            <option key={value} value={value}>
+              {t(key)}
+            </option>
+          ))}
+          {kind === "schemes" && choices.length > 0 && (
+            <optgroup label={t("namedSchemes")}>
+              {choices.map((item) => (
+                <option key={item.id} value={`scheme:${item.id}`}>
+                  {locale === "te"
+                    ? item.name_te || item.name_en
+                    : item.name_en}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          {query &&
+            !schemeId &&
+            !(
+              kind === "leads"
+                ? [
+                    "sales",
+                    "customer service",
+                    "data entry",
+                    "delivery",
+                    "python",
+                  ]
+                : [
+                    "skill training",
+                    "education scholarship",
+                    "business loan",
+                    "farmer",
+                    "women",
+                  ]
+            ).includes(query) && <option value={query}>{query}</option>}
+        </select>
+        <span className="text-sm text-graphite">{t("choiceHelp")}</span>
+      </label>
       <form
         className="control-panel flex flex-wrap gap-4"
         onSubmit={(event) => {
@@ -265,6 +348,7 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             )}
             onChange={(event) => {
               invalidate();
+              setSchemeId("");
               setQuery(event.target.value);
             }}
             required={kind !== "leads" || jobType !== "government"}
@@ -458,7 +542,30 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
         </form>
       )}
       {result && !(result.leads?.length || result.schemes?.length) && (
-        <p className="mt-5">{t("noData")}</p>
+        <div className="surface mt-5 space-y-3">
+          <p>{t("noData")}</p>
+          <p>{t(kind === "leads" ? "noJobsHelp" : "noSchemesHelp")}</p>
+          {kind === "leads" && (
+            <a
+              className="text-signal underline"
+              href="https://www.ncs.gov.in/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t("officialJobs")}
+            </a>
+          )}
+          {kind === "schemes" && (
+            <a
+              className="text-signal underline"
+              href="https://www.myscheme.gov.in/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t("officialSchemes")}
+            </a>
+          )}
+        </div>
       )}
       <div className="mt-5 grid gap-4 md:grid-cols-2">
         {result?.leads?.map((lead) => (

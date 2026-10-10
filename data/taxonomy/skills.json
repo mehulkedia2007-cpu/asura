@@ -1,54 +1,51 @@
 [
   {
     "id": "spoken_english",
-    "label_en": "Spoken English / workplace communication",
+    "label_en": "Speaking English at work",
     "label_te": "మాట్లాడే ఆంగ్లం / కార్యాలయ సంభాషణ",
     "label_hi": "बोलचाल की अंग्रेज़ी / कार्यस्थल संचार",
     "aliases": [
       "English communication",
       "workplace English",
-      "spoken communication"
+      "spoken communication",
+      "Spoken English / workplace communication"
     ],
     "level": 2,
     "hours": 30,
     "source": "ESCO skill: English — http://data.europa.eu/esco/skill/6d3edede-8951-4621-a835-e04323300fa0",
-    "prereqs": [
-
-    ]
+    "prereqs": []
   },
   {
     "id": "basic_numeracy",
-    "label_en": "Basic numeracy / arithmetic for work",
+    "label_en": "Everyday maths",
     "label_te": "ప్రాథమిక గణితం",
     "label_hi": "बुनियादी अंकगणित",
     "aliases": [
       "numeracy",
       "basic maths",
-      "arithmetic"
+      "arithmetic",
+      "Basic numeracy / arithmetic for work"
     ],
     "level": 2,
     "hours": 20,
     "source": "ESCO skill: apply numeracy skills — http://data.europa.eu/esco/skill/5dd01a1e-7ba0-4b7f-a76c-ed811c12bfde",
-    "prereqs": [
-
-    ]
+    "prereqs": []
   },
   {
     "id": "digital_literacy",
-    "label_en": "Digital literacy / basic smartphone & internet use",
+    "label_en": "Using a computer and the internet",
     "label_te": "డిజిటల్ అక్షరాస్యత",
     "label_hi": "डिजिटल साक्षरता",
     "aliases": [
       "digital skills",
       "smartphone literacy",
-      "basic computer use"
+      "basic computer use",
+      "Digital literacy / basic smartphone & internet use"
     ],
     "level": 2,
     "hours": 15,
     "source": "ESCO skill: creatively use digital technologies — http://data.europa.eu/esco/skill/1a4cc54f-1e53-442b-a6d2-1682dc8ef8f9",
-    "prereqs": [
-
-    ]
+    "prereqs": []
   },
   {
     "id": "ms_excel_basic",
@@ -85,12 +82,13 @@
   },
   {
     "id": "database_fundamentals",
-    "label_en": "Database fundamentals / relational DB concepts",
+    "label_en": "Database basics",
     "label_te": "డేటాబేస్ ప్రాథమికాంశాలు",
     "label_hi": "डेटाबेस की बुनियादी बातें",
     "aliases": [
       "relational databases",
-      "DB fundamentals"
+      "DB fundamentals",
+      "Database fundamentals / relational DB concepts"
     ],
     "level": 2,
     "hours": 20,
@@ -101,12 +99,13 @@
   },
   {
     "id": "sql_querying",
-    "label_en": "SQL querying",
+    "label_en": "Finding data with SQL",
     "label_te": "SQL క్వెరీయింగ్",
     "label_hi": "एसक्यूएल क्वेरी",
     "aliases": [
       "SQL",
-      "structured query language"
+      "structured query language",
+      "SQL querying"
     ],
     "level": 3,
     "hours": 40,
@@ -117,12 +116,13 @@
   },
   {
     "id": "python_programming",
-    "label_en": "Python programming for data analysis",
+    "label_en": "Writing Python programs",
     "label_te": "పైథాన్ ప్రోగ్రామింగ్",
     "label_hi": "पायथन प्रोग्रामिंग",
     "aliases": [
       "Python",
-      "Python for data science"
+      "Python for data science",
+      "Python programming for data analysis"
     ],
     "level": 4,
     "hours": 60,
@@ -134,12 +134,13 @@
   },
   {
     "id": "statistics_fundamentals",
-    "label_en": "Statistics fundamentals",
+    "label_en": "Understanding numbers and averages",
     "label_te": "గణాంకశాస్త్ర ప్రాథమికాంశాలు",
     "label_hi": "सांख्यिकी की बुनियादी बातें",
     "aliases": [
       "statistics",
-      "basic stats"
+      "basic stats",
+      "Statistics fundamentals"
     ],
     "level": 3,
     "hours": 40,
@@ -150,12 +151,13 @@
   },
   {
     "id": "data_cleaning",
-    "label_en": "Data cleaning / data wrangling",
+    "label_en": "Finding and fixing errors in data",
     "label_te": "డేటా క్లీనింగ్ / డేటా వ్రాంగ్లింగ్",
     "label_hi": "डेटा क्लीनिंग / डेटा रैंगलिंग",
     "aliases": [
       "data wrangling",
-      "data cleansing"
+      "data cleansing",
+      "Data cleaning / data wrangling"
     ],
     "level": 3,
     "hours": 25,
@@ -199,19 +201,18 @@
   },
   {
     "id": "critical_thinking_problem_solving",
-    "label_en": "Critical thinking / problem solving",
+    "label_en": "Solving problems",
     "label_te": "విమర్శనాత్మక ఆలోచన / సమస్యా పరిష్కారం",
     "label_hi": "आलोचनात्मक चिंतन / समस्या समाधान",
     "aliases": [
       "problem solving",
-      "analytical thinking"
+      "analytical thinking",
+      "Critical thinking / problem solving"
     ],
     "level": 3,
     "hours": 15,
     "source": "ESCO skill: think analytically — http://data.europa.eu/esco/skill/4707da90-9cfc-46ca-8de0-38a0b7bfb137",
-    "prereqs": [
-
-    ]
+    "prereqs": []
   },
   {
     "id": "traffic_safety_rules",
@@ -225,9 +226,7 @@
     "level": 2,
     "hours": 8,
     "source": "NSQF Qualification Pack: Courier Delivery Executive, Ref LSC/Q3023 v3.0, NSQF Level 3, Logistics Sector Skill Council — https://lsc-india.com/qp_files/English%20PH%20-%20Courier%20Delivery%20Executive%20-%20V3.pdf (also listed at https://nsdcindia.org/courier-delivery-executive)",
-    "prereqs": [
-
-    ]
+    "prereqs": []
   },
   {
     "id": "two_wheeler_riding",
@@ -279,12 +278,13 @@
   },
   {
     "id": "cash_handling",
-    "label_en": "Cash handling (COD collection)",
+    "label_en": "Handling cash and payments",
     "label_te": "నగదు నిర్వహణ (COD వసూలు)",
     "label_hi": "नकद प्रबंधन (सीओडी वसूली)",
     "aliases": [
       "COD collection",
-      "cash on delivery"
+      "cash on delivery",
+      "Cash handling (COD collection)"
     ],
     "level": 2,
     "hours": 6,
@@ -295,12 +295,13 @@
   },
   {
     "id": "cash_reconciliation",
-    "label_en": "Cash reconciliation / basic bookkeeping",
+    "label_en": "Checking daily cash records",
     "label_te": "నగదు సరిపోల్చడం / ప్రాథమిక లెక్కలు",
     "label_hi": "नकद मिलान / बुनियादी बहीखाता",
     "aliases": [
       "daily cash reconciliation",
-      "basic bookkeeping"
+      "basic bookkeeping",
+      "Cash reconciliation / basic bookkeeping"
     ],
     "level": 2,
     "hours": 8,
@@ -327,12 +328,13 @@
   },
   {
     "id": "delivery_safety_compliance",
-    "label_en": "Delivery safety compliance (helmet, load limits, traffic rules)",
+    "label_en": "Safe delivery practices",
     "label_te": "డెలివరీ భద్రతా నిబంధనల పాటింపు",
     "label_hi": "डिलीवरी सुरक्षा अनुपालन",
     "aliases": [
       "safety compliance",
-      "helmet compliance"
+      "helmet compliance",
+      "Delivery safety compliance (helmet, load limits, traffic rules)"
     ],
     "level": 3,
     "hours": 8,
@@ -344,50 +346,47 @@
   },
   {
     "id": "time_management",
-    "label_en": "Time management for delivery slots",
+    "label_en": "Planning your time",
     "label_te": "సమయ నిర్వహణ",
     "label_hi": "समय प्रबंधन",
     "aliases": [
       "slot management",
-      "scheduling"
+      "scheduling",
+      "Time management for delivery slots"
     ],
     "level": 2,
     "hours": 6,
     "source": "ESCO skill: manage time — http://data.europa.eu/esco/skill/d9013e0e-e937-43d5-ab71-0e917ee882b8",
-    "prereqs": [
-
-    ]
+    "prereqs": []
   },
   {
     "id": "local_area_familiarity",
-    "label_en": "Local area / locality familiarity",
+    "label_en": "Knowing your local area",
     "label_te": "స్థానిక ప్రాంత పరిచయం",
     "label_hi": "स्थानीय क्षेत्र से परिचय",
     "aliases": [
       "locality knowledge",
-      "area familiarity"
+      "area familiarity",
+      "Local area / locality familiarity"
     ],
     "level": 2,
     "hours": 10,
     "source": "NSQF Qualification Pack: Courier Delivery Executive, Ref LSC/Q3023 v3.0, Logistics Sector Skill Council — https://lsc-india.com/qp_files/English%20PH%20-%20Courier%20Delivery%20Executive%20-%20V3.pdf (role-level citation: no dedicated NOS line item found for locality knowledge as its own standard; it is an implicit part of this on-road delivery role — stated here rather than hidden, per data.md)",
-    "prereqs": [
-
-    ]
+    "prereqs": []
   },
   {
     "id": "package_handling_safety",
-    "label_en": "Safe package handling (fragile goods, food safety basics)",
+    "label_en": "Handling packages safely",
     "label_te": "పార్సిల్ సురక్షిత నిర్వహణ",
     "label_hi": "पार्सल की सुरक्षित हैंडलिंग",
     "aliases": [
       "parcel handling",
-      "fragile goods handling"
+      "fragile goods handling",
+      "Safe package handling (fragile goods, food safety basics)"
     ],
     "level": 2,
     "hours": 6,
     "source": "NSQF Qualification Pack: E-commerce Delivery Associate, Logistics Sector Skill Council (NSQC-approved) — https://lsc-india.com/qp_files/E_commerceDeliveryAssociateQP.pdf",
-    "prereqs": [
-
-    ]
+    "prereqs": []
   }
 ]
