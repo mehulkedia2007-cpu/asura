@@ -300,3 +300,17 @@ panels and the roadmap page. Keep static vector contours available if WebGL
 fails. First visits to this visual revision use dark appearance, after which
 theme choices persist. The redesigned shell preserves all existing routes,
 source annotations, score explanations, eligibility states and voice behavior.
+
+## D33 · 2026-10-10 · AP relevance and honest government recruitment
+
+Scope nearby searches to verified Andhra Pradesh addresses and measured distance.
+Require publication evidence within 60 days, independent query relevance and
+explicit opt-in for India-eligible remote jobs. Add the planned Google Jobs
+fallback under a checked free SerpAPI plan and 100-search maximum monthly budget.
+
+Separate official AP government recruitment notices from support schemes. Show
+statewide scope and source deadline checks; never infer open status or distance.
+Filter schemes using state/beneficiary restrictions and topic evidence; ministry
+terminology alone cannot make an unrelated scheme relevant. Clear old results
+and cancel pending searches when filters change. Preserve the shared engine and
+all three languages. Record the remaining live scheme accuracy gap explicitly.

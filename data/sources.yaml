@@ -17,6 +17,49 @@
       "refresh_hours": 6,
       "region": "remote",
       "tos_note": "Attribute Remotive and link to its job URL; feed is delayed by 24 hours."
+    },
+    {
+      "id": "appsc",
+      "kind": "html_list",
+      "url_template": "https://portal-psc.ap.gov.in/HomePages/RecruitmentNotifications",
+      "parser": "appsc_recruitment",
+      "refresh_hours": 6,
+      "region": "AP",
+      "government": true,
+      "label": "Andhra Pradesh Public Service Commission",
+      "tos_note": "Public recruitment notifications; link to original official notice. Dates do not establish an open application window."
+    },
+    {
+      "id": "aphc",
+      "kind": "html_list",
+      "url_template": "https://aphc.gov.in/recruitment.php",
+      "parser": "aphc_recruitment",
+      "refresh_hours": 6,
+      "region": "AP",
+      "government": true,
+      "label": "High Court of Andhra Pradesh",
+      "tos_note": "Public recruitment notifications; distinguish application notices from examination and result updates."
+    },
+    {
+      "id": "guntur_recruitment",
+      "kind": "html_list",
+      "url_template": "https://guntur.ap.gov.in/notice_category/recruitment/",
+      "parser": "district_recruitment",
+      "refresh_hours": 6,
+      "region": "AP",
+      "government": true,
+      "district": "Guntur",
+      "label": "Guntur District recruitment",
+      "tos_note": "Public NIC district recruitment notices; retain source dates and exclude expired notices."
+    },
+    {
+      "id": "google_jobs",
+      "kind": "json_api",
+      "url_template": "https://serpapi.com/search.json",
+      "parser": "google_jobs",
+      "refresh_hours": 6,
+      "region": "AP",
+      "tos_note": "Official SerpAPI Google Jobs API; free plan only, capped at 100 searches/month, six-hour snapshots. Verify each source location using Nominatim."
     }
   ],
   "schemes": [

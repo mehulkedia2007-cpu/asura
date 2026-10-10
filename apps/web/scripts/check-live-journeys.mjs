@@ -25,10 +25,26 @@ try {
   );
   await page.getByRole("button", { name: t.live.search, exact: true }).click();
   const leads = await (await leadsResponse).json();
-  await page.locator(".result-card").first().waitFor();
+  await page
+    .getByRole("button", { name: t.live.search, exact: true })
+    .waitFor();
+  await page.waitForFunction(
+    () => !document.querySelector('button[type="submit"]')?.disabled,
+  );
+  assert.equal(leads.region, "Andhra Pradesh");
+  assert.equal(leads.include_remote, false);
   assert(
-    leads.leads.length > 0,
-    "Live sources must produce stamped cards in this verification",
+    leads.leads.every(
+      (lead) =>
+        !lead.remote &&
+        Number.isFinite(lead.distance_km) &&
+        lead.distance_km <= 100,
+    ),
+  );
+  assert(
+    leads.leads.every(
+      (lead) => Date.now() - Date.parse(lead.published_at) <= 60 * 86400000,
+    ),
   );
   assert.equal(
     await page.locator(".source-footer").count(),
@@ -43,15 +59,19 @@ try {
         lead.scam,
     ),
   );
-  await page.locator(".match-panel summary").first().click();
-  assert(
-    (await page.locator(".match-panel dl").first().innerText()).length > 0,
-  );
+  if (leads.leads.length) {
+    await page.locator(".match-panel summary").first().click();
+    assert(
+      (await page.locator(".match-panel dl").first().innerText()).length > 0,
+    );
+  } else {
+    await page.getByText(t.live.noData, { exact: true }).waitFor();
+  }
   await page.screenshot({ path: `${output}/leads-mobile.png`, fullPage: true });
   report.leads = {
     returned: leads.leads.length,
     sourceStamps: true,
-    matchBreakdown: true,
+    matchBreakdown: leads.leads.length > 0,
     sourceErrors: leads.errors,
     radius: leads.radius_km,
   };

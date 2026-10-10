@@ -12,6 +12,7 @@ from sqlalchemy import text
 from daari.config import settings
 from daari.db import engine
 from daari.scheme_ranking import rank_records, tokens
+from daari.scheme_scope import ap_or_national
 
 EMBEDDING_KIND = "gemini-embedding-001:768"
 _MODEL = "models/gemini-embedding-001"
@@ -171,6 +172,7 @@ async def retrieve(query: str, limit: int = 8, *, use_embeddings: bool = True) -
         # The AP/central catalog is small. Rank all source purposes rather than
         # irreversibly truncating candidates on generic OR matches at top 20.
         records = list((await conn.execute(text("SELECT record FROM scheme_records"))).scalars())
+        records = [record for record in records if ap_or_national(record)]
         prior = {}
         if vector is not None:
             semantic = (await conn.execute(text("""
@@ -178,7 +180,8 @@ async def retrieve(query: str, limit: int = 8, *, use_embeddings: bool = True) -
                 FROM scheme_chunks WHERE embedding IS NOT NULL AND embedding_kind=:kind
                 GROUP BY scheme_id ORDER BY distance, scheme_id LIMIT 20
             """), {"vector": json.dumps(vector), "kind": EMBEDDING_KIND})).all()
-            prior = {scheme_id: 1 / (60 + rank) for rank, (scheme_id, _) in enumerate(semantic, 1)}
+            prior = {scheme_id: 1 / (60 + rank) for rank, (scheme_id, distance) in enumerate(semantic, 1)
+                     if distance is not None and distance <= 0.35}
         ranked = rank_records(query, records, limit, prior, dedupe_duplicates=True)
     return {"records": [{**r, "source": r.get("source") or "myScheme"} for r in ranked],
             "kind": "hybrid" if vector is not None else "lexical",

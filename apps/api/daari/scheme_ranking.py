@@ -41,7 +41,7 @@ _CONCEPTS = {
         # https://www.myscheme.gov.in/schemes/fspip . Preserve that proper-name
         # alias in the same vocabulary used for search instead of requiring an
         # embedding.
-        r"\b(?:digital|technology|electronics?|ict|esdm|futureskills)\b",
+        r"\b(?:digital|information technology|electronics?|ict|esdm|futureskills)\b",
         "డిజిటల్",
         "టెక్నాలజీ",
         "ఎలక్ట్రానిక్స్",
@@ -170,6 +170,10 @@ def rank_records(
         focus.discard("vocational")
     scored = []
     for record, (title, body) in zip(records, fields, strict=True):
+        metadata = set(tokens(" ".join(record.get("tags") or [])))
+        evidence_terms = title.keys() | body.keys() | metadata
+        if focus and not focus.intersection(evidence_terms):
+            continue
         score = 0.0
         for term in terms:
             idf = math.log(
@@ -195,7 +199,6 @@ def rank_records(
             score *= (
                 0.05 + sum(t in title or t in body for t in focus) / len(focus)
             ) ** 3
-        metadata = set(tokens(" ".join(record.get("tags") or [])))
         department = set(tokens(str(record.get("ministry_or_dept") or "")))
         wants_training = bool(terms & {"skill", "training", "vocational", "practice"})
         has_training = bool(

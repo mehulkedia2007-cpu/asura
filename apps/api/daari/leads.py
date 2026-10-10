@@ -1,5 +1,7 @@
 """Stamped job leads from Adzuna and Remotive, with computed local distance."""
 
+import asyncio
+import math
 import re
 from datetime import UTC, datetime
 from typing import Any
@@ -14,7 +16,8 @@ from daari_core.scam import score as scam_score
 
 from daari.config import settings
 from daari.embeddings import get_embeddings
-from daari.geocode import lookup
+from daari.geocode import lookup_ap as lookup
+from daari.job_filters import MAX_JOB_AGE_DAYS, fresh, relevant
 from daari.scam_llm import second_opinion
 from daari.source_cache import read, source, write
 from daari.taxonomy_loader import get_taxonomy
@@ -47,6 +50,8 @@ def normalize_adzuna(raw: dict, fetched_at: str, origin: tuple[float, float] | N
         if raw_lat is None or raw_lon is None:
             raise ValueError("no coordinates")
         lat, lon = float(raw_lat), float(raw_lon)
+        if not math.isfinite(lat) or not math.isfinite(lon) or not -90 <= lat <= 90 or not -180 <= lon <= 180:
+            raise ValueError("invalid coordinates")
         distance = haversine(*origin, lat, lon) if origin else None
     except (TypeError, ValueError):
         lat = lon = distance = None
@@ -70,8 +75,10 @@ def normalize_remotive(raw: dict, fetched_at: str) -> dict | None:
     if not url:
         return None
     location = str(raw.get("candidate_required_location") or "Remote")
-    if location.casefold() not in {"remote", "worldwide", "anywhere"} and not any(
-        term in location.casefold() for term in ("india", "asia", "global")
+    region = location.casefold()
+    if re.search(r"(?:except|excluding|not)\s+india", region) or (
+        region not in {"remote", "worldwide", "anywhere", "asia", "apac", "global"}
+        and not re.search(r"\bindia\b", region)
     ):
         return None
     description = re.sub(r"<[^>]+>", " ", str(raw.get("description") or ""))
@@ -105,8 +112,13 @@ async def _fetch(client: httpx.AsyncClient, key: str, url: str, params: dict,
 
 
 async def search(query: str, place: str, held: dict[str, int], refresh: bool = False,
-                 since: datetime | None = None) -> dict:
+                 since: datetime | None = None, include_remote: bool = False) -> dict:
     query, place = query.strip()[:100], place.strip()[:150]
+    taxonomy = get_taxonomy()
+    for node in [*taxonomy.skills.values(), *taxonomy.roles.values()]:
+        if query.casefold() in {node.label_te.casefold(), node.label_hi.casefold()}:
+            query = node.label_en
+            break
     if since is not None and since.tzinfo is None:
         since = since.replace(tzinfo=UTC)
     if not query or not place:
@@ -121,11 +133,14 @@ async def search(query: str, place: str, held: dict[str, int], refresh: bool = F
         except (httpx.HTTPError, ValueError):
             origin = None
             errors["nominatim"] = "unavailable"
+        if origin is None:
+            raise ValueError("apPlaceRequired")
         if settings.ADZUNA_APP_ID and settings.ADZUNA_APP_KEY:
-            cache, error = await _fetch(client, f"adzuna:{query.casefold()}:{place.casefold()}",
+            cache, error = await _fetch(client, f"adzuna:ap-v2:{query.casefold()}:{place.casefold()}",
                 source("adzuna")["url_template"].format(page=1), {
                     "app_id": settings.ADZUNA_APP_ID, "app_key": settings.ADZUNA_APP_KEY,
                     "what": query, "where": place, "results_per_page": 50,
+                    "distance": 100, "max_days_old": MAX_JOB_AGE_DAYS,
                     "content-type": "application/json",
                 }, refresh)
             if error:
@@ -135,13 +150,28 @@ async def search(query: str, place: str, held: dict[str, int], refresh: bool = F
                              if (item := normalize_adzuna(raw, cache["fetched_at"], origin)))
         else:
             errors["adzuna"] = "no_api_key"
-        cache, error = await _fetch(client, f"remotive:{query.casefold()}",
-            source("remotive")["url_template"], {"search": query, "limit": 25}, refresh)
-        if error:
-            errors["remotive"] = error
-        if cache:
-            leads.extend(item for raw in cache["payload"].get("jobs", [])
-                         if (item := normalize_remotive(raw, cache["fetched_at"])))
+        if include_remote:
+            cache, error = await _fetch(client, f"remotive:{query.casefold()}",
+                source("remotive")["url_template"], {"search": query, "limit": 25}, refresh)
+            if error:
+                errors["remotive"] = error
+            if cache:
+                leads.extend(item for raw in cache["payload"].get("jobs", [])
+                             if (item := normalize_remotive(raw, cache["fetched_at"])))
+        if not any(fresh(item.get("published_at")) and relevant(query, item["title"], item["description"])
+                   and item.get("distance_km") is not None and item["distance_km"] <= 100 for item in leads):
+            from daari.google_jobs import search as google_search
+            try:
+                async with asyncio.timeout(30):
+                    google_leads, google_error = await google_search(client, query, place, origin, refresh)
+            except TimeoutError:
+                google_leads, google_error = [], "timeout"
+            leads.extend(google_leads)
+            if google_error:
+                errors["google_jobs"] = google_error
+    leads = [item for item in leads if (not item["remote"] or item["location"].casefold() != "remote")
+             and fresh(item.get("published_at"))
+             and relevant(query, item["title"], item["description"])]
     for item in leads:
         try:
             published = datetime.fromisoformat(str(item["published_at"]))
@@ -153,8 +183,8 @@ async def search(query: str, place: str, held: dict[str, int], refresh: bool = F
     local = [item for item in leads if item["distance_km"] is not None]
     selected_radius = next((radius for radius in (25, 50, 100)
                             if sum(item["distance_km"] <= radius for item in local) >= 5), 100)
-    visible = [item for item in leads if item["remote"] or item["distance_km"] is None
-               or item["distance_km"] <= selected_radius]
+    visible = [item for item in leads if (include_remote and item["remote"]) or (
+        not item["remote"] and item["distance_km"] is not None and item["distance_km"] <= selected_radius)]
     for item in visible[:5]:
         base = item["scam"]
         if 0.1 <= base["score"] < 0.5 and len(item["description"]) >= 30:
@@ -166,7 +196,7 @@ async def search(query: str, place: str, held: dict[str, int], refresh: bool = F
                 base["score"] = value
                 base["badge"] = "red" if value >= 0.5 else "amber" if value >= 0.3 else "none"
                 base["reasons"] = [*base["reasons"], reason]
-    # Unknown-distance local listings remain visible but clearly carry no km value.
+    # Unverified local distance never masquerades as a nearby listing.
     visible.sort(key=lambda item: (item["remote"], item["distance_km"] if item["distance_km"] is not None else float("inf"), item["id"]))
     taxonomy = get_taxonomy()
     district_listings = [set(item["required_skills"]) for item in local if item["distance_km"] <= 100]
@@ -184,7 +214,8 @@ async def search(query: str, place: str, held: dict[str, int], refresh: bool = F
         for item in visible:
             item["match"] = by_id[item["id"]].__dict__
         visible.sort(key=lambda item: (-item["match"]["score"], item["id"]))
-    return {"leads": visible, "demand": demand,
+    return {"leads": visible, "demand": demand, "region": "Andhra Pradesh",
+            "include_remote": include_remote, "max_age_days": MAX_JOB_AGE_DAYS,
             "radius_km": selected_radius, "origin": origin, "errors": errors,
             "new_count": sum(item["new_since_visit"] for item in visible),
             "refreshed_at": datetime.now(UTC).isoformat()}

@@ -7,6 +7,16 @@
     "languageLabel": "Language"
   },
   "live": {
+    "jobType": "Opportunity type",
+    "localJobs": "Nearby jobs in Andhra Pradesh",
+    "governmentJobs": "Andhra Pradesh government recruitment",
+    "includeRemote": "Also include relevant remote jobs open to applicants in India",
+    "apPlaceRequired": "Enter a place that can be verified in Andhra Pradesh. Nearby results are withheld when location cannot be verified.",
+    "apJobsScope": "Andhra Pradesh focus · Nearby jobs need verified distance and a publication date within 60 days. Remote jobs are optional.",
+    "apSchemesScope": "Andhra Pradesh and national schemes only. Government schemes are support programmes, not recruitment vacancies.",
+    "statewide": "Andhra Pradesh recruitment notices; posting location varies",
+    "govWindow": "Official recruitment notice. Check the original notice for the application deadline, current opening status and posting location.",
+    "published": "Published",
     "leadsTitle": "Live job leads",
     "schemesTitle": "Government schemes",
     "leadsIntro": "Search current job sources near a place. Distances are measured in kilometres when coordinates are available.",

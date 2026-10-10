@@ -14,6 +14,7 @@ from daari.myscheme_client import detail, search_pages
 from daari.scheme_index import coverage, retrieve, upsert
 from daari.scheme_ranking import rank_records
 from daari.scheme_rules import extract as extract_llm_rules
+from daari.scheme_scope import ap_or_national
 
 REFRESH_TIMEOUT_S = 45.0
 
@@ -82,14 +83,14 @@ def normalize(raw: dict, fetched_at: str) -> dict | None:
     region = _text(raw.get("level"))
     states = raw.get("beneficiary_states") or raw.get("beneficiaryState") or raw.get("state") or []
     ap = "andhra pradesh" in str(states).casefold() or "andhra pradesh" in region.casefold()
-    if not ap and "central" not in region.casefold():
+    if not ap_or_national({"state": "Andhra Pradesh" if ap else None, "level": region, "beneficiary_states": _text(states)}):
         return None
     content = f"{name}\n{description}\n{eligibility_text}"
     return {
         "id": slug, "name_en": name, "level": region,
         "name_te": _text(raw.get("schemeName")) if raw.get("schemeNameEng") else None,
         "summary_te": _text(raw.get("briefDescription")) if raw.get("briefDescriptionEng") else None,
-        "state": "Andhra Pradesh" if ap else None,
+        "state": "Andhra Pradesh" if ap else None, "beneficiary_states": _text(states),
         "ministry_or_dept": _text(raw.get("ministry") or raw.get("nodalMinistryName") or raw.get("department")),
         "summary_en": description, "tags": raw.get("tags") or [],
         "benefit_text": _text(raw.get("benefits")) or description,
@@ -200,12 +201,8 @@ async def search(query: str, profile: dict, refresh: bool = False, locale: str =
     for scheme in ordered:
         deduplicated.setdefault(scheme["id"], scheme)
     visible = []
-    result_ids = {result["id"] for result in results}
-    ranked = sorted(deduplicated.values(), key=lambda item: -(
-        retrieval_scores.get(item["id"], 0.0)
-        + (0.005 if item.get("state") == "Andhra Pradesh" else 0.0)
-        + (0.002 if item["id"] in result_ids else 0.0)
-    ))
+    ranked = rank_records(query, [item for item in deduplicated.values() if ap_or_national(item)],
+                          limit=len(deduplicated), prior=retrieval_scores, dedupe_duplicates=True)
     for scheme in ranked:
         scheme["stale"] = bool(scheme.get("stale")) or (
             datetime.now(UTC) - datetime.fromisoformat(scheme["fetched_at"])

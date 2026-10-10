@@ -1,6 +1,10 @@
 # STATE — DAARI
 
-Spec: [build.md](../build.md), v6, §13. Updated 2026-10-01.
+Spec: [build.md](../build.md), v6, §13. Updated 2026-10-10.
+
+## Andhra Pradesh search repair on 2026-10-10
+
+Nearby job searches now verify AP addresses, exclude old/unrelated/unmeasured listings and make India-eligible remote results opt-in. A free-plan-only, budgeted Google Jobs fallback completes the three planned job feeds. Government recruitment is a separate mode backed by official AP notices, with publication dates and a deadline-verification reminder. Scheme admission rejects other-state and explicit foreign-only records; specific topics no longer receive generic padding. Editing filters clears stale cards and aborts older responses. See [AP search verification](AP_SEARCH_VERIFICATION.md) for the build-plan comparison, checks and remaining source/accuracy limits.
 
 ## Current phase
 

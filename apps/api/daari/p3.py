@@ -20,6 +20,8 @@ class LeadSearch(BaseModel):
     held: dict[str, int] = Field(default_factory=dict)
     refresh: bool = False
     since: datetime | None = None
+    include_remote: bool = False
+    job_type: Literal["local", "government"] = "local"
 
 
 class SchemeSearch(BaseModel):
@@ -36,7 +38,10 @@ async def search_leads(args: LeadSearch) -> dict:
             raise ValueError("held references an unknown skill")
         if any(not 1 <= level <= 5 for level in args.held.values()):
             raise ValueError("skill levels must be 1–5")
-        return await leads.search(args.query, args.place, args.held, args.refresh, args.since)
+        if args.job_type == "government":
+            from daari.government_jobs import search
+            return await search(args.query, args.place, args.refresh)
+        return await leads.search(args.query, args.place, args.held, args.refresh, args.since, args.include_remote)
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
 

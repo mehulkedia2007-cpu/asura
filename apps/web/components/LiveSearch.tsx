@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/Icon";
 import { PageIntro } from "@/components/PageIntro";
 
@@ -19,6 +19,9 @@ type Lead = {
   fetched_at: string;
   new_since_visit: boolean;
   remote: boolean;
+  published_at?: string;
+  published_label?: string;
+  government?: boolean;
   match?: {
     score: number;
     missing: string[];
@@ -45,6 +48,7 @@ type Result = {
   leads?: Lead[];
   schemes?: Scheme[];
   radius_km?: number;
+  job_type?: string;
   demand?: Record<string, number>;
   errors?: Record<string, string>;
   error?: string | null;
@@ -75,6 +79,9 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
   const t = useTranslations("live");
   const workspace = useTranslations("workspace");
   const locale = useLocale();
+  const request = useRef<AbortController | null>(null);
+  const [jobType, setJobType] = useState("local");
+  const [includeRemote, setIncludeRemote] = useState(false);
   const [query, setQuery] = useState("");
   const [place, setPlace] = useState("Guntur, Andhra Pradesh");
   const [age, setAge] = useState("");
@@ -118,11 +125,22 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
     };
   }, [locale]);
 
+  function invalidate() {
+    request.current?.abort();
+    setResult(null);
+    setError("");
+    setBusy(false);
+  }
+  useEffect(() => () => request.current?.abort(), []);
   async function search(
     refresh = false,
     profileUpdate: Record<string, string> = {},
   ) {
-    if (!query.trim()) return;
+    if (!query.trim() && !(kind === "leads" && jobType === "government"))
+      return;
+    request.current?.abort();
+    const controller = new AbortController();
+    request.current = controller;
     setBusy(true);
     setError("");
     try {
@@ -135,8 +153,10 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
       const body =
         kind === "leads"
           ? {
-              query,
+              query: query.trim() || "recruitment",
               place,
+              include_remote: includeRemote,
+              job_type: jobType,
               held,
               refresh,
               since: localStorage.getItem("daari-leads-last-visit"),
@@ -158,14 +178,21 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
+        signal: AbortSignal.any([
+          controller.signal,
+          AbortSignal.timeout(90_000),
+        ]),
       });
       const data = await response.json();
       if (!response.ok)
         throw new Error(
           response.status >= 500
             ? t("unavailable")
-            : (data.detail ?? t("unavailable")),
+            : t.has(data.detail ?? "")
+              ? t(data.detail)
+              : (data.detail ?? t("unavailable")),
         );
+      if (controller.signal.aborted) return;
       setResult(data);
       if (kind === "leads") {
         localStorage.setItem(
@@ -186,9 +213,10 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
         );
       }
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : t("unavailable"));
+      if (!controller.signal.aborted)
+        setError(cause instanceof Error ? cause.message : t("unavailable"));
     } finally {
-      setBusy(false);
+      if (request.current === controller) setBusy(false);
     }
   }
 
@@ -200,6 +228,9 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
         description={t(kind === "leads" ? "leadsIntro" : "schemesIntro")}
         icon={kind}
       />
+      <p className="status-note">
+        {t(kind === "leads" ? "apJobsScope" : "apSchemesScope")}
+      </p>
       <form
         className="control-panel flex flex-wrap gap-4"
         onSubmit={(event) => {
@@ -207,6 +238,23 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
           void search();
         }}
       >
+        {kind === "leads" && (
+          <label className="flex min-w-48 flex-1 flex-col gap-2 text-sm">
+            {t("jobType")}
+            <select
+              aria-label={t("jobType")}
+              value={jobType}
+              onChange={(event) => {
+                invalidate();
+                setJobType(event.target.value);
+                setIncludeRemote(false);
+              }}
+            >
+              <option value="local">{t("localJobs")}</option>
+              <option value="government">{t("governmentJobs")}</option>
+            </select>
+          </label>
+        )}
         <label className="flex min-w-48 flex-1 flex-col gap-2 text-sm">
           {t("query")}
           <input
@@ -215,8 +263,11 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             placeholder={t(
               kind === "leads" ? "searchPlaceholder" : "schemePlaceholder",
             )}
-            onChange={(event) => setQuery(event.target.value)}
-            required
+            onChange={(event) => {
+              invalidate();
+              setQuery(event.target.value);
+            }}
+            required={kind !== "leads" || jobType !== "government"}
           />
         </label>
         {kind === "leads" ? (
@@ -225,7 +276,10 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
             <input
               className="rounded border border-graphite/30 bg-background p-2"
               value={place}
-              onChange={(event) => setPlace(event.target.value)}
+              onChange={(event) => {
+                invalidate();
+                setPlace(event.target.value);
+              }}
               required
             />
           </label>
@@ -238,7 +292,10 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
                 min="0"
                 className="rounded border border-graphite/30 bg-background p-2"
                 value={age}
-                onChange={(event) => setAge(event.target.value)}
+                onChange={(event) => {
+                  invalidate();
+                  setAge(event.target.value);
+                }}
               />
             </label>
             <label className="flex w-40 flex-col gap-2 text-sm">
@@ -248,10 +305,26 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
                 min="0"
                 className="rounded border border-graphite/30 bg-background p-2"
                 value={income}
-                onChange={(event) => setIncome(event.target.value)}
+                onChange={(event) => {
+                  invalidate();
+                  setIncome(event.target.value);
+                }}
               />
             </label>
           </>
+        )}
+        {kind === "leads" && jobType === "local" && (
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={includeRemote}
+              onChange={(event) => {
+                invalidate();
+                setIncludeRemote(event.target.checked);
+              }}
+            />
+            {t("includeRemote")}
+          </label>
         )}
         <div className="flex items-end gap-2">
           <button
@@ -263,7 +336,7 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
           </button>
           <button
             type="button"
-            disabled={busy || !query.trim()}
+            disabled={busy || (!query.trim() && jobType !== "government")}
             onClick={() => void search(true)}
             className="rounded border border-graphite/40 px-4 py-2 disabled:opacity-50"
           >
@@ -318,7 +391,7 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
           role="status"
         >
           {kind === "leads"
-            ? `${result.leads?.length ?? 0} ${t("results")} · ${t("radius")} ${result.radius_km ?? 0} km`
+            ? `${result.leads?.length ?? 0} ${t("results")} · ${result.job_type === "government" ? t("statewide") : `${t("radius")} ${result.radius_km ?? 0} km`}`
             : `${result.schemes?.length ?? 0} ${t("results")}`}
         </p>
       )}
@@ -409,6 +482,16 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
                   : `${lead.distance_km} km`}{" "}
               {lead.pay ? `· ${lead.pay}` : ""}
             </p>
+            {lead.government && (
+              <p className="mt-2 text-graphite text-sm">{t("govWindow")}</p>
+            )}
+            {lead.published_at && (
+              <p className="mt-2 font-mono text-xs">
+                {t("published")}{" "}
+                {lead.published_label ||
+                  new Date(lead.published_at).toLocaleDateString()}
+              </p>
+            )}
             {lead.match && (
               <div className="match-panel">
                 <div>

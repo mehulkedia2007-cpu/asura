@@ -194,6 +194,9 @@ async def _execute(name: str, supplied: dict, request: AgentRequest) -> dict:
     if name == "search_jobs":
         query = str(supplied["query"]).strip()
         place = str(supplied.get("place") or request.place).strip()
+        if re.search(r"government|govt|ప్రభుత్వ|सरकारी", query, re.IGNORECASE):
+            from daari.government_jobs import search as government_search
+            return await government_search(query, place)
         return await leads.search(query, place, request.held)
     if name == "find_schemes":
         query = str(supplied["query"]).strip()
