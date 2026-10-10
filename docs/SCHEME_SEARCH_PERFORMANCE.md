@@ -28,3 +28,17 @@ These timings are measurements, not guaranteed response times. Deployment startu
 - Frontend: lint, typecheck, 8 tests and production build.
 - Browser regression: From `apps/web`, run `WEB_URL=<site> node scripts/check-scheme-search.mjs`. Default target is the fellowship shown in the user's screenshot. The local snapshot uses `SCHEME_NAME='FutureSkills Prime Incentive Program'`.
 - Production results are emitted by that script into `.cache/scheme-search/report.json` after publication.
+
+## Production measurements
+
+The exact screenshot scheme (`National Fellowship for Students with Disabilities`) was tested on the public site after release `4a82daa`:
+
+| Action | Browser response |
+|---|---:|
+| Named scheme, age 19 / income 0 test values | 701 ms, 1 record |
+| Refresh official details | 3,458 ms, 1 record retained, no source errors |
+| Type the exact title | 619 ms, 1 record |
+| No match | 735 ms, empty result without provider errors |
+| Education/scholarship category | 1,394 ms, 5 records |
+
+No API responses were mocked. No browser exceptions occurred. CI run `38028426408` passed, and both Vercel deployments were ready. A final display cleanup decodes HTML entities and removes bold Markdown markers from official source prose so the returned details remain readable.

@@ -2,6 +2,7 @@
 
 import asyncio
 import hashlib
+import html
 import re
 from datetime import UTC, datetime
 from typing import Any
@@ -313,6 +314,10 @@ async def _present(query: str, profile: dict, results: list, retrieval: dict, er
     if exact:
         ranked = list(deduplicated.values())
     for scheme in ranked:
+        # Official Markdown and HTML entities should read as ordinary text in cards.
+        for field in ("benefit_text", "summary_te", "eligibility_text", "documents_text"):
+            if isinstance(scheme.get(field), str):
+                scheme[field] = re.sub(r"\*\*(.*?)\*\*", r"\1", html.unescape(scheme[field]), flags=re.DOTALL)
         scheme["stale"] = bool(scheme.get("stale")) or (
             datetime.now(UTC) - datetime.fromisoformat(scheme["fetched_at"])
         ).total_seconds() > 6 * 3600
