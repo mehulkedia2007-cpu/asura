@@ -460,6 +460,9 @@ export function Preparation({
             setResults(null);
           }}
         >
+          {company && !companies.some((c) => c.id === company) && (
+            <option value={company}>{company}</option>
+          )}
           {companies.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}

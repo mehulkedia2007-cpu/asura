@@ -249,10 +249,18 @@ try {
     "Open Start interview practice from your plan. Your company and job title carry over. Start five questions, then type an answer, or record one and check the transcript. I am sending a practice answer. Feedback quotes your own words and suggests improvements. The counts are practice aids, not a hiring score.",
     async () => {
       await page.getByRole("link", { name: t.p5.mock, exact: true }).click();
-      await page.getByLabel(t.p5.role, { exact: true }).waitFor();
+      await page.waitForFunction(
+        () =>
+          document.querySelector('input[list="company-job-titles"]')?.value ===
+          "Data Analyst",
+      );
       assert.equal(
         await page.getByLabel(t.p5.role, { exact: true }).inputValue(),
         "Data Analyst",
+      );
+      assert.equal(
+        await page.getByLabel(t.p5.company, { exact: true }).inputValue(),
+        "Example Analytics (practice only)",
       );
       const session = await click("/interview/start", t.p5.start);
       assert.equal(session.questions.length, 5);
