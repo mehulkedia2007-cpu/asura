@@ -40,3 +40,5 @@ Final visual review found a central-sponsored scholarship explicitly for Afghan 
 - Pasted companies absent from the interview-report library retain their own visible option, rather than appearing to select a different company. The walkthrough verifies both company and role before starting practice.
 
 Video review additionally caught an action-keyword false negative for “I used SQL”. Added common first-person action phrases with exact boundaries, a negative control for third-person descriptions, and plain-English feedback headings. The updated demo asserts that its first answer is recognized as an action. Metrics remain lexical practice aids, not semantic grading.
+
+Final functional release: `77ae854`; GitHub CI run `38026771869` passed all three jobs. Core 89 + API 120 + web 8 = 217 tests. The demo was re-recorded after this API revision became healthy, with an explicit assertion that “I used SQL” sets the action indicator and does not produce a missing-action suggestion.
