@@ -26,6 +26,13 @@ def test_scam_signal_catches_telugu_and_hindi_payment_phrases():
     assert score("ఫీజు లేదు. దరఖాస్తు సమర్పించండి", "Example Ltd").badge == "none"
 
 
+def test_scam_free_email_found_in_description():
+    # Adzuna puts recruiter contacts in the description; callers pass no contact field.
+    result = score("Data entry. Contact Recruiter.Name@Gmail.com", "Happiest Resume")
+    assert "Employer uses a free email domain" in result.reasons
+    assert score("Apply at hr@example.com", "Example Ltd").reasons == ()
+
+
 def test_scam_signal_catches_localized_whatsapp_only_contact():
     result = score("వాట్సాప్ ద్వారా మాత్రమే సంప్రదించండి", "Example Ltd")
     assert "WhatsApp" in " ".join(result.reasons)

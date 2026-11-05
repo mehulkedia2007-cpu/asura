@@ -65,6 +65,7 @@ def normalize_adzuna(raw: dict, fetched_at: str, origin: tuple[float, float] | N
         "location": str((raw.get("location") or {}).get("display_name") or ""),
         "lat": lat, "lon": lon, "distance_km": distance,
         "pay": f"₹{pay_min:,.0f}+" if isinstance(pay_min, (float, int)) and pay_min > 0 else None,
+        "pay_period": "year",  # Adzuna salary_min is annual
         "description": description[:1200], "required_skills": _skills(f"{raw.get('title', '')} {description}"),
         "scam": scam_score(description, org).__dict__, "remote": False,
     }

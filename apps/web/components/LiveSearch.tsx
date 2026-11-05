@@ -12,6 +12,7 @@ type Lead = {
   location: string;
   distance_km: number | null;
   pay: string | null;
+  pay_period?: "year";
   required_skills: Record<string, number>;
   scam: { badge: string; score: number; reasons: string[] };
   source: string;
@@ -36,7 +37,7 @@ type Scheme = {
   benefit_text: string;
   eligibility_text: string;
   documents_text?: string;
-  apply_steps?: { channel: string; text: string }[];
+  apply_steps?: { channel: string; text: string; url?: string }[];
   eligibility: { status: string; reasons: string[]; missing_fields: string[] };
   url: string;
   fetched_at: string;
@@ -506,8 +507,8 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
           role="status"
         >
           {kind === "leads"
-            ? `${result.leads?.length ?? 0} ${t("results")} · ${result.job_type === "government" ? t("statewide") : `${t("radius")} ${result.radius_km ?? 0} km`}`
-            : `${result.schemes?.length ?? 0} ${t("results")}`}
+            ? `${t("results", { count: result.leads?.length ?? 0 })} · ${result.job_type === "government" ? t("statewide") : `${t("radius")} ${result.radius_km ?? 0} km`}`
+            : t("results", { count: result.schemes?.length ?? 0 })}
         </p>
       )}
       {kind === "schemes" && result?.coverage && (
@@ -618,7 +619,9 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
                 : lead.distance_km == null
                   ? t("distanceUnknown")
                   : `${lead.distance_km} km`}{" "}
-              {lead.pay ? `· ${lead.pay}` : ""}
+              {lead.pay
+                ? `· ${lead.pay}${lead.pay_period === "year" ? ` ${t("perYear")}` : ""}`
+                : ""}
             </p>
             {lead.government && (
               <p className="mt-2 text-graphite text-sm">{t("govWindow")}</p>
@@ -743,6 +746,27 @@ export function LiveSearch({ kind }: { kind: "leads" | "schemes" }) {
                   {scheme.eligibility_text}
                 </p>
               </details>
+            )}
+            {scheme.apply_steps?.some((step) => step.url) && (
+              <div className="mt-4">
+                {scheme.apply_steps
+                  .filter((step) => step.url)
+                  .map((step) => (
+                    <a
+                      key={step.url}
+                      className="mr-3 mb-2 inline-block border border-signal px-3 py-2 text-signal"
+                      href={step.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t("applyOnline")} ·{" "}
+                      <span className="font-mono">
+                        {new URL(step.url as string).hostname}
+                      </span>
+                    </a>
+                  ))}
+                <p className="text-graphite text-xs">{t("applyNote")}</p>
+              </div>
             )}
             {scheme.documents_text && (
               <details className="mt-3 text-sm">

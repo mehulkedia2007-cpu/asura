@@ -7,7 +7,7 @@
     "skill_ids": [
       "sql_querying"
     ],
-    "round": "practice",
+    "round": "technical",
     "kind": "practice",
     "topic": "sql_querying"
   },
@@ -43,7 +43,7 @@
     "skill_ids": [
       "data_cleaning"
     ],
-    "round": "practice",
+    "round": "technical",
     "kind": "practice",
     "topic": "data_cleaning"
   },
@@ -103,7 +103,7 @@
     "skill_ids": [
       "cash_reconciliation"
     ],
-    "round": "practice",
+    "round": "technical",
     "kind": "practice",
     "topic": "cash_reconciliation"
   },

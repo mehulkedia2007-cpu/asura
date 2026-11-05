@@ -17,6 +17,7 @@ COPY = {
     "structure": ("Check how your example is told", "Check that context, responsibility, action and outcome connect.", "ఉదాహరణ నిర్మాణాన్ని సమీక్షించండి", "సందర్భం, బాధ్యత, చర్య, ఫలితం అనుసంధానంగా ఉన్నాయో చూడండి.", "उदाहरण की संरचना देखें", "संदर्भ, जिम्मेदारी, कार्रवाई और परिणाम का संबंध जाँचें।"),
     "evidence": ("Check the evidence in this answer", "Keep only details you can explain from your own experience.", "సమాధానంలోని ఆధారాన్ని తనిఖీ చేయండి", "మీ అనుభవం నుంచి వివరించగల వివరాలనే ఉంచండి.", "उत्तर के प्रमाण जाँचें", "अपने अनुभव से समझा सकने वाले विवरण ही रखें।"),
     "focus": ("Try a shorter, clearer answer", "Retell this example with one main point per sentence.", "స్పష్టంగా మళ్లీ చెప్పడం సాధన చేయండి", "ఒక్కో వాక్యంలో ఒక ముఖ్య విషయం చెప్పండి.", "केंद्रित उत्तर का अभ्यास करें", "हर वाक्य में एक मुख्य बात रखें।"),
+    "steps": ("Explain your steps in order", "Say each step you would take and how you would check the result is correct.", "మీ దశలను క్రమంగా వివరించండి", "మీరు చేసే ప్రతి దశను, ఫలితం సరైనదో ఎలా తనిఖీ చేస్తారో చెప్పండి.", "अपने चरण क्रम से समझाएँ", "हर चरण बताएँ जो आप करेंगे और यह कैसे जाँचेंगे कि परिणाम सही है।"),
 }
 FOLLOWUP = {
     "situation": ("What was happening at the start?", "మొదట ఏం జరుగుతోంది?", "शुरुआत में क्या हो रहा था?"),
@@ -27,29 +28,30 @@ FOLLOWUP = {
 
 
 def feedback(transcript: str, locale: str = "en", duration: float | None = None,
-             keywords: tuple[str, ...] = ()) -> dict:
+             keywords: tuple[str, ...] = (), technical: bool = False) -> dict:
     metrics = measure(transcript, duration, keywords)
     index = {"en": 0, "te": 2, "hi": 4}[locale]
     quote = transcript.strip()[:200]
-    codes = [key for key, found in metrics["star"].items() if not found]
-    if not metrics["quantifiers"]:
+    # STAR story cues and number counts only fit behavioural questions, not code or procedures.
+    codes = [] if technical else [key for key, found in metrics["star"].items() if not found]
+    if not technical and not metrics["quantifiers"]:
         codes.append("quantifiers")
     if metrics["filler_count"]:
         codes.insert(0, "fillers")
     if metrics["missing_keywords"]:
         codes.insert(0, "keywords")
-    for code in ("structure", "evidence", "focus"):
+    for code in ("steps",) if technical else ("structure", "evidence", "focus"):
         if len(codes) < 3:
             codes.append(code)
     items = [{"code": code, "point": COPY[code][index], "fix": COPY[code][index+1], "quote": quote,
-              "source": "text", "severity": "info" if code in {"structure", "evidence", "focus"} else "practice"}
+              "source": "text", "severity": "info" if code in {"structure", "evidence", "focus", "steps"} else "practice"}
              for code in codes[:6]] if quote else []
     for item in items:
         if item["code"] == "fillers":
             match = re.search(r"(?<!\w)(?:" + "|".join(re.escape(word) for word in FILLERS) + r")(?!\w)", transcript, re.IGNORECASE)
             if match:
                 item["quote"] = transcript[max(0, match.start()-30):min(len(transcript), match.end()+60)]
-    weakest = weakest_star(metrics)
+    weakest = None if technical else weakest_star(metrics)
     return {"metrics": metrics, "feedback": validate(items, transcript, items),
             "followup": FOLLOWUP[weakest][index // 2] if weakest else None,
             "weakest_star": weakest, "mode": "metrics_template", "prosody": {"status": "not_measured"},

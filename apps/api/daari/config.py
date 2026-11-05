@@ -38,6 +38,7 @@ class Settings(BaseSettings):
     ADZUNA_APP_KEY: str | None = None
     SERPAPI_KEY: str | None = None
     SERPAPI_MONTHLY_BUDGET: int = 100
+    CRON_SECRET: str | None = None  # Vercel sends it as a Bearer token to cron routes
 
     # App config — non-secret.
     LLM_CACHE_DIR: str = ".cache/llm"

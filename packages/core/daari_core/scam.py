@@ -61,7 +61,7 @@ def score(description: str, org: str, contact: str = "", pay: float | None = Non
     if re.search(r"earn\s+from\s+home", content) and re.search(r"no\s+(?:skill|experience)", content):
         value += 0.2
         reasons.append("Promises home earnings without skills or experience")
-    if re.search(r"[\w.+-]+@(?:gmail|yahoo|outlook|hotmail)\.[\w.-]+", contact, re.IGNORECASE):
+    if re.search(r"[\w.+-]+@(?:gmail|yahoo|outlook|hotmail)\.[\w.-]+", content):
         value += 0.1
         reasons.append("Employer uses a free email domain")
     value = min(1.0, round(value, 2))

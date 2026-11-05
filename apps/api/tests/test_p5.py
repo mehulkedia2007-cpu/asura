@@ -78,6 +78,18 @@ def test_practice_bank_and_feedback_are_localized_and_guarded(locale):
     assert not validate([{**allowed[0], "code": "invented_claim"}], transcript, allowed)
 
 
+@pytest.mark.parametrize("locale", ["en", "te", "hi"])
+def test_technical_answer_gets_no_star_advice(locale):
+    # A coding answer once got "make your actions clear" and "no numbers included" despite "O(n)".
+    transcript = "I would use a for loop like for x in arr: print(x). It is O(n) time."
+    result = feedback(transcript, locale, technical=True)
+    codes = [row["code"] for row in result["feedback"]]
+    assert codes == ["steps"]
+    assert result["followup"] is None
+    assert all(row["quote"] in transcript for row in result["feedback"])
+    assert {row["code"] for row in feedback("um it is O(n)", locale, technical=True)["feedback"]} == {"fillers", "steps"}
+
+
 @pytest.mark.asyncio
 async def test_feedback_rewrites_once_then_falls_back(monkeypatch):
     from daari.interview import guard

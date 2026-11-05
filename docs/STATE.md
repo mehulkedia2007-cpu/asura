@@ -1,6 +1,22 @@
 # STATE — DAARI
 
-Spec: [build.md](../build.md), v6, §13. Updated 2026-10-10.
+Spec: [build.md](../build.md), v6, §13. Updated 2026-11-05.
+
+## Audit quick fixes on 2026-11-05
+
+A live-site audit found and fixed five defects. Interview and question practice no longer disable Start/Search after choosing one of the 58 companies without listed titles; the title now defaults to the first common title. Adzuna pay renders as a yearly figure (`pay_period: "year"`, localized label). Scam Shield's free-email rule now reads the listing description, where Adzuna puts recruiter contacts; regression test added, scam golden recall/precision stay 1.0. The result count uses a plural form. `evals/i18n_report.json` was regenerated (440 keys), restoring the two failing evidence tests.
+
+Verification: 90 core tests, 127 API tests, Ruff, web typecheck, Biome, 8 web tests, production build and `run_p3.py --snapshot` (scheme precision@5 0.805) pass. Not browser-checked locally (no Docker for Postgres/Redis); not yet deployed.
+
+Interview feedback no longer applies STAR or "no numbers" advice to technical questions (round `technical`, including practice-0/3/8 in `data/interview/bank.json`); they get filler/keyword items plus one "explain your steps" template and no STAR follow-up. The new Telugu and Hindi template strings are unreviewed. P5 goldens stay at must-mention 1.0 and 0 adversarial violations. Note: `run_p7.py --audit` overwrites the preserved field-rehearsal data in `evals/p7_report.json`; restore it with git after running.
+
+CI gap: pushes to the fork `mehulkedia2007-cpu/asura` create no GitHub Actions runs (all 17 runs are manual dispatches), so `073dc53` shipped to Vercel with 2 failing tests. Human to-do: enable push-triggered Actions on the fork and add the `core`, `api` and `web` jobs as Vercel Deployment Checks on both projects.
+
+Daily scheme refresh and official apply links: `vercel.json` now schedules five once-a-day Vercel crons (Hobby limit verified in Vercel docs). `/engine/cron/discover` (16:00 UTC) runs the worker's scheme discovery without lead searches, so the Google Jobs budget is untouched. `/engine/cron/schemes/1..4` (18:00, 20:00, 22:00, 00:00 UTC) each re-fetch the 55 least recently checked myScheme records in full, so the whole library (~213) refreshes daily; a partial fetch keeps the saved record. Both routes require `CRON_SECRET` and return 503 without it. Scheme cards now show "Apply on the official website" buttons using the `applicationProcess[].url` that myScheme publishes (verified live for `pmkvy-stt`), with the domain shown; offline schemes keep their steps. DAARI never submits applications or collects Aadhaar. Existing records gain links on their first refresh. Human to-do: set `CRON_SECRET` on the Vercel API project. The new Telugu/Hindi strings are unreviewed.
+
+Open from the audit, not started: feedback items still quote the whole answer; live scheme index precision@5 is 0.66 on `/evidence` (below 0.80); the ~250-name scheme dropdown is hard to use on phones; near-duplicate job reposts are not collapsed; common job titles and the topic placeholder in `Preparation.tsx` are English-only.
+
+Next action: commit these fixes, deploy, then take the open items one at a time.
 
 ## Guided usability update on 2026-10-10
 

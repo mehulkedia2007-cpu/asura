@@ -9,5 +9,12 @@
       "excludeFiles": "apps/web/**",
       "includeFiles": "{apps/api/daari/**,packages/core/daari_core/**,data/**,evals/**,docs/**}"
     }
-  }
+  },
+  "crons": [
+    { "path": "/engine/cron/discover", "schedule": "0 16 * * *" },
+    { "path": "/engine/cron/schemes/1", "schedule": "0 18 * * *" },
+    { "path": "/engine/cron/schemes/2", "schedule": "0 20 * * *" },
+    { "path": "/engine/cron/schemes/3", "schedule": "0 22 * * *" },
+    { "path": "/engine/cron/schemes/4", "schedule": "0 0 * * *" }
+  ]
 }

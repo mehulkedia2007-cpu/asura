@@ -489,7 +489,7 @@ export function Preparation({
             setCustomRole(false);
             setRole(
               companies.find((c) => c.id === event.target.value)?.roles[0] ??
-                "",
+                commonJobTitles[0],
             );
             setResults(null);
           }}

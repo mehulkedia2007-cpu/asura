@@ -68,7 +68,8 @@ async def answer(session_id: UUID, question_id: str, transcript: str, duration: 
         question = row["questions"][row["current"]]
         taxonomy = get_taxonomy()
         keywords = tuple(taxonomy.skills[s].label_en for s in question["skill_ids"] if s in taxonomy.skills)
-        result = feedback(transcript, row["locale"], duration, keywords if question["kind"] == "jd_practice" else ())
+        result = feedback(transcript, row["locale"], duration, keywords if question["kind"] == "jd_practice" else (),
+                          technical=question.get("round") == "technical")
         row["attempts"].append({"question_id": question_id, "transcript": transcript,
                                 "created_at": datetime.now(UTC).isoformat(), **result})
         row["current"] += 1

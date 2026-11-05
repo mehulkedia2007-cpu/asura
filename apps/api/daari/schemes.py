@@ -6,6 +6,7 @@ import html
 import re
 from datetime import UTC, datetime
 from typing import Any
+from urllib.parse import urlparse
 
 import httpx
 from daari_core.eligibility import evaluate
@@ -47,6 +48,14 @@ def _text(value: Any) -> str:
             return _text(value["label"])
         return "\n".join(_text(item) for item in value.values())
     return ""
+
+
+def _official_url(value: Any) -> str:
+    """Application link exactly as myScheme publishes it; anything but http(s) is dropped."""
+    url = str(value or "").strip()
+    parsed = urlparse(url)
+    # Whitespace inside would make the browser's URL parser throw and break the whole card list.
+    return url if parsed.scheme in {"http", "https"} and parsed.netloc and not re.search(r"\s", url) else ""
 
 
 def extract_rules(eligibility_text: str) -> tuple[dict, bool]:
@@ -124,7 +133,8 @@ def merge_detail(scheme: dict, payload: dict) -> dict:
     scheme["eligibility_text"] = _text(criteria.get("eligibilityDescription_md"))
     scheme["documents_text"] = _text(documents.get("documentsRequired_md"))
     scheme["apply_steps"] = [
-        {"channel": _text(item.get("mode")), "text": _text(item.get("process"))[:2000]}
+        {"channel": _text(item.get("mode")), "text": _text(item.get("process"))[:2000],
+         "url": _official_url(item.get("url"))}
         for item in english.get("applicationProcess", []) if isinstance(item, dict)
     ]
     scheme["apply_text"] = "\n".join(step["text"] for step in scheme["apply_steps"])
@@ -150,6 +160,27 @@ async def ingest_summaries(query: str, locale: str = "en", refresh: bool = False
             await upsert(scheme, summary_only=True)
     return {"query": query, "indexed_candidates": len(candidates),
             "errors": errors, "truncated": truncated}
+
+
+async def refresh_oldest(limit: int = 55, budget_s: float = 240.0) -> dict:
+    """Daily cron batch: re-fetch the least recently checked myScheme records in full."""
+    # shortcut: a scheme that always fails keeps its old date and stays first in line; add a
+    # separate checked_at if failures start crowding out the batch.
+    records = sorted((r for r in await browse() if r.get("source", "myScheme") == "myScheme"),
+                     key=lambda r: str(r.get("fetched_at") or ""))[:limit]
+    updated, errors = 0, []
+    try:
+        async with asyncio.timeout(budget_s), httpx.AsyncClient(timeout=15) as client:
+            for record in records:
+                payload, detail_errors = await detail(client, record["id"], "te", True)
+                errors.extend(detail_errors)
+                # A partial fetch would blank documents or steps; keep the saved record instead.
+                if payload and not detail_errors:
+                    await upsert(merge_detail(dict(record), payload), embed_documents=False)
+                    updated += 1
+    except TimeoutError:
+        errors.append("refresh_timeout")
+    return {"checked": len(records), "updated": updated, "errors": sorted(set(errors))}
 
 
 async def search(query: str, profile: dict, refresh: bool = False, locale: str = "en") -> dict:

@@ -14,7 +14,7 @@ from daari.schemes import ingest_summaries
 from daari.schemes import search as search_schemes
 
 
-async def refresh_sources(ctx: dict) -> dict:
+async def refresh_sources(ctx: dict, include_leads: bool = True) -> dict:
     del ctx
     results: dict[str, object] = {}
     for query in ("skill", "livelihood", "apprenticeship"):
@@ -30,7 +30,8 @@ async def refresh_sources(ctx: dict) -> dict:
             results[f"scheme_index:{query}"] = await ingest_summaries(query, refresh=True)
         except Exception as exc:  # noqa: BLE001 — preserve the other source refreshes
             results[f"scheme_index:{query}"] = type(exc).__name__
-    for query in ("technician", "data analyst"):
+    # The daily Vercel cron skips leads: they could spend the 100/month Google Jobs budget.
+    for query in ("technician", "data analyst") if include_leads else ():
         try:
             response = await search_leads(query, "Guntur, Andhra Pradesh", {}, refresh=True)
             results[f"leads:{query}"] = {"found": len(response["leads"]),

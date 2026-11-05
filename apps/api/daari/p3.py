@@ -1,12 +1,15 @@
 """P3 live-source API. All displayed records carry a URL and fetch stamp."""
 
+import asyncio
+import hmac
 from datetime import datetime
 from typing import Literal
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException, Path
 from pydantic import BaseModel, Field
 
 from daari import leads, schemes
+from daari.config import settings
 from daari.portal_sources import probe_all
 from daari.scheme_index import browse, coverage
 from daari.taxonomy_loader import get_taxonomy
@@ -69,3 +72,27 @@ async def scheme_coverage() -> dict:
 @router.get("/schemes/sources")
 async def scheme_sources(refresh: bool = False) -> dict:
     return {"sources": await probe_all(refresh)}
+
+
+def _cron_only(authorization: str = Header(default="")) -> None:
+    # Fail closed: without a secret anyone could spend the free source quotas.
+    if not settings.CRON_SECRET:
+        raise HTTPException(503, "Cron is not configured")
+    if not hmac.compare_digest(authorization, f"Bearer {settings.CRON_SECRET}"):
+        raise HTTPException(401, "Unauthorized")
+
+
+@router.get("/cron/schemes/{batch}", dependencies=[Depends(_cron_only)])
+async def cron_scheme_details(batch: int = Path(ge=1, le=4)) -> dict:
+    return {"batch": batch, **await schemes.refresh_oldest()}
+
+
+@router.get("/cron/discover", dependencies=[Depends(_cron_only)])
+async def cron_discover() -> dict:
+    from daari.workers import refresh_sources
+
+    try:
+        async with asyncio.timeout(270):
+            return await refresh_sources({}, include_leads=False)
+    except TimeoutError:
+        return {"error": "refresh_timeout"}
